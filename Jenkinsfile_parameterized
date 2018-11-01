@@ -1,0 +1,29 @@
+#!groovy
+@Library(value="Infrastructure") _
+
+properties([
+        parameters([
+                string(name: 'PRODUCT_NAME', defaultValue: 'finrem', description: 'Financial Remedy'),
+                string(name: 'APP', defaultValue: 'emca', description: 'Financial Remedy Evidence Management Client API'),
+                string(name: 'TYPE', defaultValue: 'java', description: ''),
+                string(name: 'ENVIRONMENT', defaultValue: 'saat', description: 'Environment where code should be built and deployed'),
+                choice(name: 'SUBSCRIPTION', choices: 'sandbox\nnonprod\nprod', description: 'Azure subscriptions available to build in')
+    ])
+])
+
+List<LinkedHashMap<String, Object>> secrets = [
+        secret("finrem-doc-s2s-auth-secret", "IDAM_AUTH_SECRET")
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+    [ $class: 'AzureKeyVaultSecret',
+      secretType: 'Secret',
+      name: secretName,
+      version: '',
+      envVariable: envVar
+    ]
+}
+
+withParameterizedPipeline(params.TYPE, params.PRODUCT_NAME, params.APP, params.ENVIRONMENT, params.SUBSCRIPTION) {
+    loadVaultSecrets(secrets)
+}
