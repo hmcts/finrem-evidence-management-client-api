@@ -12,8 +12,6 @@ services:
         - no_proxy
     ports:
       - "4006:4006"
-    expose:
-      - "4006"
     environment:
       - AUTH_PROVIDER_SERVICE_CLIENT_BASEURL=http://service-auth-provider-api:8080
       - AUTH_PROVIDER_SERVICE_CLIENT_PORT=8080
