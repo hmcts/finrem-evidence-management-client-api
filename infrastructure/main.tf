@@ -9,6 +9,11 @@ locals {
   vaultName = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
   vaultUri = "${data.azurerm_key_vault.finrem_key_vault.vault_uri}"
 
+  previewDivVaultName = "div-aat"
+  nonPreviewVaultName = "div-${var.env}"
+  divVaultName = "${var.env == "preview" ? local.previewDivVaultName : local.nonPreviewVaultName}"
+  divVaultUri = "${data.azurerm_key_vault_div.div_key_vault.vault_uri}"
+
   asp_name = "${var.env == "prod" ? "finrem-emca-prod" : "${var.raw_product}-${var.env}"}"
   asp_rg = "${var.env == "prod" ? "finrem-emca-prod" : "${var.raw_product}-${var.env}"}"
 }
@@ -48,6 +53,12 @@ module "finrem-emca" {
   }
 }
 
+data "azurerm_key_vault_div" "div_key_vault" {
+  name                = "${local.divVaultName}"
+  resource_group_name = "${local.divVaultName}"
+}
+
+
 data "azurerm_key_vault" "finrem_key_vault" {
   name                = "${local.vaultName}"
   resource_group_name = "${local.vaultName}"
@@ -60,5 +71,5 @@ data "azurerm_key_vault_secret" "finrem_doc_s2s_auth_secret" {
 
 data "azurerm_key_vault_secret" "idam-secret" {
   name      = "idam-secret"
-  vault_uri = "${data.azurerm_key_vault.finrem_key_vault.vault_uri}"
+  vault_uri = "${data.azurerm_key_vault_div.div_key_vault.vault_uri}"
 }
