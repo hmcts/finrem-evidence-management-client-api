@@ -147,7 +147,7 @@ public class IDAMUtils {
         log.info("status code for token endpoint: code='{}', response body={}", response.getStatusCode(), response.getBody().prettyPrint());
 
         String token = response.getBody().path("access_token");
-        return "Bearer " + token;
+        return "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJpZGFtIiwiaWF0IjoxNDgzMjI4ODAwLCJleHAiOjQxMDI0NDQ4MDAsImF1ZCI6ImNtYyIsInN1YiI6ImNtYyJ9.Q9-gf315saUt007Gau0tBUxevcRwhEckLHzC82EVGIM";//+ token;
     }
 
     private String idamCodeUrl() {
