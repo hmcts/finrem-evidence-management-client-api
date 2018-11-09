@@ -144,7 +144,7 @@ public class IDAMUtils {
                 .relaxedHTTPSValidation()
                 .post(idamTokenUrl(authCode));
 
-        log.info("status code for token endpoint: code='{}'", response.getStatusCode());
+        log.info("status code for token endpoint: code='{}', response body={}", response.getStatusCode(), response.getBody().prettyPrint());
 
         String token = response.getBody().path("access_token");
         return "Bearer " + token;
