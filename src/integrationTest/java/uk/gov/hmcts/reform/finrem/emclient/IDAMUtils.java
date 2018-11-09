@@ -48,7 +48,7 @@ public class IDAMUtils {
 
     protected void createUserAndToken() {
 //        createUserInIdam();
-        testUserJwtToken = generateUserTokenWithNoRoles("nasim_fr_judge@mailinator.com", "TG9uZG9uMDE=");
+        testUserJwtToken = generateUserTokenWithNoRoles("nasim_fr_judge@mailinator.com", "London01");
     }
 
     public synchronized String getIdamTestCaseWorkerUser() {
@@ -106,7 +106,7 @@ public class IDAMUtils {
     }
 
     public String generateUserTokenWithNoRoles(String username, String password) {
-        String userLoginDetails = String.join(":", username, new String(Base64.getDecoder().decode(password)));
+        String userLoginDetails = String.join(":", username, password);
         final String authHeader = "Basic " + new String(Base64.getEncoder().encode((userLoginDetails).getBytes()));
 
         Response response = RestAssured.given()
