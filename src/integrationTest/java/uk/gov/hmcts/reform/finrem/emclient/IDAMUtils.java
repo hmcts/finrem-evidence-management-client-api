@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.finrem.emclient;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class IDAMUtils {
 
     @Value("${auth.idam.client.baseUrl}")
@@ -48,7 +50,23 @@ public class IDAMUtils {
 
     protected void createUserAndToken() {
 //        createUserInIdam();
-        testUserJwtToken = generateUserTokenWithNoRoles("nasim_fr_judge@mailinator.com", "London01");
+        String[] emails = { "kate_fr_courtadmn@mailinator.com",
+                "nasim_fr_courtadmn@mailinator.com",
+                "vivek_fr_courtadmn@mailinator.com",
+                "atique_fr_courtadmn@mailinator.com",
+                "phi_fr_courtadmn@mailinator.com",
+                "mahesh_fr_courtadmn@mailinator.com"
+        };
+
+        String token = null;
+        for (String email:emails) {
+            token = generateUserTokenWithNoRoles(email, "London01");
+
+            log.info("token found for: token='{}', email='{}'", token, email);
+            log.debug("token found for: token='{}', email='{}'", token, email);
+        }
+
+        testUserJwtToken = generateUserTokenWithNoRoles("nasim_fr_courtadmn@mailinator.com", "London01");
     }
 
     public synchronized String getIdamTestCaseWorkerUser() {
