@@ -10,8 +10,8 @@ locals {
   vaultUri = "${data.azurerm_key_vault.finrem_key_vault.vault_uri}"
 
   previewDivVaultName = "div-aat"
-  nonPreviewVaultName = "div-${var.env}"
-  divVaultName = "${var.env == "preview" ? local.previewDivVaultName : local.nonPreviewVaultName}"
+  nonPreviewDivVaultName = "div-${var.env}"
+  divVaultName = "${var.env == "preview" ? local.previewDivVaultName : local.nonPreviewDivVaultName}"
   divVaultUri = "${data.azurerm_key_vault_div.div_key_vault.vault_uri}"
 
   asp_name = "${var.env == "prod" ? "finrem-emca-prod" : "${var.raw_product}-${var.env}"}"
@@ -49,7 +49,7 @@ module "finrem-emca" {
     HTTP_CONNECT_SOCKET_TIMEOUT         = "${var.http_connect_socket_timeout}"
     IDAM_API_URL = "${var.idam_api_url}"
     IDAM_API_HEALTH_URI = "${var.idam_api_url}/health"
-    AUTH_IDAM_CLIENT_SECRET = "${data.azurerm_key_vault_secret.idam-secret.value}"
+    AUTH_IDAM_CLIENT_SECRET = "${data.azurerm_key_vault_secret_1.idam-secret.value}"
   }
 }
 
@@ -58,6 +58,10 @@ data "azurerm_key_vault_div" "div_key_vault" {
   resource_group_name = "${local.divVaultName}"
 }
 
+data "azurerm_key_vault_secret_1" "idam-secret" {
+  name      = "idam-secret"
+  vault_uri = "${data.azurerm_key_vault_div.div_key_vault.vault_uri}"
+}
 
 data "azurerm_key_vault" "finrem_key_vault" {
   name                = "${local.vaultName}"
@@ -71,5 +75,5 @@ data "azurerm_key_vault_secret" "finrem_doc_s2s_auth_secret" {
 
 data "azurerm_key_vault_secret" "idam-secret" {
   name      = "idam-secret"
-  vault_uri = "${data.azurerm_key_vault_div.div_key_vault.vault_uri}"
+  vault_uri = "${data.azurerm_key_vault.finrem_key_vault.vault_uri}"
 }
