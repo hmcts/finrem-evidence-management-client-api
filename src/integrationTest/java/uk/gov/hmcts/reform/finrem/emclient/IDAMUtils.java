@@ -137,7 +137,7 @@ public class IDAMUtils {
         }
         String authCode = response.getBody().path("code");
 
-        log.debug("code found for: user='{}', code='{}'", username, authCode);
+        log.info("code found for: user='{}', code='{}'", username, authCode);
 
         response = RestAssured.given()
                 .header("Authorization", authHeader)
