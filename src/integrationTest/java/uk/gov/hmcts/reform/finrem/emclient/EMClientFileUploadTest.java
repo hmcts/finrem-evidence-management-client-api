@@ -119,13 +119,13 @@ public class EMClientFileUploadTest {
     }
 
     public Response readDataFromEvidenceManagement(String uri) {
-        String username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
-        String password = UUID.randomUUID().toString().toUpperCase(Locale.UK);
-        idamTestSupportUtil.createCaseworkerUserInIdam(username, password);
+        String username = "nasim_fr_courtadmn@mailinator.com";//"simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
+//        String password = UUID.randomUUID().toString().toUpperCase(Locale.UK);
+//        idamTestSupportUtil.createCaseworkerUserInIdam(username, password);
         Map<String, Object> headers = new HashMap<>();
         headers.put("ServiceAuthorization", authTokenGenerator.generate());
         headers.put("user-id", username);
-        headers.put("user-roles", "caseworker-divorce");
+        headers.put("user-roles", "caseworker-divorce-financialremedy-courtadmin");
         return given()
                 .contentType("application/json")
                 .headers(headers)
