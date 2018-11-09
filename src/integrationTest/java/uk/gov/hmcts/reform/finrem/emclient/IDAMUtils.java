@@ -48,7 +48,7 @@ public class IDAMUtils {
 
     protected void createUserAndToken() {
 //        createUserInIdam();
-        testUserJwtToken = generateUserTokenWithNoRoles("nasim_fr_courtadmn@mailinator.com", "TG9uZG9uMDE=");
+        testUserJwtToken = generateUserTokenWithNoRoles("nasim_fr_judge@mailinator.com", "TG9uZG9uMDE=");
     }
 
     public synchronized String getIdamTestCaseWorkerUser() {
