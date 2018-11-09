@@ -63,7 +63,6 @@ public class IDAMUtils {
             token = generateUserTokenWithNoRoles(email, "London01");
 
             log.info("token found for: token='{}', email='{}'", token, email);
-            log.debug("token found for: token='{}', email='{}'", token, email);
         }
 
         testUserJwtToken = generateUserTokenWithNoRoles("nasim_fr_courtadmn@mailinator.com", "London01");
@@ -136,10 +135,14 @@ public class IDAMUtils {
             throw new IllegalStateException("Token generation failed with code: " + response.getStatusCode()
                     + " body: " + response.getBody().prettyPrint());
         }
+        String authCode = response.getBody().path("code");
+
+        log.debug("code found for: user='{}', code='{}'", username, authCode);
 
         response = RestAssured.given()
+                .header("Authorization", authHeader)
                 .relaxedHTTPSValidation()
-                .post(idamTokenUrl(response.getBody().path("code")));
+                .post(idamTokenUrl(authCode));
 
         String token = response.getBody().path("access_token");
         return "Bearer " + token;
