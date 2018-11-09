@@ -140,7 +140,7 @@ public class IDAMUtils {
         log.info("code found for: user='{}', code='{}'", username, authCode);
 
         response = RestAssured.given()
-                .header("Authorization", authHeader)
+                .header("Authorization", "heeheaa")
                 .relaxedHTTPSValidation()
                 .post(idamTokenUrl(authCode));
 
