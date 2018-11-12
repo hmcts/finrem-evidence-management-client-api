@@ -38,10 +38,6 @@ public class EvidenceManagementTestUtils {
             return uri.replace("http://em-api-gateway-web:3404", documentManagementURL);
         }
 
-        if (uri.contains("document-management-store:8080")) {
-            return uri.replace("http://document-management-store:8080", documentManagementURL);
-        }
-
         return uri;
     }
 

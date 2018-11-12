@@ -12,14 +12,13 @@ services:
         - no_proxy
     ports:
       - "4006:4006"
-    expose:
-      - "4006"
     environment:
       - AUTH_PROVIDER_SERVICE_CLIENT_BASEURL=http://service-auth-provider-api:8080
       - EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL=http://em-api-gateway-web:3404/documents
       - EVIDENCE_MANAGEMENT_HEALTH_URL=http://em-api-gateway-web:3404/health
       - DOCUMENT_MANAGEMENT_STORE_URL=http://document-management-store:8080
       - IDAM_API_URL=http://idam-api:8080
+      - AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE=finrem_document_generator
     links:
      - em-api-gateway-web
      - idam-api
@@ -68,8 +67,6 @@ services:
       ports:
        - 3405:8080
        - 5005:5005
-      expose:
-        - 5005
       environment:
         - SERVER_PORT=8080
         - IDAM_SUPERUSER_EMAIL
@@ -83,6 +80,9 @@ services:
         - LOGGING_LEVEL_UK_GOV_HMCTS_IDAM=DEBUG
         - IDAM_CLIENT_URL=http://idam-api:8080
         - PROVIDER_SERVICE_CLIENT_URL=http://service-auth-provider-api:8080
+        - IDAM_USER_BASE_URI=http://idam-api:8080
+        - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
+        - S2S_NAMES_WHITELIST=sscs,divorce,ccd,em_gw,document-management-store,ccd_gw,idam-api,finrem_document_generator
         - http_proxy=
         - https_proxy=
         - no_proxy=
@@ -114,31 +114,38 @@ services:
 
   idam-api:
     image: docker.artifactory.reform.hmcts.net/auth/idam-api:latest
-    command: --wait-for-database 60
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 10
     environment:
-      - IDAM_SUPERUSER_EMAIL=cmc-int-test@cmc.reform.hmcts.net
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://idam-database:5432/idam
-      - SPRING_MAIL_HOST=smtp-server
-      - IDAM_TESTING_SUPPORT_ENABLED=true
-      - NOTIFY_API_KEY=${GOV_NOTIFY_API_KEY}
-      - NOTIFY_CMC_ACTIVATE_USER_TEMPLATE=76aa8695-64e8-4afd-ae13-bc8385302b1f
-      - IDAM_SECRET=cmc_it_test_secret_key
-      - NOTIFY=false
-      - NOTIFY_CMC_WELCOME_USER_TEMPLATE=fake
-      - NOTIFY_DIVORCE_WELCOME_USER_TEMPLATE=fake
-      - NOTIFY_SSCS_WELCOME_USER_TEMPLATE=fake
-      - NOTIFY_RESET_PASSWORD_TEMPLATE=fake
-      - NOTIFY_PROBATE_ACTIVATE_USER_TEMPLATE=fake
-      - NOTIFY_DIVORCE_ACTIVATE_USER_TEMPLATE=fake
-      - NOTIFY_SSCS_ACTIVATE_USER_TEMPLATE=fake
-      - NOTIFY_CCD_ACTIVATE_USER_TEMPLATE=fake
-      - http_proxy
-      - https_proxy
-      - no_proxy
+      IDAM_SUPERUSER_EMAIL: cmc-int-test@cmc.reform.hmcts.net
+      SPRING_DATASOURCE_URL: jdbc:postgresql://idam-database:5432/idam
+      SPRING_MAIL_HOST: smtp-server
+      IDAM_TESTING_SUPPORT_ENABLED: "true"
+      NOTIFY_API_KEY: AAAAAAAAAAAAAAAA
+      NOTIFY_CMC_ACTIVATE_USER_TEMPLATE: 76aa8695-64e8-4afd-ae13-bc8385302b1f
+      IDAM_SECRET: cmc_it_test_secret_key
+      IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_CCD_GATEWAY: OOOOOOOOOOOOOOOO
+      IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_CCD_ADMIN: IIIIIIIIIIIIIIII
+      IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_DIVORCE: dummy-secret
+      NOTIFY: "false"
+      NOTIFY_CMC_WELCOME_USER_TEMPLATE: fake
+      NOTIFY_DIVORCE_WELCOME_USER_TEMPLATE: fake
+      NOTIFY_SSCS_WELCOME_USER_TEMPLATE: fake
+      NOTIFY_RESET_PASSWORD_TEMPLATE: fake
+      NOTIFY_PROBATE_ACTIVATE_USER_TEMPLATE: fake
+      NOTIFY_DIVORCE_ACTIVATE_USER_TEMPLATE: fake
+      NOTIFY_SSCS_ACTIVATE_USER_TEMPLATE: fake
+      NOTIFY_CCD_ACTIVATE_USER_TEMPLATE: fake
+      REFORM_ENVIRONMENT: test
+      http_proxy:
+      https_proxy:
+      no_proxy:
     ports:
-      - 8081:8080
+      - 4501:8080
     expose:
-      - 8081
+      - 4501
     links:
       - smtp-server
       - idam-database
@@ -152,15 +159,21 @@ services:
       - 5430:5432
 
   service-auth-provider-api:
-    image: docker.artifactory.reform.hmcts.net/auth/service-auth-provider-api:47e18b53aad48ae8124744041988565e07dfed50
+    image: hmcts/service-auth-provider-app
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 10
     ports:
-      - 8082:8080
-    expose:
-      - 8082
+      - 4502:8080
     environment:
-      - auth.provider.service.server.jwtKey=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
-      - auth.provider.service.server.microserviceKeys.sscs=AAAAAAAAAAAAAAAA
-      - auth.provider.service.testing-support.enabled=true
+      SERVER_PORT: 8080
+      JWT_KEY: wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
+      MICROSERVICE_KEYS_SSCS: "AAAAAAAAAAAAAAAA"
+      MICROSERVICE_KEYS_EM_GW: "AAAAAAAAAAAAAAAA"
+      MICROSERVICE_KEYS_FINREM_DOCUMENT_GENERATOR: "AAAAAAAAAAAAAAAA"
+      MICROSERVICE_KEYS_DIVORCE: "AAAAAAAAAAAAAAAA"
+      TESTING_SUPPORT_ENABLED: "true"
 
   smtp-server:
     image: mailhog/mailhog

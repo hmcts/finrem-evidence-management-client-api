@@ -9,6 +9,11 @@
 #   - IMAGE_NAME:   registry-name/hmcts/product-component:branch
 #
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ${NAMESPACE}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,15 +35,16 @@ spec:
         envFrom:
           - configMapRef:
               name: ${SERVICE_NAME}-config
+
         # These may be adjusted, but be mindful please
         resources:
           requests:
             memory: "512Mi"
             cpu: "200m"
           limits:
-            memory: "1024Mi"
+            memory: "2048Mi"
             cpu: "2500m"
- 
+
         # This is the port your process is listening on in the container
         ports:
         - containerPort: 4006
