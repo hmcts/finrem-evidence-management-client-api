@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.finrem.emclient;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import java.util.Locale;
 import java.util.UUID;
 
 @Service
-@Slf4j
 public class IDAMUtils {
 
     @Value("${auth.idam.client.baseUrl}")
@@ -49,23 +47,8 @@ public class IDAMUtils {
     }
 
     protected void createUserAndToken() {
-//        createUserInIdam();
-        String[] emails = { "kate_fr_courtadmn@mailinator.com",
-                "nasim_fr_courtadmn@mailinator.com",
-                "vivek_fr_courtadmn@mailinator.com",
-                "atique_fr_courtadmn@mailinator.com",
-                "phi_fr_courtadmn@mailinator.com",
-                "mahesh_fr_courtadmn@mailinator.com"
-        };
-
-        String token = null;
-        for (String email:emails) {
-            token = generateUserTokenWithNoRoles(email, "London01");
-
-            log.info("token found for: token='{}', email='{}'", token, email);
-        }
-
-        testUserJwtToken = generateUserTokenWithNoRoles("nasim_fr_courtadmn@mailinator.com", "London01");
+        createUserInIdam();
+        testUserJwtToken = generateUserTokenWithNoRoles(idamUsername, idamPassword);
     }
 
     public synchronized String getIdamTestCaseWorkerUser() {
@@ -135,19 +118,13 @@ public class IDAMUtils {
             throw new IllegalStateException("Token generation failed with code: " + response.getStatusCode()
                     + " body: " + response.getBody().prettyPrint());
         }
-        String authCode = response.getBody().path("code");
-
-        log.info("code found for: user='{}', code='{}'", username, authCode);
 
         response = RestAssured.given()
-                .header("Authorization", authHeader)
                 .relaxedHTTPSValidation()
-                .post(idamTokenUrl(authCode));
-
-        log.info("status code for token endpoint: code='{}', response body={}", response.getStatusCode(), response.getBody().prettyPrint());
+                .post(idamTokenUrl(response.getBody().path("code")));
 
         String token = response.getBody().path("access_token");
-        return "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJpZGFtIiwiaWF0IjoxNDgzMjI4ODAwLCJleHAiOjQxMDI0NDQ4MDAsImF1ZCI6ImNtYyIsInN1YiI6ImNtYyJ9.Q9-gf315saUt007Gau0tBUxevcRwhEckLHzC82EVGIM";//+ token;
+        return "Bearer " + token;
     }
 
     private String idamCodeUrl() {
