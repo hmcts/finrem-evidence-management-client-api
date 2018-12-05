@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.emclient.application;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -24,6 +25,7 @@ import uk.gov.hmcts.reform.authorisation.healthcheck.ServiceAuthHealthIndicator;
 @EnableRetry(proxyTargetClass=true)
 @EnableFeignClients(basePackageClasses = {ServiceAuthorisationApi.class, IdamApiClient.class})
 @EnableCircuitBreaker
+@Slf4j
 public class EvidenceManagementClientApplication {
 
     public static void main(String[] args) {
@@ -36,6 +38,8 @@ public class EvidenceManagementClientApplication {
             @Value("${idam.auth.microservice}") final String microService,
             final ServiceAuthorisationApi serviceAuthorisationApi
     ) {
+        log.info("secret --> {}", secret);
+        log.info("microservice --> {}", microService);
         return AuthTokenGeneratorFactory.createDefaultGenerator(secret, microService, serviceAuthorisationApi);
     }
 

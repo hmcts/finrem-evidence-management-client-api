@@ -95,6 +95,9 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         headers.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
         headers.set("Content-Type", "multipart/form-data");
         headers.set("user-id", userId);
+
+        log.info("auth token generated..{}", headers.get(SERVICE_AUTHORIZATION_HEADER));
+
         return headers;
     }
 
