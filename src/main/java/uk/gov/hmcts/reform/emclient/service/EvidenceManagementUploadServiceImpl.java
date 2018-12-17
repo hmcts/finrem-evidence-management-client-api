@@ -52,11 +52,8 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     @Override
     public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, final String authorizationToken,
                                            @Nullable String requestId) {
-        log.info("Pulling user details");
         UserDetails userDetails = userService.getUserDetails(authorizationToken);
-        log.info("user details user pulled");
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(userDetails.getId()));
-        log.info("going to upload documents {} at {}", files.size(), evidenceManagementStoreUrl);
         JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)
                 .path("_embedded").path("documents");
         log.info("For Request Id {} and userId {} : File upload response from Evidence Management service is {}", requestId, userDetails.getId(), documents);
@@ -95,9 +92,6 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         headers.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
         headers.set("Content-Type", "multipart/form-data");
         headers.set("user-id", userId);
-
-        log.info("auth token generated..{}", headers.get(SERVICE_AUTHORIZATION_HEADER));
-
         return headers;
     }
 

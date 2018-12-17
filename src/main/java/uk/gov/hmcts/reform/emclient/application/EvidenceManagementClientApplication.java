@@ -25,7 +25,6 @@ import uk.gov.hmcts.reform.authorisation.healthcheck.ServiceAuthHealthIndicator;
 @EnableRetry(proxyTargetClass=true)
 @EnableFeignClients(basePackageClasses = {ServiceAuthorisationApi.class, IdamApiClient.class})
 @EnableCircuitBreaker
-@Slf4j
 public class EvidenceManagementClientApplication {
 
     public static void main(String[] args) {
@@ -38,8 +37,6 @@ public class EvidenceManagementClientApplication {
             @Value("${idam.auth.microservice}") final String microService,
             final ServiceAuthorisationApi serviceAuthorisationApi
     ) {
-        log.info("secret --> {}", secret);
-        log.info("microservice --> {}", microService);
         return AuthTokenGeneratorFactory.createDefaultGenerator(secret, microService, serviceAuthorisationApi);
     }
 
