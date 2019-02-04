@@ -40,7 +40,7 @@ public class WebServiceHealthCheckTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>())))
                 .thenReturn(responseEntity);
 
-        assertThat(healthCheck.health()).isEqualTo(Health.up().build());
+        assertThat(healthCheck.health()).isEqualTo(Health.up().withDetail("uri", uri).build());
 
         verify(httpEntityFactory).createRequestEntityForHealthCheck();
         verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
@@ -60,7 +60,7 @@ public class WebServiceHealthCheckTest {
         doThrow(exception).when(restTemplate)
                 .exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
 
-        assertThat(healthCheck.health()).isEqualTo(Health.down().build());
+        assertThat(healthCheck.health()).isEqualTo(Health.down().withDetail("uri", uri).build());
 
         verify(httpEntityFactory).createRequestEntityForHealthCheck();
         verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
@@ -79,7 +79,7 @@ public class WebServiceHealthCheckTest {
         doThrow(exception).when(restTemplate)
                 .exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
 
-        assertThat(healthCheck.health()).isEqualTo(Health.down().build());
+        assertThat(healthCheck.health()).isEqualTo(Health.down().withDetail("uri", uri).build());
 
         verify(httpEntityFactory).createRequestEntityForHealthCheck();
         verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
@@ -98,7 +98,7 @@ public class WebServiceHealthCheckTest {
         doThrow(exception).when(restTemplate)
                 .exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
 
-        assertThat(healthCheck.health()).isEqualTo(Health.unknown().build());
+        assertThat(healthCheck.health()).isEqualTo(Health.unknown().withDetail("uri", uri).build());
 
         verify(httpEntityFactory).createRequestEntityForHealthCheck();
         verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
@@ -116,7 +116,7 @@ public class WebServiceHealthCheckTest {
         when(restTemplate.exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>())))
                 .thenReturn(responseEntity);
 
-        assertThat(healthCheck.health()).isEqualTo(Health.unknown().build());
+        assertThat(healthCheck.health()).isEqualTo(Health.unknown().withDetail("uri", uri).build());
 
         verify(httpEntityFactory).createRequestEntityForHealthCheck();
         verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
