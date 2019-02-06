@@ -1,5 +1,8 @@
 package uk.gov.hmcts.reform.emclient.controller;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,13 @@ public class EvidenceManagementClientController {
     @Autowired
     private EvidenceManagementUploadService emUploadService;
 
+    @ApiOperation(value = "Handles file upload to evidence management document store.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully uploaded the files",
+                    response = List.class),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
@@ -37,6 +47,13 @@ public class EvidenceManagementClientController {
 
 
 
+    @ApiOperation(value = "Handles file deletion  from evidence management document store.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully deleted the files",
+                    response = List.class),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ResponseEntity<?> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
