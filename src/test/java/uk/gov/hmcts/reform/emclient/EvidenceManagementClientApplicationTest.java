@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.emclient.application;
+package uk.gov.hmcts.reform.emclient;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

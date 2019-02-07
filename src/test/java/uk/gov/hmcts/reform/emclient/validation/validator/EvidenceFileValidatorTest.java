@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
-import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
+import uk.gov.hmcts.reform.emclient.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
 
 import com.google.common.collect.ImmutableList;
