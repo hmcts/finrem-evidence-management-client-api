@@ -95,7 +95,7 @@ public class EMClientFileUploadTest {
         Assert.assertEquals(true, true);
     }
 
-    @Test @Ignore
+    @Test
     public void uploadFile() {
         uploadFileToEMStore(this.name, this.fileType);
     }

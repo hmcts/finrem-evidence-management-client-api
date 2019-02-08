@@ -130,14 +130,14 @@ public class IDAMUtils {
     private String idamCodeUrl() {
         return idamUserBaseUrl + "/oauth2/authorize"
                 + "?response_type=code"
-                + "&client_id=divorce"
+                + "&client_id=finrem"
                 + "&redirect_uri=" + idamRedirectUri;
     }
 
     private String idamTokenUrl(String code) {
         return idamUserBaseUrl + "/oauth2/token"
                 + "?code=" + code
-                + "&client_id=divorce"
+                + "&client_id=finrem"
                 + "&client_secret=" + idamSecret
                 + "&redirect_uri=" + idamRedirectUri
                 + "&grant_type=authorization_code";
