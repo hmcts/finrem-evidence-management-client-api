@@ -38,6 +38,14 @@ jar {
 
 
 sourceSets {
+    testSmoke {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/smokeTest/java')
+        }
+        resources.srcDir file('src/smokeTest/resources')
+    }
     integrationTest {
         java {
             compileClasspath += main.output + test.output
@@ -191,6 +199,9 @@ dependencies {
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
     }
+    testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
+    testSmokeCompile sourceSets.main.runtimeClasspath
+    testSmokeCompile sourceSets.test.runtimeClasspath
 }
 
 test {
@@ -198,9 +209,8 @@ test {
 }
 
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {
-    useJUnit {
-        includeCategories 'uk.gov.hmcts.reform.emclient.category.SmokeTest'
-    }
+    testClassesDirs = sourceSets.testSmoke.output.classesDirs
+    classpath = sourceSets.testSmoke.runtimeClasspath
 }
 
 
