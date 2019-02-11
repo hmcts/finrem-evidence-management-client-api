@@ -2,8 +2,7 @@ package uk.gov.hmcts.reform.emclient.health;
 
 import java.util.HashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.http.HttpEntity;
@@ -14,8 +13,12 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import static org.springframework.boot.actuate.health.Health.down;
+import static org.springframework.boot.actuate.health.Health.unknown;
+import static org.springframework.boot.actuate.health.Health.up;
+
+@Slf4j
 public abstract class WebServiceHealthCheck implements HealthIndicator {
-    private static final Logger log = LoggerFactory.getLogger(WebServiceHealthCheck.class);
 
     protected final HttpEntityFactory httpEntityFactory;
     protected final RestTemplate restTemplate;
@@ -35,12 +38,14 @@ public abstract class WebServiceHealthCheck implements HealthIndicator {
             responseEntity = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, Object.class, new HashMap<>());
         } catch (HttpServerErrorException | ResourceAccessException serverException) {
             log.error("Exception occurred while doing health check", serverException);
-            return Health.down().build();
+            return down().withDetail("uri", uri).build();
         } catch (Exception exception) {
             log.info("Unable to access upstream service", exception);
-            return Health.unknown().build();
+            return unknown().withDetail("uri", uri).build();
         }
 
-        return responseEntity.getStatusCode().equals(HttpStatus.OK) ? Health.up().build() : Health.unknown().build();
+        return responseEntity.getStatusCode().equals(HttpStatus.OK) ?
+                up().withDetail("uri", uri).build() :
+                unknown().withDetail("uri", uri).build();
     }
 }
