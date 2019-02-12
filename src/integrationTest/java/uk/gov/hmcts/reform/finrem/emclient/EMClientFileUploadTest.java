@@ -6,7 +6,6 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.annotations.TestData;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -91,11 +90,6 @@ public class EMClientFileUploadTest {
     }
 
     @Test
-    public void passTest() {
-        Assert.assertEquals(true, true);
-    }
-
-    @Test @Ignore
     public void uploadFile() {
         uploadFileToEMStore(this.name, this.fileType);
     }

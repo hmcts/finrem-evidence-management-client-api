@@ -28,6 +28,7 @@ version = '3.0.0'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 jar.archiveName = 'finrem-evidence-management-client-api.jar'
+ext['selenium.version']='3.14.0'
 
 jar {
     manifest {
@@ -130,7 +131,7 @@ def versions = [
         reformsJavaLogging: '2.1.1',
         reformsHttpProxySpringBootAutoconfigure: '1.1.0',
         restAssured: '3.0.3',
-        serenity: '1.5.2',
+        serenity: '2.0.11',
         serenityCucumber: '1.1.3',
         serviceTokenGenerator: '0.6.0',
         skyscreamer: '1.2.3',
