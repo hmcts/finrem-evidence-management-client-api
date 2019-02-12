@@ -5,7 +5,6 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,12 +59,6 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     private static final String CITIZEN_USERNAME = "CitizenTestUser";
     private static final String PASSWORD = "password";
     public static final String DELE_ENDPOINT = "/deleteFile?fileUrl=";
-
-
-    @Test
-    public void passTest() {
-        Assert.assertEquals(true, true);
-    }
 
     @Test
     public void verifyDeleteRequestForExistingDocumentIsSuccessful() {
