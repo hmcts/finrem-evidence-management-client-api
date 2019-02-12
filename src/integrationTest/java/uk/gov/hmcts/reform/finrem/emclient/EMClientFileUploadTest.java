@@ -112,6 +112,9 @@ public class EMClientFileUploadTest {
     }
 
     private void assertEMGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {
+        System.out.println("FILE URL----->" + fileUrl);
+        System.out.println("FILE UPLOAD----->" + fileToUpload);
+        System.out.println("FILE CONTENT TYPE----->" + fileContentType);
         Response responseFromEvidenceManagement = readDataFromEvidenceManagement(fileUrl);
         Assert.assertEquals(HttpStatus.OK.value(), responseFromEvidenceManagement.getStatusCode());
         Assert.assertEquals(fileToUpload, responseFromEvidenceManagement.getBody().path("originalDocumentName"));
