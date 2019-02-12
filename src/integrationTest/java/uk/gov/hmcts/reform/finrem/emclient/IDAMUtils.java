@@ -30,15 +30,6 @@ public class IDAMUtils {
 
     private String testUserJwtToken;
 
-    private String testCaseworkerJwtToken;
-
-    public String generateNewUserAndReturnToken() {
-        String username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
-        String password = UUID.randomUUID().toString().toUpperCase(Locale.UK);
-        createUserInIdam(username, password);
-        return generateUserTokenWithNoRoles(username, password);
-    }
-
     public synchronized String getIdamTestUser() {
         if (StringUtils.isBlank(testUserJwtToken)) {
             createUserAndToken();
@@ -49,17 +40,6 @@ public class IDAMUtils {
     protected void createUserAndToken() {
         createUserInIdam();
         testUserJwtToken = generateUserTokenWithNoRoles(idamUsername, idamPassword);
-    }
-
-    public synchronized String getIdamTestCaseWorkerUser() {
-        if (StringUtils.isBlank(testCaseworkerJwtToken)) {
-            String username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
-            String password = UUID.randomUUID().toString().toUpperCase(Locale.UK);
-            createCaseworkerUserInIdam(username, password);
-            testCaseworkerJwtToken = generateUserTokenWithNoRoles(username, password);
-        }
-
-        return testCaseworkerJwtToken;
     }
 
     public void createUserInIdam(String username, String password) {
