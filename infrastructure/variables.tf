@@ -82,3 +82,7 @@ variable "idam_api_url" {}
 variable "common_tags" {
   type = "map"
 }
+
+variable "swagger_enabled" {
+  default = true
+}
