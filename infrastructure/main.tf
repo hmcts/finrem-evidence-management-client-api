@@ -45,6 +45,7 @@ module "finrem-emca" {
     IDAM_API_URL = "${var.idam_api_url}"
     IDAM_API_HEALTH_URI = "${var.idam_api_url}/health"
     AUTH_IDAM_CLIENT_SECRET = "${data.azurerm_key_vault_secret.idam-secret.value}"
+    SWAGGER_ENABLED                     = "${var.swagger_enabled}"
 }
 }
 
