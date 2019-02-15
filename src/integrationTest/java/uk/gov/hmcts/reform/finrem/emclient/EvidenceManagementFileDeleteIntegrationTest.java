@@ -5,7 +5,6 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,13 +60,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     private static final String PASSWORD = "password";
     public static final String DELE_ENDPOINT = "/deleteFile?fileUrl=";
 
-
     @Test
-    public void passTest() {
-        Assert.assertEquals(true, true);
-    }
-
-    @Test @Ignore
     public void verifyDeleteRequestForExistingDocumentIsSuccessful() {
         String fileUrl = uploadFile();
         Response response = deleteFileFromEvidenceManagement(fileUrl, evidenceManagementTestUtils.getAuthenticationTokenHeader(CITIZEN_USERNAME, PASSWORD, idamTestSupportUtil));
@@ -75,7 +68,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     }
 
 
-    @Test @Ignore
+    @Test
     public void verifyDeleteRequestForNonExistentDocumentIs404NotFound() {
         String fileUrl = uploadFile();
         String fileUrlAlt = fileUrl.concat("xyzzy");
@@ -85,7 +78,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     }
 
 
-    @Test @Ignore
+    @Test
     public void verifyDeleteRequestWithMissingDocumentIdIsNotAllowed() {
         String fileUrl = uploadFile();
         String fileUrlAlt = fileUrl.substring(0, fileUrl.lastIndexOf("/") + 1);
@@ -95,7 +88,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     }
 
 
-    @Test @Ignore
+    @Test
     public void verifyDeleteRequestWithInvalidAuthTokenIsForbidden() {
         String fileUrl = uploadFile();
         Map<String, Object> headers = evidenceManagementTestUtils.getAuthenticationTokenHeader(CITIZEN_USERNAME, PASSWORD, idamTestSupportUtil);
@@ -107,7 +100,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     }
 
 
-    @Test @Ignore
+    @Test
     public void verifyDeleteRequestWithUnauthorisedAuthTokenIsForbidden() {
         String fileUrl = uploadFile();
         Map<String, Object> headers = evidenceManagementTestUtils.getAuthenticationTokenHeader("Unauthorised@unauthorized.com", PASSWORD, idamTestSupportUtil);
