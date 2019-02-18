@@ -20,6 +20,18 @@ public class EmClientSmokeTests {
     @Value("${url}")
     private String url;
 
+    @Value("${http.connect.timeout}")
+    private int requestTimeOut;
+
+    @Value("${http.connect.request.timeout}")
+    private int connectionTimeOut;
+
+    @Value("${http.connect.socketTimeOut}")
+    private int socketTimeOut;
+
+    @Value("${http.connect.connectionManagerTimeOut}")
+    private int connectionManagerTimeOut;
+
     private RestAssuredConfig config;
 
     @Before
@@ -27,10 +39,10 @@ public class EmClientSmokeTests {
         RestAssured.useRelaxedHTTPSValidation();
         config = RestAssured.config()
                 .httpClient(HttpClientConfig.httpClientConfig()
-                        .setParam("http.connection.timeout", 30000)
-                        .setParam("http.socket.timeout", 30000)
-                        .setParam("http.connection-manager.timeout", 30000)
-                        .setParam("http.connect.request.timeout", 30000));
+                        .setParam("http.connection.timeout", connectionTimeOut)
+                        .setParam("http.socket.timeout", socketTimeOut)
+                        .setParam("http.connection-manager.timeout", connectionManagerTimeOut)
+                        .setParam("http.connect.request.timeout", requestTimeOut));
 
     }
 
