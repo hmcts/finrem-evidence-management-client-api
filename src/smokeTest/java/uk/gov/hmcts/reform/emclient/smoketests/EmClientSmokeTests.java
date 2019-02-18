@@ -32,10 +32,7 @@ public class EmClientSmokeTests {
     @Value("${http.connect.connectionManagerTimeOut}")
     private int connectionManagerTimeOut;
 
-
-
     private RestAssuredConfig config;
-
 
     @Before
     public void setUp() {
