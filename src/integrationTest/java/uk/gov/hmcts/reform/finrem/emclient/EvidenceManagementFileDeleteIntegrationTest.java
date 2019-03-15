@@ -5,6 +5,7 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -87,6 +88,19 @@ public class EvidenceManagementFileDeleteIntegrationTest {
         Assert.assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), response.getStatusCode());
     }
 
+
+    @Test
+    public void verifyDeleteRequestWithInvalidAuthTokenIsForbidden() {
+        String fileUrl = uploadFile();
+        Map<String, Object> headers = evidenceManagementTestUtils.getAuthenticationTokenHeader(CITIZEN_USERNAME, PASSWORD, idamTestSupportUtil);
+        String token = "x".concat(headers.get(AUTHORIZATION_HEADER_NAME).toString()).concat("x");
+        headers.put(AUTHORIZATION_HEADER_NAME, token);
+        Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
+
+        Assert.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
+    }
+
+    @Ignore
     @Test
     public void verifyDeleteRequestWithUnauthorisedAuthTokenIsForbidden() {
         String fileUrl = uploadFile();
