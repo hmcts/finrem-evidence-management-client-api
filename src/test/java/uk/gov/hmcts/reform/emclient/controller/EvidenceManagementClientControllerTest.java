@@ -27,7 +27,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.emclient.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
-import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 
 import java.util.Collections;
@@ -62,10 +61,6 @@ public class EvidenceManagementClientControllerTest {
 
     @MockBean
     private EvidenceManagementUploadService emUploadService;
-
-    @MockBean
-    private EvidenceManagementDeleteService emDeleteService;
-
 
     private MockMvc mockMvc;
 
@@ -196,55 +191,6 @@ public class EvidenceManagementClientControllerTest {
         verifyExceptionFromUploadServiceIsHandledGracefully();
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
-    }
-
-
-    @Test
-    public void shouldDeleteFileWhenDeleteFileIsInvokedWithFileUrl() throws Exception {
-        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
-                .willReturn(new ResponseEntity<>(HttpStatus.OK));
-
-        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
-                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
-                .header(REQUEST_ID_HEADER, REQUEST_ID))
-                .andExpect(status().isOk())
-                .andReturn();
-    }
-
-    @Test
-    public void shouldDoNothingWhenDeleteFileIsInvokedWithoutFileUrl() throws Exception {
-        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
-                .willReturn(new ResponseEntity<>(HttpStatus.NO_CONTENT));
-
-        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
-                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
-                .header(REQUEST_ID_HEADER, REQUEST_ID))
-                .andExpect(status().isNoContent())
-                .andReturn();
-    }
-
-    @Test
-    public void shouldFailWhenDeleteFileIsInvokedWithBadToken() throws Exception {
-        String badAuthToken = "x" + AUTH_TOKEN + "x";
-        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, badAuthToken, REQUEST_ID))
-                .willReturn(new ResponseEntity<>(HttpStatus.FORBIDDEN));
-
-        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
-                .header(AUTHORIZATION_TOKEN_HEADER, badAuthToken)
-                .header(REQUEST_ID_HEADER, REQUEST_ID))
-                .andExpect(status().isForbidden())
-                .andReturn();
-    }
-
-    @Test
-    public void shouldReceiveExceptionWhenDeleteFileIsInvokedAgainstDeadEmService() throws Exception {
-        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
-                .willThrow(new ResourceAccessException("Service not found"));
-
-        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
-                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
-                .header(REQUEST_ID_HEADER, REQUEST_ID))
-                .andExpect(status().isInternalServerError());
     }
 
     private List<FileUploadResponse> prepareFileUploadResponse() {
