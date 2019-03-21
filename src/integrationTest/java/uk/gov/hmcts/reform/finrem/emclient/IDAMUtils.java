@@ -53,6 +53,7 @@ public class IDAMUtils {
                 .userGroup(UserCode.builder().code("citizens").build())
                 .build();
 
+        System.out.println("creating user at--->" + idamCreateUrl());
         RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body(ResourceLoader.objectToJson(userRequest))
