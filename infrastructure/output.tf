@@ -17,3 +17,7 @@ output "environment_name" {
 output "auth_idam_client_secret" {
     value = "${data.azurerm_key_vault_secret.idam-secret.value}"
 }
+
+output "idam_api_url" {
+  value = "${var.idam_api_url}"
+}
