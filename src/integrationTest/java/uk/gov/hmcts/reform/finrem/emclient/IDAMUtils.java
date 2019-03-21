@@ -106,7 +106,11 @@ public class IDAMUtils {
                 .relaxedHTTPSValidation()
                 .post(idamTokenUrl(response.getBody().path("code")));
 
+        System.out.println("idam access secret--->" + idamSecret);
+
+
         String token = response.getBody().path("access_token");
+        System.out.println("idam access token--->" + token);
         return "Bearer " + token;
     }
 
