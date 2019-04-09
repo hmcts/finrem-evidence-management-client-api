@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.finrem.emclient.model.CreateUserRequest;
 import uk.gov.hmcts.reform.finrem.emclient.model.UserCode;
@@ -49,7 +50,7 @@ public class IDAMUtils {
                 .forename("Test")
                 .surname("User")
                 .roles(new UserCode[] { UserCode.builder().code("citizen").build() })
-                .userGroup(UserCode.builder().code("divorce-private-beta").build())
+                .userGroup(UserCode.builder().code("citizens").build())
                 .build();
 
         RestAssured.given()
@@ -60,7 +61,7 @@ public class IDAMUtils {
 
     private void createUserInIdam() {
         idamUsername = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
-        idamPassword = UUID.randomUUID().toString();
+        idamPassword = "genericPassword123";
 
         createUserInIdam(idamUsername, idamPassword);
     }
@@ -100,6 +101,7 @@ public class IDAMUtils {
         }
 
         response = RestAssured.given()
+                .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .relaxedHTTPSValidation()
                 .post(idamTokenUrl(response.getBody().path("code")));
 
