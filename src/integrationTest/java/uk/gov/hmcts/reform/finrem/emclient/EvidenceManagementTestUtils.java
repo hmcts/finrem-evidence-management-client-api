@@ -16,15 +16,21 @@ public class EvidenceManagementTestUtils {
     public static final String AUTHORIZATION_HEADER_NAME = "Authorization";
 
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getAuthenticationTokenHeader(String username, String password,
-                                                            IDAMUtils idamTestSupportUtil) {
-        idamTestSupportUtil.createUserInIdam(username, password);
-        String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
+    public Map<String, Object> getAuthenticationTokenHeader(IDAMUtils idamTestSupportUtil) {
+        String authenticationToken = idamTestSupportUtil.getIdamTestUser();
         Map<String, Object> headers = new HashMap<>();
         headers.put(AUTHORIZATION_HEADER_NAME, authenticationToken);
         return headers;
     }
 
+
+    public Map<String, Object> getInvalidAuthenticationTokenHeader() {
+        Map<String, Object> headers = new HashMap<>();
+        headers.put(AUTHORIZATION_HEADER_NAME, "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                + ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ"
+                + ".SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5cinvalid");
+        return headers;
+    }
 
     /**
      * Given the uri it will update the url to corresponding localhost url for testing with docker
@@ -51,13 +57,12 @@ public class EvidenceManagementTestUtils {
      */
     @SuppressWarnings("unchecked")
     public String uploadFileToEvidenceManagement(String filePath,
-                                                 String fileContentType, String username,
-                                                 String password, String evidenceManagementClientApiBaseUrl,
+                                                 String fileContentType, String evidenceManagementClientApiBaseUrl,
                                                  String documentManagementURL, IDAMUtils idamTestSupportUtil) {
 
         File file = new File(filePath);
         Response response = SerenityRest.given()
-                .headers(getAuthenticationTokenHeader(username, password, idamTestSupportUtil))
+                .headers(getAuthenticationTokenHeader(idamTestSupportUtil))
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
