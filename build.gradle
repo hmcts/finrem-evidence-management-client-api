@@ -36,11 +36,12 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 jar.archiveName = 'finrem-evidence-management-client-api.jar'
 
-jar {
+bootJar {
     manifest {
         attributes 'Implementation-Title': project.name,
                 'Implementation-Version': project.version
     }
+    archiveName 'finrem-evidence-management-client-api.jar'
 }
 
 
