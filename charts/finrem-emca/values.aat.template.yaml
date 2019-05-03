@@ -15,4 +15,5 @@ java:
     IDAM_API_URL : "https://idam-api.aat.platform.hmcts.net"
     EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL : "http://dm-store-aat.service.core-compute-aat.internal/documents"
     AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS : "900"
+    AUTH_PROVIDER_SERVICE_CLIENT_KEY : ${AUTH_PROVIDER_SERVICE_CLIENT_KEY}
 
