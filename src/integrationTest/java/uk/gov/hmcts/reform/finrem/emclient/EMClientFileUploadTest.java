@@ -134,6 +134,7 @@ public class EMClientFileUploadTest {
 
     private Map<String, Object> getAuthenticationTokenHeader() {
         String authenticationToken = idamTestSupportUtil.getIdamTestUser();
+        System.out.println("authenticationToken---->" + authenticationToken);
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);
         headers.put("Content-Type", "multipart/form-data");
