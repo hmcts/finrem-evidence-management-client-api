@@ -99,6 +99,7 @@ public class EMClientFileUploadTest {
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
+        System.out.println("response body---->" + response.prettyPrint());
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
         assertEMGetFileResponse(fileToUpload, fileContentType, fileRetrieveUrl(fileUrl));
