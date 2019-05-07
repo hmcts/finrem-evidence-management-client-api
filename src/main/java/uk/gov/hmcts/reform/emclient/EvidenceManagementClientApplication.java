@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.emclient;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +23,7 @@ import uk.gov.hmcts.reform.authorisation.healthcheck.ServiceAuthHealthIndicator;
 @EnableRetry(proxyTargetClass=true)
 @EnableFeignClients(basePackageClasses = {IdamApiClient.class})
 @EnableCircuitBreaker
+@Slf4j
 public class EvidenceManagementClientApplication {
 
     public static void main(String[] args) {
@@ -30,11 +32,13 @@ public class EvidenceManagementClientApplication {
 
     @Bean
     public AuthTokenGenerator serviceAuthTokenGenerator(
-            @Value("${idam.auth.secret}") final String secret,
+            @Value("${idam.auth.secret}") final String s2sToken,
             @Value("${idam.auth.microservice}") final String microService,
             final ServiceAuthorisationApi serviceAuthorisationApi
     ) {
-        return AuthTokenGeneratorFactory.createDefaultGenerator(secret, microService, serviceAuthorisationApi);
+        log.info("EMCA App S2S auth : s2sToken='{}', microService='{}', serviceAuthorisationApi='{}' ",
+                s2sToken,  microService, serviceAuthorisationApi);
+        return AuthTokenGeneratorFactory.createDefaultGenerator(s2sToken, microService, serviceAuthorisationApi);
     }
 
 }

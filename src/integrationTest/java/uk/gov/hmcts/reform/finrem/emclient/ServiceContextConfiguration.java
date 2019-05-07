@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.finrem.emclient;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -17,14 +18,17 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
 @Configuration
 @Lazy
 @ImportAutoConfiguration({RibbonAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class, FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class, ServiceAuthAutoConfiguration.class})
+@Slf4j
 public class ServiceContextConfiguration {
 
     @Bean
     public AuthTokenGenerator serviceAuthTokenGenerator(
-            @Value("${idam.auth.secret}") final String secret,
+            @Value("${idam.auth.secret}") final String s2sToken,
             @Value("${idam.auth.microservice}") final String microService,
             final ServiceAuthorisationApi serviceAuthorisationApi
     ) {
-        return AuthTokenGeneratorFactory.createDefaultGenerator(secret, microService, serviceAuthorisationApi);
+        log.info("EMCA Test Config S2S auth : s2sToken='{}', microService='{}', serviceAuthorisationApi='{}' ",
+                s2sToken,  microService, serviceAuthorisationApi);
+        return AuthTokenGeneratorFactory.createDefaultGenerator(s2sToken, microService, serviceAuthorisationApi);
     }
 }

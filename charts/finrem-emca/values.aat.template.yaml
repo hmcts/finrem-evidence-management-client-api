@@ -3,17 +3,16 @@ java:
   ingressHost: ${SERVICE_FQDN}
   environment:
     REFORM_ENVIRONMENT: aat
-    EVIDENCE_MANAGEMENT_HEALTH_URL : "http://dm-store-aat.service.core-compute-aat.internal/health"
-    HTTP_CONNECT_REQUEST_TIMEOUT : "60000"
-    DOCUMENT_MANAGEMENT_STORE_URL : "http://dm-store-aat.service.core-compute-aat.internal"
-    IDAM_API_HEALTH_URI : "https://idam-api.aat.platform.hmcts.net/health"
-    HTTP_CONNECT_TIMEOUT : "60000"
-    APPLICATION_INSIGHTS_IKEY : "97f6a0e1-6be6-44b0-97bf-d03852b7791f"
-    HTTP_CONNECT_SOCKET_TIMEOUT : "1000"
-    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL : "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-    AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE : "finrem_document_generator"
-    IDAM_API_URL : "https://idam-api.aat.platform.hmcts.net"
-    EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL : "http://dm-store-aat.service.core-compute-aat.internal/documents"
-    AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS : "900"
-    AUTH_PROVIDER_SERVICE_CLIENT_KEY : ${AUTH_PROVIDER_SERVICE_CLIENT_KEY}
-
+    EVIDENCE_MANAGEMENT_HEALTH_URL : http://dm-store-aat.service.core-compute-aat.internal/health
+    HTTP_CONNECT_REQUEST_TIMEOUT : 60000
+    DOCUMENT_MANAGEMENT_STORE_URL : http://dm-store-aat.service.core-compute-aat.internal
+    IDAM_API_HEALTH_URI : https://idam-api.aat.platform.hmcts.net/health
+    HTTP_CONNECT_TIMEOUT : 60000
+    APPLICATION_INSIGHTS_IKEY : 97f6a0e1-6be6-44b0-97bf-d03852b7791f
+    HTTP_CONNECT_SOCKET_TIMEOUT : 1000
+    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL : http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    AUTH_PROVIDER_SERVICE_CLIENT_KEY: CU3IWA2SBR6DEYCZ
+    AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE : finrem_document_generator
+    IDAM_API_URL : https://idam-api.aat.platform.hmcts.net
+    EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL : http://dm-store-aat.service.core-compute-aat.internal/documents
+    AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS : 900
