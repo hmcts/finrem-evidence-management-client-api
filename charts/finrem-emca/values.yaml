@@ -12,6 +12,6 @@ java:
     finrem:
       resourceGroup: finrem
       secrets:
-        - finrem-doc-s2s-auth-secret
         - idam-secret
         - finrem-doc-s2s-auth-secret
+

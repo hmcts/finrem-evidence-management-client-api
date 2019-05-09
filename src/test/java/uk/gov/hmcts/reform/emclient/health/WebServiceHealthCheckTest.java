@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -55,7 +55,6 @@ public class WebServiceHealthCheckTest {
         when(httpEntityFactory.createRequestEntityForHealthCheck()).thenReturn(httpEntity);
 
         HttpServerErrorException exception = mock(HttpServerErrorException.class);
-        when(exception.getStatusCode()).thenReturn(HttpStatus.SERVICE_UNAVAILABLE);
 
         doThrow(exception).when(restTemplate)
                 .exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));

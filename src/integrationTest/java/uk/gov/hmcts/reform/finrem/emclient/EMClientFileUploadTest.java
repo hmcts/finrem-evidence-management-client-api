@@ -12,17 +12,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
-import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
-import org.springframework.cloud.netflix.feign.ribbon.FeignRibbonClientAutoConfiguration;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.cloud.openfeign.FeignAutoConfiguration;
+import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.io.File;
@@ -43,7 +41,6 @@ import static net.serenitybdd.rest.SerenityRest.given;
 @ImportAutoConfiguration({RibbonAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class,
         FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
-@EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
 public class EMClientFileUploadTest {
@@ -102,6 +99,7 @@ public class EMClientFileUploadTest {
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
+        System.out.println("response body---->" + response.prettyPrint());
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
         assertEMGetFileResponse(fileToUpload, fileContentType, fileRetrieveUrl(fileUrl));
@@ -136,6 +134,7 @@ public class EMClientFileUploadTest {
 
     private Map<String, Object> getAuthenticationTokenHeader() {
         String authenticationToken = idamTestSupportUtil.getIdamTestUser();
+        System.out.println("authenticationToken---->" + authenticationToken);
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);
         headers.put("Content-Type", "multipart/form-data");

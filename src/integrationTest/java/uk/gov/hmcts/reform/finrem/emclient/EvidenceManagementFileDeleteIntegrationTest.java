@@ -11,10 +11,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration;
-import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
-import org.springframework.cloud.netflix.feign.ribbon.FeignRibbonClientAutoConfiguration;
-import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.cloud.openfeign.FeignAutoConfiguration;
+import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
@@ -28,8 +27,8 @@ import static uk.gov.hmcts.reform.finrem.emclient.EvidenceManagementTestUtils.AU
 @Lazy
 @RunWith(SerenityRunner.class)
 @ComponentScan(basePackages = {"uk.gov.hmcts.reform.finrem.emclient", "uk.gov.hmcts.auth.provider.service"})
-@ImportAutoConfiguration({RibbonAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class,
-        FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
+@ImportAutoConfiguration({FeignRibbonClientAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class,
+        FeignAutoConfiguration.class})
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
