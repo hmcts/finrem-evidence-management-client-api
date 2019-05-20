@@ -1,0 +1,17 @@
+java:
+  applicationPort: '4006'
+  livenessPath: '/health'
+  environment:
+      APPLICATION_INSIGHTS_IKEY: '97f6a0e1-6be6-44b0-97bf-d03852b7791f'
+      SLOT: 'PRODUCTION'
+      REFORM_SERVICE_NAME: 'emca'
+      REFORM_TEAM: 'finrem'
+      APPINSIGHTS_INSTRUMENTATIONKEY : '97f6a0e1-6be6-44b0-97bf-d03852b7791f'
+  image: 'https://hmcts.azurecr.io/hmcts/finrem-evidence-management-client-api:latest'
+  keyVaults:
+    finrem:
+      resourceGroup: finrem
+      secrets:
+        - idam-secret
+        - finrem-doc-s2s-auth-secret
+
