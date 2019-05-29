@@ -74,4 +74,8 @@
         <notes>We don't use the CGI Servlet</notes>
         <cve>CVE-2019-0232</cve>
     </suppress>
+    <suppress>
+        <notes>Ignore the jackson binding issue</notes>
+        <cve>CVE-2019-12086</cve>
+    </suppress>
 </suppressions>
