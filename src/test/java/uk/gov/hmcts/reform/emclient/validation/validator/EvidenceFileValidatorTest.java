@@ -113,7 +113,7 @@ public class EvidenceFileValidatorTest {
     
     @Test
     public void testMimeTypeFailValidation() {
-        MockMultipartFile jpgFile = new MockMultipartFile("test.jpg", "test.jpg", "application/msexcel", "data".getBytes());
+        MockMultipartFile jpgFile = new MockMultipartFile("test.jpg", "test.jpg", "application/octet-stream", "data".getBytes());
 
         Set<ConstraintViolation<ValidationBean>> constraintViolations =
                 validateFiles(ImmutableList.of(jpgFile));
