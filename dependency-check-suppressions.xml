@@ -75,7 +75,12 @@
         <cve>CVE-2019-0232</cve>
     </suppress>
     <suppress>
-        <notes>CVE-2018-1258: we do not use Spring Method Security, so this does not affect us. see https://pivotal.io/security/cve-2018-1258</notes>
-        <cve>CVE-2018-1258</cve>
+        <notes>Ignore the jackson binding issue</notes>
+        <cve>CVE-2019-12086</cve>
+    </suppress>
+    <suppress>
+        <notes>Don't use SSI</notes>
+        <gav regex="true">.*</gav>
+        <cve>CVE-2019-0221</cve>
     </suppress>
 </suppressions>
