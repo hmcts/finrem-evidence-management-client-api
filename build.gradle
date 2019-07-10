@@ -159,7 +159,8 @@ def versions = [
         spring_security_rsa                     : '1.0.8.RELEASE',
         unirestJava                             : '1.4.9',
         wiremockVersion                         : '2.8.0',
-        springSecurityCrypto                    : '5.1.5.RELEASE'
+        springSecurityCrypto                    : '5.1.5.RELEASE',
+        elasticsearch                           : '7.1.1'
 ]
 
 configurations.all {
@@ -190,6 +191,7 @@ dependencies {
     integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
 
+    compile group: 'org.elasticsearch.client', name :'transport',version: versions.elasticsearch
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonCore
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonCore
