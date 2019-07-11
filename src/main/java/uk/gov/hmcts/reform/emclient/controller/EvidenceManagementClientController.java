@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
 
@@ -26,6 +27,9 @@ public class EvidenceManagementClientController {
 
     @Autowired
     private EvidenceManagementUploadService emUploadService;
+
+    @Autowired
+    private EvidenceManagementDownloadService emReadService;
 
     @ApiOperation(value = "Handles file upload to evidence management document store.")
     @ApiResponses(value = {
@@ -46,6 +50,19 @@ public class EvidenceManagementClientController {
     }
 
 
+    @ApiOperation(value = "Downloads file from evidence management document store.")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "The files are downloaded Successfully",
+            response = List.class),
+        @ApiResponse(code = 400, message = "Bad Request"),
+        @ApiResponse(code = 500, message = "Internal Server Error")
+    })
+    @GetMapping(value = "/version/1/download", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<byte[]> download(
+        @RequestParam("binaryFileUrl") String binaryFileUrl) {
+        return emReadService.download(binaryFileUrl);
+    }
 
     @ApiOperation(value = "Handles file deletion  from evidence management document store.")
     @ApiResponses(value = {

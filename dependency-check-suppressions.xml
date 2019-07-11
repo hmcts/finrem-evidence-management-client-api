@@ -77,5 +77,26 @@
     <suppress>
         <notes>Ignore the jackson binding issue</notes>
         <cve>CVE-2019-12086</cve>
+        <cve>CVE-2019-12814</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+      only effects distribution based tomcat that has been backported.
+      our tomcat version has the fix in it
+      ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cve>CVE-2017-6056</cve>
+        <cve>CVE-2019-0221</cve>
+        <cve>CVE-2019-10072</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+      only effects distribution based tomcat that has been backported.
+      our tomcat version has the fix in it
+      ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-websocket:.*$</gav>
+        <cve>CVE-2017-6056</cve>
+        <cve>CVE-2019-0221</cve>
+        <cve>CVE-2019-10072</cve>
     </suppress>
 </suppressions>
