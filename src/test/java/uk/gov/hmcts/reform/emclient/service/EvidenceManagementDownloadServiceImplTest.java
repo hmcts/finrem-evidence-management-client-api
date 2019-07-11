@@ -20,6 +20,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -73,8 +74,8 @@ public class EvidenceManagementDownloadServiceImplTest {
             .when(restTemplate)
             .exchange(Mockito.eq(fileUrl),
                 Mockito.eq(HttpMethod.GET),
-                Matchers.<HttpEntity<String>>any(),
-                Matchers.<Class<Resource>>any());
+                any(),
+                any(Class.class));
 
         ResponseEntity<?> response = downloadService.download(fileUrl);
         assertFalse("Failed to receive exception resulting from non-running EM service", true);
@@ -88,7 +89,7 @@ public class EvidenceManagementDownloadServiceImplTest {
             .when(restTemplate)
             .exchange(Mockito.eq(fileUrl),
                 Mockito.eq(HttpMethod.GET),
-                Matchers.<HttpEntity<String>>any(),
-                Matchers.<Class<Resource>>any());
+                any(),
+                any(Class.class));
     }
 }

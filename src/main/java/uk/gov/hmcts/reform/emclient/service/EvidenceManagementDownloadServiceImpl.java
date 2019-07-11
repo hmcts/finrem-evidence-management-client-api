@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.emclient.service;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.rest.RestRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -37,7 +36,7 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
         HttpHeaders headers = new HttpHeaders();
         headers.set(SERVICE_AUTHORIZATION, authTokenGenerator.generate());
         headers.set(USER_ROLES, FINANCIAL_REMEDY_COURT_ADMIN);
-        HttpEntity<RestRequest> httpEntity = new HttpEntity<>(headers);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<byte[]> response = restTemplate.exchange(binaryFileUrl, HttpMethod.GET, httpEntity, byte[].class);
         if (response.getStatusCode() != HttpStatus.OK) {
