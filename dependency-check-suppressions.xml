@@ -77,5 +77,6 @@
     <suppress>
         <notes>Ignore the jackson binding issue</notes>
         <cve>CVE-2019-12086</cve>
+        <cve>CVE-2019-12814</cve>
     </suppress>
 </suppressions>
