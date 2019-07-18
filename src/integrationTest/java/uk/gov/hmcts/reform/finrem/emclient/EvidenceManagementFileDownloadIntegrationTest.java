@@ -46,6 +46,9 @@ public class EvidenceManagementFileDownloadIntegrationTest {
     @Value("${document.management.store.baseUrl}")
     private String documentManagementURL;
 
+    @Value("${evidence.management.client.api.endpoint.download}")
+    private String evidenceManagementClientApiDownloadUrl;
+
     private EvidenceManagementTestUtils evidenceManagementTestUtils = new EvidenceManagementTestUtils();
 
     private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
@@ -97,6 +100,15 @@ public class EvidenceManagementFileDownloadIntegrationTest {
 
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
         Assert.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
+    }
+
+    @Test
+    public void verifyEvidenceManagementFileDownload()
+    {
+
+        evidenceManagementTestUtils.downloadFileToEvidenceManagement(
+                uploadFile()
+                ,evidenceManagementClientApiDownloadUrl);
     }
 
     private Response deleteFileFromEvidenceManagement(String fileUrl, Map<String, Object> headers) {
