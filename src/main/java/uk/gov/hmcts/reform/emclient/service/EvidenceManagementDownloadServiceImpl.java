@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.emclient.service;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Service
 @Slf4j
@@ -29,6 +33,9 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
+    @Value("${document.management.store.baseUrl}")
+    private String evidenceManagementUrl;
+
     @Override
     public ResponseEntity<byte[]> download(@NonNull final String binaryFileUrl) {
 
@@ -37,8 +44,15 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
         headers.set(SERVICE_AUTHORIZATION, authTokenGenerator.generate());
         headers.set(USER_ROLES, FINANCIAL_REMEDY_COURT_ADMIN);
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+        String url;
+        try {
+             url = getUrl(binaryFileUrl);
+        } catch (URISyntaxException e) {
+            log.error("Failed to rewrite the url for document for {}", binaryFileUrl);
+            throw new RuntimeException(String.format("Failed to rewrite the url for document for %s", binaryFileUrl));
+        }
 
-        ResponseEntity<byte[]> response = restTemplate.exchange(binaryFileUrl, HttpMethod.GET, httpEntity, byte[].class);
+        ResponseEntity<byte[]> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, byte[].class);
         if (response.getStatusCode() != HttpStatus.OK) {
             log.error("Failed to get bytes from document store for document {} ",
                 binaryFileUrl);
@@ -47,6 +61,12 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
 
         log.info("File download status : {} ", response.getStatusCode());
         return response;
+    }
+
+    private String getUrl(String binaryFileUrl) throws URISyntaxException {
+        URI uri = new URI(binaryFileUrl);
+        return evidenceManagementUrl + uri.getPath();
+
     }
 
 
