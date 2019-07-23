@@ -2,7 +2,10 @@ package uk.gov.hmcts.reform.emclient.service;
 
 
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,6 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.emclient.exception.InvalidURIException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,7 +33,10 @@ import static org.mockito.Mockito.when;
 public class EvidenceManagementDownloadServiceImplTest {
 
     private static final String EVIDENCE_MANAGEMENT_SERVICE_URL = "http://localhost:8080/documents/";
-    public static final String URL = "http://dm-store-demo.service.core-compute-demo.internal/";
+    private static final String URL = "http://dm-store-demo.service.core-compute-demo.internal/";
+
+    @ClassRule
+    public static ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private RestTemplate restTemplate;
@@ -85,6 +92,13 @@ public class EvidenceManagementDownloadServiceImplTest {
 
         ResponseEntity<?> response = downloadService.download(fileUrl);
         assertFalse("Failed to receive exception resulting from non-running EM service", true);
+    }
+
+
+    @Test(expected = InvalidURIException.class)
+    public void shouldPassThruExceptionThrownWhenInvalidURI() {
+        String fileUrl = "//><sssssss/>";
+        downloadService.download(fileUrl);
     }
 
     private void setupMockEvidenceManagementService(String fileUrl,

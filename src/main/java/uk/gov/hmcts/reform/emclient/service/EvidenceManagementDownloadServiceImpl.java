@@ -12,9 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.emclient.exception.InvalidURIException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import static java.lang.String.format;
 
 @Service
 @Slf4j
@@ -46,17 +49,18 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
         String url;
         try {
-             url = getUrl(binaryFileUrl);
+            url = getUrl(binaryFileUrl);
         } catch (URISyntaxException e) {
-            log.error("Failed to rewrite the url for document for {}", binaryFileUrl);
-            throw new RuntimeException(String.format("Failed to rewrite the url for document for %s", binaryFileUrl));
+            log.error("Failed to rewrite the url for document for {}, error message {}", binaryFileUrl, e.getMessage());
+            throw new InvalidURIException(format("Failed to rewrite the url for document for %s and error %s",
+                    binaryFileUrl, e.getMessage()));
         }
 
         ResponseEntity<byte[]> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, byte[].class);
         if (response.getStatusCode() != HttpStatus.OK) {
             log.error("Failed to get bytes from document store for document {} ",
-                binaryFileUrl);
-            throw new RuntimeException(String.format("Unexpected code from DM store: %s ", response.getStatusCode()));
+                    binaryFileUrl);
+            throw new RuntimeException(format("Unexpected code from DM store: %s ", response.getStatusCode()));
         }
 
         log.info("File download status : {} ", response.getStatusCode());
