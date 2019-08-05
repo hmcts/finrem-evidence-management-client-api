@@ -5,12 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +20,7 @@ import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -33,13 +31,10 @@ import static org.mockito.Mockito.when;
 public class EvidenceManagementDeleteServiceImplTest {
 
     private static final String EVIDENCE_MANAGEMENT_SERVICE_URL = "http://localhost:8080/documents/";
-
-    @Mock
-    private RestTemplate restTemplate;
-
     @Mock
     UserService userService;
-
+    @Mock
+    private RestTemplate restTemplate;
     @Mock
     private AuthTokenGenerator authTokenGenerator;
 
@@ -47,7 +42,7 @@ public class EvidenceManagementDeleteServiceImplTest {
     private EvidenceManagementDeleteServiceImpl deleteService = new EvidenceManagementDeleteServiceImpl();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         when(userService.getUserDetails(anyString())).thenReturn(UserDetails.builder().id("19").build());
     }
 
@@ -144,11 +139,11 @@ public class EvidenceManagementDeleteServiceImplTest {
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
 
         doThrow(ResourceAccessException.class)
-                .when(restTemplate)
-                .exchange(Mockito.eq(fileUrl),
-                        Mockito.eq(HttpMethod.DELETE),
-                        Matchers.<HttpEntity<String>>any(),
-                        Matchers.<Class<Resource>>any());
+            .when(restTemplate)
+            .exchange(Mockito.eq(fileUrl),
+                Mockito.eq(HttpMethod.DELETE),
+                any(),
+                any(Class.class));
 
         deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
 
@@ -169,10 +164,10 @@ public class EvidenceManagementDeleteServiceImplTest {
         when(authTokenGenerator.generate()).thenReturn("xxxx");
 
         doReturn(new ResponseEntity<>(httpStatus))
-                .when(restTemplate)
-                .exchange(Mockito.eq(fileUrl),
-                        Mockito.eq(HttpMethod.DELETE),
-                        Matchers.<HttpEntity<String>>any(),
-                        Matchers.<Class<Resource>>any());
+            .when(restTemplate)
+            .exchange(Mockito.eq(fileUrl),
+                Mockito.eq(HttpMethod.DELETE),
+                any(),
+                any(Class.class));
     }
 }
