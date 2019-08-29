@@ -19,9 +19,11 @@ def component = "emca"
 
 def channel = '#finrem-dev'
 
-List<LinkedHashMap<String, Object>> secrets = [
-        secret("idam-secret", "AUTH_IDAM_CLIENT_SECRET"),
-        secret("finrem-doc-s2s-auth-secret", "AUTH_PROVIDER_SERVICE_CLIENT_KEY")
+def secrets = [
+        'finrem-${env}': [
+                secret("idam-secret", "AUTH_IDAM_CLIENT_SECRET"),
+                secret("finrem-doc-s2s-auth-secret", "AUTH_PROVIDER_SERVICE_CLIENT_KEY")
+        ]
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -37,7 +39,6 @@ withPipeline(type, product, component) {
     enableDockerBuild()
     installCharts()
     loadVaultSecrets(secrets)
-    setVaultName(product)
 
     after('checkout') {
         echo '${product}-${component} checked out'
