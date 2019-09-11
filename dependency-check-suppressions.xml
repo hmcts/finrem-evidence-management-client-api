@@ -30,6 +30,7 @@
         <cve>CVE-2012-5055</cve>
         <cve>CVE-2018-1260</cve>
         <cve>CVE-2018-1258</cve>
+        <cve>CVE-2019-15052</cve>
     </suppress>
 
     <suppress>
@@ -81,6 +82,7 @@
         <cve>CVE-2019-14379</cve>
         <cve>CVE-2019-14439</cve>
         <cve>CVE-2019-12384</cve>
+        <cve>CVE-2019-10086</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
