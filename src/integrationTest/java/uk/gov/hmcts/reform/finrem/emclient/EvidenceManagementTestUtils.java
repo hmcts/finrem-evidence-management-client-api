@@ -70,4 +70,15 @@ public class EvidenceManagementTestUtils {
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
         return getDocumentStoreURI(((List<String>) response.getBody().path("fileUrl")).get(0), documentManagementURL);
     }
+
+    public void downloadFileToEvidenceManagement(String filePath,String evidenceManagementClientApiDownloadUrl) {
+
+        Response response = SerenityRest.given()
+                .queryParam("binaryFileUrl",filePath)
+                .get(evidenceManagementClientApiDownloadUrl)
+                .andReturn();
+
+        Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+    }
+
 }
