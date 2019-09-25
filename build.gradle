@@ -140,7 +140,7 @@ def versions = [
         jaywayJsonPath                          : '2.2.0',
         jsr305                                  : '3.0.2',
         junit                                   : '4.12',
-        lombokVersion                           : '1.16.18',
+        lombok                                  : '1.16.18',
         puppyCrawl                              : '7.6',
         reformHealth                            : '0.0.3',
         reformPropertiesVolume                  : '0.0.4',
@@ -204,7 +204,7 @@ dependencies {
     compile group: 'javax.validation', name: 'validation-api', version: versions.javaxValidation
     compile group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     compile group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
-    compile group: 'org.projectlombok', name: 'lombok', version: versions.lombokVersion
+    compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: versions.springBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
@@ -250,7 +250,7 @@ dependencies {
         exclude group: 'io.reactivex', module: 'rxnetty-servo'
     }
 
-    testCompile group: 'org.projectlombok', name: 'lombok', version: versions.lombokVersion
+    testCompile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     testCompile group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
