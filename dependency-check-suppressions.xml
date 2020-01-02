@@ -9,6 +9,17 @@
     </suppress>
 
     <suppress>
+        <notes>Ignore the jackson binding issue</notes>
+        <cve>CVE-2019-12086</cve>
+        <cve>CVE-2019-12814</cve>
+        <cve>CVE-2019-14379</cve>
+        <cve>CVE-2019-14439</cve>
+        <cve>CVE-2019-12384</cve>
+        <cve>CVE-2019-16335</cve>
+        <cve>CVE-2019-14540</cve>
+    </suppress>
+
+    <suppress>
         <notes>Vulnerability applies to Spring Framework 5.0.5, project uses 5.2.0</notes>
         <cve>CVE-2018-1258</cve>
     </suppress>
@@ -18,5 +29,26 @@
         <cve>CVE-2014-3488</cve>
         <cve>CVE-2015-2156</cve>
         <cve>CVE-2019-16869</cve>
+    </suppress>
+
+    <suppress>
+        <notes>Vulnerability in Apache Tomcat</notes>
+        <cve>CVE-2019-0221</cve>
+        <cve>CVE-2019-0232</cve>
+        <cve>CVE-2019-10072</cve>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+            Release day supressions ]]>
+        </notes>
+        <gav regex="true">.*</gav>
+        <cve>CVE-2019-16942</cve>
+        <cve>CVE-2019-16943</cve>
+        <cve>CVE-2019-17267</cve>
+        <cve>CVE-2019-16869</cve>
+        <cve>CVE-2015-2156</cve>
+        <cve>CVE-2014-3488</cve>
+        <cve>CVE-2019-17531</cve>
     </suppress>
 </suppressions>
