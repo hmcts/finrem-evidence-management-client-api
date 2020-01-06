@@ -39,7 +39,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.client.ExpectedCount.manyTimes;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -153,7 +153,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
         mockRestServiceServer.expect(manyTimes(), requestTo(requestUrl)).andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(status)
                         .body(responseBody)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8));
+                        .contentType(MediaType.APPLICATION_JSON));
     }
 
     private void mockServiceAuthFeignHealthCheck() throws URISyntaxException, IOException {
@@ -165,7 +165,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
         serviceAuthServer.stubFor(get("/health")
             .willReturn(aResponse()
                 .withStatus(HttpStatus.OK.value())
-                .withHeader(CONTENT_TYPE, APPLICATION_JSON_UTF8_VALUE)
+                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(responseBody)));
     }
 

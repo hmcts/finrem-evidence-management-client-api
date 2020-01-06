@@ -29,7 +29,7 @@ import static java.util.Arrays.asList;
 @Configuration
 public class EvidenceManagementClientConfiguration {
 
-    private static final MediaType MEDIA_TYPE_HAL_JSON = new MediaType("application", "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
+    private static final MediaType MEDIA_TYPE_HAL_JSON = new MediaType("application", "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json");
 
     @Autowired
     private ObjectMapper objectMapper;

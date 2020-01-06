@@ -91,6 +91,7 @@ repositories {
 
     maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
     maven { url "https://repo1.maven.org/maven2/" }
+    maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
 }
 
 distributions {
@@ -144,7 +145,7 @@ def versions = [
         serenityCucumber                        : '1.9.49',
         serviceTokenGenerator                   : '3.0.0',
         skyscreamer                             : '1.2.3',
-        springfoxSwagger                        : '2.9.2',
+        springfoxSwagger                        : '3.0.0-SNAPSHOT',
         springCloud                             : '2.2.1.RELEASE',
         springHateoas                           : '1.0.2.RELEASE',
         springRetry                             : '1.2.5.RELEASE',
