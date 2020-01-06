@@ -60,8 +60,10 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     private FileUploadResponse createUploadResponse(JsonNode document) {
         return FileUploadResponse.builder()
                 .status(HttpStatus.OK)
-                .fileUrl(new HalLinkDiscoverer().findLinkWithRel("self",
-                        document.toString()).get().getHref())
+                .fileUrl(new HalLinkDiscoverer()
+                    .findLinkWithRel("self", document.toString())
+                    .orElseThrow(() -> new IllegalStateException("self rel link not found"))
+                    .getHref())
                 .fileName(document.get("originalDocumentName").asText())
                 .createdBy(getTextFromJsonNode(document, "createdBy"))
                 .createdOn(document.get("createdOn").asText())
