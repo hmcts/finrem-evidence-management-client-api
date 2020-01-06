@@ -83,23 +83,23 @@ public class EvidenceManagementFileDownloadIntegrationTest {
 
 
     @Test
-    public void verifyDeleteRequestWithInvalidAuthTokenIsForbidden() {
+    public void verifyDeleteRequestWithInvalidAuthTokenIsUnauthorized() {
         String fileUrl = uploadFile();
         Map<String, Object> headers = evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil);
         String token = "x".concat(headers.get(AUTHORIZATION_HEADER_NAME).toString()).concat("x");
         headers.put(AUTHORIZATION_HEADER_NAME, token);
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
 
-        Assert.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
+        Assert.assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
     }
 
     @Test
-    public void verifyDeleteRequestWithUnauthorisedAuthTokenIsForbidden() {
+    public void verifyDeleteRequestWithUnauthorisedAuthTokenIsUnauthorized() {
         String fileUrl = uploadFile();
         Map<String, Object> headers = evidenceManagementTestUtils.getInvalidAuthenticationTokenHeader();
 
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
-        Assert.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
+        Assert.assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
     }
 
     @Test
