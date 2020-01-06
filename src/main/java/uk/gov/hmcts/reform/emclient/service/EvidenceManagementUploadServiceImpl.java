@@ -6,7 +6,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.hateoas.hal.HalLinkDiscoverer;
+import org.springframework.hateoas.mediatype.hal.HalLinkDiscoverer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -61,7 +61,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         return FileUploadResponse.builder()
                 .status(HttpStatus.OK)
                 .fileUrl(new HalLinkDiscoverer().findLinkWithRel("self",
-                        document.toString()).getHref())
+                        document.toString()).get().getHref())
                 .fileName(document.get("originalDocumentName").asText())
                 .createdBy(getTextFromJsonNode(document, "createdBy"))
                 .createdOn(document.get("createdOn").asText())
