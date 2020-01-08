@@ -34,6 +34,7 @@ public class GlobalExceptionHandler {
             WebRequest request,
             HttpServletResponse response) {
 
+        log.debug("In HttpClientErrorException handler");
         log.error(EXCEPTION_MESSAGE, request.getHeader(REQUEST_ID_HEADER_KEY), clientErrorException.getMessage());
 
         return ResponseEntity.status(clientErrorException.getStatusCode()).body(
