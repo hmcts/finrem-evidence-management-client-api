@@ -277,16 +277,20 @@ sonarqube {
     }
 }
 
+project.tasks['sonarqube'].dependsOn test, jacocoTestReport
+project.tasks['sonarqube'].group = "Verification"
+
 task addReleaseSuffixToDevelop() {
     version = "${version}-SNAPSHOT"
 }
 
 jacocoTestReport {
-    executionData(test)
+    executionData(test, functional)
 
     reports {
         xml.enabled true
         html.enabled true
+        xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
