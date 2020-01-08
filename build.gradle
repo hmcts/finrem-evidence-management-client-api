@@ -282,16 +282,11 @@ task addReleaseSuffixToDevelop() {
 }
 
 jacocoTestReport {
-    executionData(test, functional)
+    executionData(test)
 
     reports {
-        xml {
-            enabled true
-        }
-
-        html {
-            enabled true
-        }
+        xml.enabled true
+        html.enabled true
     }
 }
 
@@ -299,7 +294,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.9
+                minimum = 0.8
             }
         }
     }
