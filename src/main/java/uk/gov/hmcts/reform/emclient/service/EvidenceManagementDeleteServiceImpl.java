@@ -47,14 +47,13 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
     public ResponseEntity<String> deleteFile(String fileUrl,
                                         String authorizationToken,
                                         String requestId) {
-
         log.info("Deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrl, requestId);
 
-        UserDetails userDetails = null;
+        UserDetails userDetails;
         try {
             userDetails = userService.getUserDetails(authorizationToken);
         } catch (FeignException e) {
-            log.debug("FeignException {}, {}, {}", e.status(), e.getMessage(), e.getStackTrace());
+            log.info("FeignException status: {}, message: {}", e.status(), e.getMessage());
             return new ResponseEntity<>(e.contentUTF8(), HttpStatus.valueOf(e.status()));
         }
         HttpEntity<Object> httpEntity = deleteServiceCallHeaders(userDetails.getId());

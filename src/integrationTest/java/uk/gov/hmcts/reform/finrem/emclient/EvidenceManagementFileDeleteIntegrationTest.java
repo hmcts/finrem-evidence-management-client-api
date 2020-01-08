@@ -80,14 +80,14 @@ public class EvidenceManagementFileDeleteIntegrationTest {
 
 
     @Test
-    public void verifyDeleteRequestWithInvalidAuthTokenIsUnauthorized() {
+    public void verifyDeleteRequestWithInvalidAuthorizationHeaderIsInternalServerError() {
         String fileUrl = uploadFile();
         Map<String, Object> headers = evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil);
-        String token = "x".concat(headers.get(AUTHORIZATION_HEADER_NAME).toString()).concat("x");
-        headers.put(AUTHORIZATION_HEADER_NAME, token);
+        String invalidToken = "x".concat(headers.get(AUTHORIZATION_HEADER_NAME).toString()).concat("x");
+        headers.put(AUTHORIZATION_HEADER_NAME, invalidToken);
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
 
-        Assert.assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
+        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatusCode());
     }
 
     @Test
