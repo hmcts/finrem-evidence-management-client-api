@@ -111,6 +111,5 @@ public class EvidenceManagementFileDeleteIntegrationTest {
                 evidenceManagementClientApiBaseUrl,
                 documentManagementURL,
                 idamTestSupportUtil);
-
     }
 }
