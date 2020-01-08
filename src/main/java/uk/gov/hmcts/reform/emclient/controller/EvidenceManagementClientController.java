@@ -38,7 +38,7 @@ public class EvidenceManagementClientController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public List<FileUploadResponse> upload(
@@ -57,7 +57,7 @@ public class EvidenceManagementClientController {
         @ApiResponse(code = 400, message = "Bad Request"),
         @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    @GetMapping(value = "/version/1/download", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/version/1/download", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<byte[]> download(
         @RequestParam("binaryFileUrl") String binaryFileUrl) {
@@ -71,7 +71,7 @@ public class EvidenceManagementClientController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<?> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
                                         @RequestHeader(value = "requestId", required = false) String requestId,

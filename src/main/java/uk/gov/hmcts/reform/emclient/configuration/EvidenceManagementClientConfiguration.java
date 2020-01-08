@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -29,7 +29,7 @@ import static java.util.Arrays.asList;
 @Configuration
 public class EvidenceManagementClientConfiguration {
 
-    private static final MediaType MEDIA_TYPE_HAL_JSON = new MediaType("application", "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
+    private static final MediaType MEDIA_TYPE_HAL_JSON = new MediaType("application", "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json");
 
     @Autowired
     private ObjectMapper objectMapper;

@@ -6,7 +6,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.hateoas.hal.HalLinkDiscoverer;
+import org.springframework.hateoas.mediatype.hal.HalLinkDiscoverer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +47,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
 
     @Override
     public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, final String authorizationToken,
-                                           @Nullable String requestId) {
+                                           String requestId) {
         UserDetails userDetails = userService.getUserDetails(authorizationToken);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(userDetails.getId()));
         JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)
@@ -60,8 +59,10 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     private FileUploadResponse createUploadResponse(JsonNode document) {
         return FileUploadResponse.builder()
                 .status(HttpStatus.OK)
-                .fileUrl(new HalLinkDiscoverer().findLinkWithRel("self",
-                        document.toString()).getHref())
+                .fileUrl(new HalLinkDiscoverer()
+                    .findLinkWithRel("self", document.toString())
+                    .orElseThrow(() -> new IllegalStateException("self rel link not found"))
+                    .getHref())
                 .fileName(document.get("originalDocumentName").asText())
                 .createdBy(getTextFromJsonNode(document, "createdBy"))
                 .createdOn(document.get("createdOn").asText())
