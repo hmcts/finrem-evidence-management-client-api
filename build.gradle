@@ -126,13 +126,11 @@ dependencyCheck {
 }
 
 def versions = [
-        ccdClient                               : '4.6.4',
         commonsIo                               : '2.5',
         commonsLang3                            : '3.9',
         hibernate                               : '6.0.5.Final',
         javaxValidation                         : '2.0.0.Final',
         jaywayJsonPath                          : '2.2.0',
-        jsr305                                  : '3.0.2',
         junit                                   : '4.12',
         lombok                                  : '1.16.18',
         puppyCrawl                              : '7.6',
@@ -185,7 +183,6 @@ dependencies {
     integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
 
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: versions.jsr305
     implementation group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
     implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIo
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
@@ -285,7 +282,7 @@ task addReleaseSuffixToDevelop() {
 }
 
 jacocoTestReport {
-    executionData(test, functional)
+    executionData(test)
 
     reports {
         xml.enabled true
