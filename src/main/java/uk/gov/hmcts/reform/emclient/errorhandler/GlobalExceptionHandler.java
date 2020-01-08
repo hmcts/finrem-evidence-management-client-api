@@ -1,10 +1,5 @@
 package uk.gov.hmcts.reform.emclient.errorhandler;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,6 +12,10 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -34,7 +33,6 @@ public class GlobalExceptionHandler {
             WebRequest request,
             HttpServletResponse response) {
 
-        log.debug("In HttpClientErrorException handler");
         log.error(EXCEPTION_MESSAGE, request.getHeader(REQUEST_ID_HEADER_KEY), clientErrorException.getMessage());
 
         return ResponseEntity.status(clientErrorException.getStatusCode()).body(
