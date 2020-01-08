@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.emclient.service;
 
 
+import feign.FeignException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +18,11 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -31,12 +34,10 @@ import static org.mockito.Mockito.when;
 public class EvidenceManagementDeleteServiceImplTest {
 
     private static final String EVIDENCE_MANAGEMENT_SERVICE_URL = "http://localhost:8080/documents/";
-    @Mock
-    UserService userService;
-    @Mock
-    private RestTemplate restTemplate;
-    @Mock
-    private AuthTokenGenerator authTokenGenerator;
+
+    @Mock UserService userService;
+    @Mock private RestTemplate restTemplate;
+    @Mock private AuthTokenGenerator authTokenGenerator;
 
     @InjectMocks
     private EvidenceManagementDeleteServiceImpl deleteService = new EvidenceManagementDeleteServiceImpl();
@@ -46,14 +47,12 @@ public class EvidenceManagementDeleteServiceImplTest {
         when(userService.getUserDetails(anyString())).thenReturn(UserDetails.builder().id("19").build());
     }
 
-
     /**
      * This test issues a document delete request that is expected to succeed. It ensures that the OK response from
      * the EM document store service passes cleanly through the evidence management client api to the caller
      * without any issues or exceptions occurring.
      * <p/>
      */
-
     @Test
     public void shouldPassThruDocumentDeletedSuccessfullyState() {
 
@@ -135,7 +134,6 @@ public class EvidenceManagementDeleteServiceImplTest {
 
     @Test(expected = ResourceAccessException.class)
     public void shouldPassThruExceptionThrownWhenEvidenceManagementServiceNotFound() {
-
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
 
         doThrow(ResourceAccessException.class)
@@ -150,6 +148,17 @@ public class EvidenceManagementDeleteServiceImplTest {
         assertFalse("Failed to receive exception resulting from non-running EM service", true);
     }
 
+    @Test
+    public void shouldCatchExceptionFromUserServiceAndReturnResponseWithSameHttpStatus() {
+        doThrow(new FeignException.InternalServerError("does not compute", new byte[] {}))
+            .when(userService)
+            .getUserDetails(anyString());
+
+        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
+        ResponseEntity<String> responseEntity = deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
+
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
 
     /**
      * This method sets up the mock evidence management document service endpoint for the currently executing test.
