@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +47,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
 
     @Override
     public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, final String authorizationToken,
-                                           @Nullable String requestId) {
+                                           String requestId) {
         UserDetails userDetails = userService.getUserDetails(authorizationToken);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(userDetails.getId()));
         JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)
