@@ -32,7 +32,6 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
-
     /**
      * This method attempts to delete the document stored in the Evidence Management document store identified by the
      * given file url.

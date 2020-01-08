@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-
 import feign.FeignException;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +27,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class EvidenceManagementDeleteServiceImplTest {

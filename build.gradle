@@ -244,7 +244,6 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
     classpath = sourceSets.testSmoke.runtimeClasspath
 }
 
-
 task functional(type: Test, description: 'Runs the functional tests', group: 'Verification') {
         setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
         setClasspath(sourceSets.integrationTest.runtimeClasspath)
@@ -271,10 +270,9 @@ def sonarExclusions = [
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "FinancialRemedyEvidenceManagementClientApi"
         property "sonar.projectName", "Financial Remedy :: Evidence Management Client API"
-        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
-        property "sonar.jacoco.itReportPath", "${project.buildDir}/jacoco/functional.exec"
+        property "sonar.projectKey", "FinancialRemedyEvidenceManagementClientApi"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         property "sonar.exclusions", sonarExclusions.join(", ")
     }
 }
