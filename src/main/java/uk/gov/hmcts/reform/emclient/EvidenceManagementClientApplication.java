@@ -40,5 +40,4 @@ public class EvidenceManagementClientApplication {
                 s2sToken,  microService, serviceAuthorisationApi);
         return AuthTokenGeneratorFactory.createDefaultGenerator(s2sToken, microService, serviceAuthorisationApi);
     }
-
 }

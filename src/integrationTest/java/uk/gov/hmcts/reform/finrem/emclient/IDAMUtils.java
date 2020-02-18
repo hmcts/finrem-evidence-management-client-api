@@ -25,12 +25,10 @@ public class IDAMUtils {
     private String idamSecret;
 
     private String idamUsername;
-
     private String idamPassword;
-
     private String testUserJwtToken;
 
-    public synchronized String getIdamTestUser() {
+    synchronized String getIdamTestUser() {
         if (StringUtils.isBlank(testUserJwtToken)) {
             createUserAndToken();
         }

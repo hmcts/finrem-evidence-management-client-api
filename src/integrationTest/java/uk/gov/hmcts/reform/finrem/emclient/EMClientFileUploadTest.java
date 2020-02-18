@@ -99,7 +99,7 @@ public class EMClientFileUploadTest {
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
 
-        System.out.println("response body---->" + response.prettyPrint());
+        System.out.println("Response Body---->" + response.prettyPrint());
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
 
         assertEquals(HttpStatus.OK.value(), response.statusCode());
@@ -137,7 +137,7 @@ public class EMClientFileUploadTest {
 
     private Map<String, Object> getAuthenticationTokenHeader() {
         String authenticationToken = idamTestSupportUtil.getIdamTestUser();
-        System.out.println("authenticationToken---->" + authenticationToken);
+        System.out.println("Authentication Token---->" + authenticationToken);
 
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);
