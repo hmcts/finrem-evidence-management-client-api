@@ -1,16 +1,6 @@
 package uk.gov.hmcts.reform.emclient.validation.validator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Resource;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,11 +9,18 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
-
 import uk.gov.hmcts.reform.emclient.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
 
-import com.google.common.collect.ImmutableList;
+import javax.annotation.Resource;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @SpringBootTest(classes = {EvidenceManagementClientApplication.class})
 @RunWith(SpringRunner.class)
@@ -32,6 +29,8 @@ public class EvidenceFileValidatorTest {
 
     @Resource
     private Validator validator;
+
+    private static String INVALID_FILE_ERROR_MSG = "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)";
 
     @Test
     public void testJpegFileSuccessValidation() {
@@ -107,7 +106,7 @@ public class EvidenceFileValidatorTest {
                 validateFiles(ImmutableList.of(exeFile));
 
         assertFalse(constraintViolations.isEmpty());
-        assertEquals("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)",
+        assertEquals(INVALID_FILE_ERROR_MSG,
                 constraintViolations.iterator().next().getMessage());
     }
     
@@ -119,7 +118,7 @@ public class EvidenceFileValidatorTest {
                 validateFiles(ImmutableList.of(jpgFile));
 
         assertFalse(constraintViolations.isEmpty());
-        assertEquals("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)",
+        assertEquals(INVALID_FILE_ERROR_MSG,
                 constraintViolations.iterator().next().getMessage());
     }
 

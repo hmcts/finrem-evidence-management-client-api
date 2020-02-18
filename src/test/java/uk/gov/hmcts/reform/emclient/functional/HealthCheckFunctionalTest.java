@@ -86,7 +86,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
 
     @Before
     public void setUp() {
-        healthUrl = "http://localhost:" + String.valueOf(port) + "/health";
+        healthUrl = "http://localhost:" + port + "/health";
         originalRequestFactory = restTemplate.getRequestFactory();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
     }
@@ -168,6 +168,4 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(responseBody)));
     }
-
-
 }

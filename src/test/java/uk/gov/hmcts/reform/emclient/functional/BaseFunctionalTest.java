@@ -14,18 +14,18 @@ public class BaseFunctionalTest {
     public static class LocalRibbonClientConfiguration {
         @Bean
         public ServerList<Server> ribbonServerList(@Value("${auth.provider.service.client.port}") int serverPort) {
+
             return new StaticServerList<>(new Server("localhost", serverPort));
         }
-
     }
 
     protected String getAppBaseUrl(String serverPort){
         if(StringUtils.isNotEmpty(serverPort)){
-            String url = new LocalRibbonClientConfiguration().ribbonServerList(Integer.valueOf(serverPort)).getInitialListOfServers().get(0).getId();
+            String url = new LocalRibbonClientConfiguration().ribbonServerList(Integer.parseInt(serverPort)).getInitialListOfServers().get(0).getId();
+
             return "http://" + url;
         }else {
             throw new RuntimeException("Server Port config not found in application properties");
         }
-
     }
 }
