@@ -30,7 +30,7 @@ public class EvidenceFileValidatorTest {
     @Resource
     private Validator validator;
 
-    private static String INVALID_FILE_ERROR_MSG = "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)";
+    private static final String INVALID_FILE_ERROR_MSG = "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)";
 
     @Test
     public void testJpegFileSuccessValidation() {

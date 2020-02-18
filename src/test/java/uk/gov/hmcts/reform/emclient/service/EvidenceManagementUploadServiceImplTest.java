@@ -108,10 +108,9 @@ public class EvidenceManagementUploadServiceImplTest {
         httpEntityReqEntity.getAllValues();
     }
 
-    private ArgumentCaptor<HttpEntity> mockRestTemplate() throws IOException {
+    private void mockRestTemplate() throws IOException {
         this.httpEntityReqEntity = ArgumentCaptor.forClass(HttpEntity.class);
         when(restTemplate.postForObject(eq("emuri"), httpEntityReqEntity.capture(), any())).thenReturn(getResponse());
-        return httpEntityReqEntity;
     }
 
     private HttpHeaders getEMRequestHeaders() {

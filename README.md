@@ -18,7 +18,6 @@
   * OWASP dependency check
   * Sonar
 
-
 ## Project setup
 * git clone [https://github.com/hmcts/finrem-evidence-management-client-api.git](https://github.com/hmcts/finrem-evidence-management-client-api.git)
 
@@ -31,7 +30,7 @@
     `<==========---> 80% EXECUTING [43s]
      :bootRun
     ` but this is expected behaviour of Gradle and means the project is running.)
- 
+
 ## Developing
 
 ### Unit tests
@@ -84,15 +83,6 @@ To run all checks (including unit tests) please execute following command:
 
 ``` Actual file for the given URL. ```
 
-### API documentation
-
-API documentation is provided with Swagger:
- - `http://localhost:4006/swagger-ui.html` - UI to interact with the API resources
-
-## Standard API
-
-We follow [RESTful API standards](https://hmcts.github.io/restful-api-standards/).
-
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.

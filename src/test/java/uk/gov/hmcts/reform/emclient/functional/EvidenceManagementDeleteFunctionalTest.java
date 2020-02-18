@@ -48,7 +48,7 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
 
     @Autowired
     private RestTemplate restTemplate;
-    private String docUri = "http://doc-store/1";
+    private final String docUri = "http://doc-store/1";
     private String API_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
 
     @Before
