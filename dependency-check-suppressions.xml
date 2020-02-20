@@ -4,12 +4,4 @@
         <notes>Vulnerability applies to Spring Framework 5.0.5, project uses 5.2.0</notes>
         <cve>CVE-2018-1258</cve>
     </suppress>
-    <suppress>
-        <notes>Vulnerability applies to Netty before version 4.1.44, project does not use Netty</notes>
-        <cve>CVE-2014-3488</cve>
-        <cve>CVE-2015-2156</cve>
-        <cve>CVE-2019-16869</cve>
-        <cve>CVE-2019-20444</cve>
-        <cve>CVE-2019-20445</cve>
-    </suppress>
 </suppressions>

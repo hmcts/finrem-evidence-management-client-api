@@ -45,6 +45,12 @@ public class EvidenceManagementDeleteServiceImplTest {
         when(userService.getUserDetails(anyString())).thenReturn(UserDetails.builder().id("19").build());
     }
 
+    /**
+     * This test issues a document delete request that is expected to succeed. It ensures that the OK response from
+     * the EM document store service passes cleanly through the evidence management client api to the caller
+     * without any issues or exceptions occurring.
+     * <p/>
+     */
     @Test
     public void shouldPassThruDocumentDeletedSuccessfullyState() {
 
@@ -56,6 +62,14 @@ public class EvidenceManagementDeleteServiceImplTest {
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
+
+    /**
+     * This test issues a document delete request that is expected to do nothing. It ensures that the NO_CONTENT
+     * response from the EM document store service passes cleanly through the evidence management client api to
+     * the caller without any issues or exceptions occurring.
+     * <p/>
+     */
 
     @Test
     public void shouldPassThruNoDocumentIdIsPassedState() {
@@ -69,6 +83,14 @@ public class EvidenceManagementDeleteServiceImplTest {
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
+
+    /**
+     * This test issues a document delete request that is expected to be rejected due to the caller being unauthorised.
+     * It ensures that the UNAUTHORIZED response from the EM document store service passes cleanly through the
+     * evidence management client api to the caller without any issues or exceptions occurring.
+     * <p/>
+     */
+
     @Test
     public void shouldPassThruNotAuthorisedAuthTokenState() {
 
@@ -81,6 +103,14 @@ public class EvidenceManagementDeleteServiceImplTest {
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
+
+    /**
+     * This test issues a document delete request that is expected to be rejected due to the caller being unauthenticated.
+     * It ensures that the FORBIDDEN response from the EM document store service passes cleanly through the
+     * evidence management client api to the caller without any issues or exceptions occurring.
+     * <p/>
+     */
+
     @Test
     public void shouldPassThruNotAuthenticatedAuthTokenState() {
 
@@ -92,6 +122,13 @@ public class EvidenceManagementDeleteServiceImplTest {
         assertNotNull(response);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
+
+
+    /**
+     * This test issues a document delete request that is expected to cause an exception due to the EM document service
+     * being unavailable. It ensures that the expected exception passes cleanly through to the caller.
+     * <p/>
+     */
 
     @Test(expected = ResourceAccessException.class)
     public void shouldPassThruExceptionThrownWhenEvidenceManagementServiceNotFound() {
@@ -120,6 +157,14 @@ public class EvidenceManagementDeleteServiceImplTest {
 
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
     }
+
+    /**
+     * This method sets up the mock evidence management document service endpoint for the currently executing test.
+     * <p/>
+     *
+     * @param fileUrl    a String containing the url for which the mock endpoint will respond
+     * @param httpStatus an HttpStatus enum representing the http status value to be returned from the mock endpoint
+     */
 
     private void setupMockEvidenceManagementService(String fileUrl, HttpStatus httpStatus) {
         when(authTokenGenerator.generate()).thenReturn("xxxx");
