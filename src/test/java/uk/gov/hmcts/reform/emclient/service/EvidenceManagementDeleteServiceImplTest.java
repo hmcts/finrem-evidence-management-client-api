@@ -19,9 +19,9 @@ import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -143,7 +143,7 @@ public class EvidenceManagementDeleteServiceImplTest {
 
         deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
 
-        assertFalse("Failed to receive exception resulting from non-running EM service", true);
+        fail("Failed to receive exception resulting from non-running EM service");
     }
 
     @Test
@@ -166,8 +166,7 @@ public class EvidenceManagementDeleteServiceImplTest {
      * @param httpStatus an HttpStatus enum representing the http status value to be returned from the mock endpoint
      */
 
-    private void setupMockEvidenceManagementService(String fileUrl,
-                                                    HttpStatus httpStatus) {
+    private void setupMockEvidenceManagementService(String fileUrl, HttpStatus httpStatus) {
         when(authTokenGenerator.generate()).thenReturn("xxxx");
 
         doReturn(new ResponseEntity<>(httpStatus))

@@ -10,7 +10,6 @@ import uk.gov.hmcts.reform.finrem.emclient.model.CreateUserRequest;
 import uk.gov.hmcts.reform.finrem.emclient.model.UserCode;
 
 import java.util.Base64;
-import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -26,12 +25,10 @@ public class IDAMUtils {
     private String idamSecret;
 
     private String idamUsername;
-
     private String idamPassword;
-
     private String testUserJwtToken;
 
-    public synchronized String getIdamTestUser() {
+    synchronized String getIdamTestUser() {
         if (StringUtils.isBlank(testUserJwtToken)) {
             createUserAndToken();
         }
@@ -86,7 +83,7 @@ public class IDAMUtils {
         return idamUserBaseUrl + "/testing-support/accounts";
     }
 
-    public String generateUserTokenWithNoRoles(String username, String password) {
+    private String generateUserTokenWithNoRoles(String username, String password) {
         String userLoginDetails = String.join(":", username, password);
         final String authHeader = "Basic " + new String(Base64.getEncoder().encode((userLoginDetails).getBytes()));
 

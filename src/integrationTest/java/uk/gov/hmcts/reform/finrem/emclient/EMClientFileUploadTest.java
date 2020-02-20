@@ -5,7 +5,6 @@ import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.annotations.TestData;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
-import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
@@ -34,6 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static net.serenitybdd.rest.SerenityRest.given;
+import static org.junit.Assert.assertEquals;
 
 @Lazy
 @RunWith(SerenityParameterizedRunner.class)
@@ -63,14 +63,13 @@ public class EMClientFileUploadTest {
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
-    private String name;
+    private final String name;
+    private final String fileType;
 
-    private String fileType;
-
-    private static String[] fileName = {"PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg",
+    private static final String[] fileName = {"PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg",
             "PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg"};
 
-    private static String[] fileContentType = {"image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg",
+    private static final String[] fileContentType = {"image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg",
             "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
 
 
@@ -99,9 +98,11 @@ public class EMClientFileUploadTest {
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
-        System.out.println("response body---->" + response.prettyPrint());
-        Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+
+        System.out.println("Response Body---->" + response.prettyPrint());
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
+
+        assertEquals(HttpStatus.OK.value(), response.statusCode());
         assertEMGetFileResponse(fileToUpload, fileContentType, fileRetrieveUrl(fileUrl));
     }
 
@@ -111,19 +112,21 @@ public class EMClientFileUploadTest {
 
     private void assertEMGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {
         Response responseFromEvidenceManagement = readDataFromEvidenceManagement(fileUrl);
-        Assert.assertEquals(HttpStatus.OK.value(), responseFromEvidenceManagement.getStatusCode());
-        Assert.assertEquals(fileToUpload, responseFromEvidenceManagement.getBody().path("originalDocumentName"));
-        Assert.assertEquals(fileContentType, responseFromEvidenceManagement.getBody().path("mimeType"));
+        assertEquals(HttpStatus.OK.value(), responseFromEvidenceManagement.getStatusCode());
+        assertEquals(fileToUpload, responseFromEvidenceManagement.getBody().path("originalDocumentName"));
+        assertEquals(fileContentType, responseFromEvidenceManagement.getBody().path("mimeType"));
     }
 
     public Response readDataFromEvidenceManagement(String uri) {
         String username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
         String password = UUID.randomUUID().toString().toUpperCase(Locale.UK);
         idamTestSupportUtil.createCaseworkerUserInIdam(username, password);
+
         Map<String, Object> headers = new HashMap<>();
         headers.put("ServiceAuthorization", authTokenGenerator.generate());
         headers.put("user-id", username);
         headers.put("user-roles", "caseworker-divorce");
+
         return given()
                 .contentType("application/json")
                 .headers(headers)
@@ -134,11 +137,12 @@ public class EMClientFileUploadTest {
 
     private Map<String, Object> getAuthenticationTokenHeader() {
         String authenticationToken = idamTestSupportUtil.getIdamTestUser();
-        System.out.println("authenticationToken---->" + authenticationToken);
+        System.out.println("Authentication Token---->" + authenticationToken);
+
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);
         headers.put("Content-Type", "multipart/form-data");
+
         return headers;
     }
-
 }

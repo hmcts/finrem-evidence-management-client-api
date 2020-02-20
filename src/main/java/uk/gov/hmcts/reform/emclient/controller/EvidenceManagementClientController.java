@@ -7,7 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
@@ -31,9 +38,9 @@ public class EvidenceManagementClientController {
     @Autowired
     private EvidenceManagementDownloadService emReadService;
 
-    @ApiOperation(value = "Handles file upload to evidence management document store.")
+    @ApiOperation(value = "Handles file upload to Evidence Management Document Store")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully uploaded the files",
+            @ApiResponse(code = 200, message = "Files uploaded successfully",
                     response = List.class),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")
@@ -49,10 +56,9 @@ public class EvidenceManagementClientController {
         return emUploadService.upload(files, authorizationToken, requestId);
     }
 
-
-    @ApiOperation(value = "Downloads file from evidence management document store.")
+    @ApiOperation(value = "Downloads file from Evidence Management Document Store.")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "The files are downloaded Successfully",
+        @ApiResponse(code = 200, message = "Files downloaded successfully",
             response = List.class),
         @ApiResponse(code = 400, message = "Bad Request"),
         @ApiResponse(code = 500, message = "Internal Server Error")
@@ -64,9 +70,9 @@ public class EvidenceManagementClientController {
         return emReadService.download(binaryFileUrl);
     }
 
-    @ApiOperation(value = "Handles file deletion  from evidence management document store.")
+    @ApiOperation(value = "Handles file deletion from Evidence Management Document Store.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully deleted the files",
+            @ApiResponse(code = 200, message = "Files deleted successfully",
                     response = List.class),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")

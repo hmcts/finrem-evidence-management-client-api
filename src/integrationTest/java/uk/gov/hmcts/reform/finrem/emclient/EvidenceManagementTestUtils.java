@@ -10,21 +10,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EvidenceManagementTestUtils {
+class EvidenceManagementTestUtils {
 
+    static final String AUTHORIZATION_HEADER_NAME = "Authorization";
 
-    public static final String AUTHORIZATION_HEADER_NAME = "Authorization";
-
-    @SuppressWarnings("unchecked")
-    public Map<String, Object> getAuthenticationTokenHeader(IDAMUtils idamTestSupportUtil) {
+    Map<String, Object> getAuthenticationTokenHeader(IDAMUtils idamTestSupportUtil) {
         String authenticationToken = idamTestSupportUtil.getIdamTestUser();
         Map<String, Object> headers = new HashMap<>();
         headers.put(AUTHORIZATION_HEADER_NAME, authenticationToken);
         return headers;
     }
 
-
-    public Map<String, Object> getInvalidAuthenticationTokenHeader() {
+    Map<String, Object> getInvalidAuthenticationTokenHeader() {
         Map<String, Object> headers = new HashMap<>();
         headers.put(AUTHORIZATION_HEADER_NAME, "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                 + ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ"
@@ -32,14 +29,8 @@ public class EvidenceManagementTestUtils {
         return headers;
     }
 
-    /**
-     * Given the uri it will update the url to corresponding localhost url for testing with docker
-     *
-     * @param uri the link to be updated
-     * @return updated url
-     */
     //this is a hack to make this work with the docker container
-    String getDocumentStoreURI(String uri, String documentManagementURL) {
+    private String getDocumentStoreURI(String uri, String documentManagementURL) {
         if (uri.contains("http://em-api-gateway-web:3404")) {
             return uri.replace("http://em-api-gateway-web:3404", documentManagementURL);
         }
@@ -47,18 +38,10 @@ public class EvidenceManagementTestUtils {
         return uri;
     }
 
-    /**
-     * Make REST call to an emclient API with user token to store a document in EM Store
-     * <p/>
-     *
-     * @param filePath the name of the file to be sent to the EM store
-     * @param fileContentType the fileContentType represents the contentType of the file
-     * @return the id of the stored document
-     */
     @SuppressWarnings("unchecked")
-    public String uploadFileToEvidenceManagement(String filePath,
-                                                 String fileContentType, String evidenceManagementClientApiBaseUrl,
-                                                 String documentManagementURL, IDAMUtils idamTestSupportUtil) {
+    String uploadFileToEvidenceManagement(String filePath,
+                                          String fileContentType, String evidenceManagementClientApiBaseUrl,
+                                          String documentManagementURL, IDAMUtils idamTestSupportUtil) {
 
         File file = new File(filePath);
         Response response = SerenityRest.given()
@@ -71,7 +54,7 @@ public class EvidenceManagementTestUtils {
         return getDocumentStoreURI(((List<String>) response.getBody().path("fileUrl")).get(0), documentManagementURL);
     }
 
-    public void downloadFileToEvidenceManagement(String filePath,String evidenceManagementClientApiDownloadUrl) {
+    void downloadFileToEvidenceManagement(String filePath, String evidenceManagementClientApiDownloadUrl) {
 
         Response response = SerenityRest.given()
                 .queryParam("binaryFileUrl",filePath)
@@ -80,5 +63,4 @@ public class EvidenceManagementTestUtils {
 
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
     }
-
 }

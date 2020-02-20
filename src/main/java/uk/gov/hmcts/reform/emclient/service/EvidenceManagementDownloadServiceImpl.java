@@ -23,11 +23,8 @@ import static java.lang.String.format;
 @Slf4j
 public class EvidenceManagementDownloadServiceImpl implements EvidenceManagementDownloadService {
 
-
     private static final String FINANCIAL_REMEDY_COURT_ADMIN = "caseworker-divorce-financialremedy-courtadmin";
-
     private static final String USER_ROLES = "user-roles";
-
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
     @Autowired
@@ -58,8 +55,7 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
 
         ResponseEntity<byte[]> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, byte[].class);
         if (response.getStatusCode() != HttpStatus.OK) {
-            log.error("Failed to get bytes from document store for document {} ",
-                    binaryFileUrl);
+            log.error("Failed to get bytes from document store for document {} ", binaryFileUrl);
             throw new RuntimeException(format("Unexpected code from DM store: %s ", response.getStatusCode()));
         }
 
@@ -69,9 +65,7 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
 
     private String getUrl(String binaryFileUrl) throws URISyntaxException {
         URI uri = new URI(binaryFileUrl);
+
         return evidenceManagementUrl + uri.getPath();
-
     }
-
-
 }

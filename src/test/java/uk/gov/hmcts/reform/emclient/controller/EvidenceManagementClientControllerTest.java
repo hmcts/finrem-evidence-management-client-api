@@ -49,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ImportAutoConfiguration( {RibbonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class, FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
 public class EvidenceManagementClientControllerTest {
-    public static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
+    private static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
     private static final String AUTH_TOKEN = "AAAAAAA";
     private static final String REQUEST_ID = "1234";
     private static final String AUTHORIZATION_TOKEN_HEADER = "Authorization";
@@ -60,6 +60,7 @@ public class EvidenceManagementClientControllerTest {
     private static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
     private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
     private static final String EM_CLIENT_DOWNLOAD_ENDPOINT_URL = "/emclientapi/version/1/download?binaryFileUrl=";
+
     @MockBean
     private EvidenceManagementUploadService emUploadService;
 
@@ -78,7 +79,6 @@ public class EvidenceManagementClientControllerTest {
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
-
 
     @Test
     public void shouldDownloadFileWhenDownloadFileIsInvokedWithFileUrl() throws Exception {
@@ -167,7 +167,6 @@ public class EvidenceManagementClientControllerTest {
             .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
-
     @Test
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEMStoreThrowsHttpServerException()
         throws Exception {
@@ -175,7 +174,6 @@ public class EvidenceManagementClientControllerTest {
             .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
         verifyExceptionFromUploadServiceIsHandledGracefully();
-
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
@@ -217,7 +215,6 @@ public class EvidenceManagementClientControllerTest {
             .willThrow(new ResourceAccessException("Evidence management service is currently down"));
 
         verifyExceptionFromUploadServiceIsHandledGracefully();
-
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
@@ -228,7 +225,6 @@ public class EvidenceManagementClientControllerTest {
             .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
         verifyExceptionFromUploadServiceIsHandledGracefully();
-
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
@@ -291,15 +287,18 @@ public class EvidenceManagementClientControllerTest {
             .modifiedOn("2017-09-01T13:12:36.862+0000")
             .lastModifiedBy("testuser")
             .mimeType(MediaType.TEXT_PLAIN_VALUE).build();
+
         return Collections.singletonList(fileUploadResponse);
     }
 
     private MockMultipartFile textMultipartFile() {
+
         return new MockMultipartFile("file", "test.txt", "multipart/form-data",
             "This is a test file".getBytes());
     }
 
     private MockMultipartFile jpegMultipartFile() {
+
         return new MockMultipartFile("image", "image.jpeg", "image/jpeg", new byte[0]);
     }
 

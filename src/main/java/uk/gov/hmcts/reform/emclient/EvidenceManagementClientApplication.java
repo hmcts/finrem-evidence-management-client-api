@@ -14,8 +14,8 @@ import org.springframework.retry.annotation.EnableRetry;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
-import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
 import uk.gov.hmcts.reform.authorisation.healthcheck.ServiceAuthHealthIndicator;
+import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
 
 @SpringBootApplication(exclude = {HypermediaAutoConfiguration.class})
 @ComponentScan(basePackages = "uk.gov.hmcts", excludeFilters = {
@@ -40,5 +40,4 @@ public class EvidenceManagementClientApplication {
                 s2sToken,  microService, serviceAuthorisationApi);
         return AuthTokenGeneratorFactory.createDefaultGenerator(s2sToken, microService, serviceAuthorisationApi);
     }
-
 }

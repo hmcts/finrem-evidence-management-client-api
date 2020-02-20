@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.emclient.service;
 
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
@@ -21,13 +20,12 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.exception.InvalidURIException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class EvidenceManagementDownloadServiceImplTest {
@@ -47,11 +45,9 @@ public class EvidenceManagementDownloadServiceImplTest {
     @InjectMocks
     private EvidenceManagementDownloadServiceImpl downloadService = new EvidenceManagementDownloadServiceImpl();
 
-
     @Before
     public void setUp() {
-        ReflectionTestUtils.setField(downloadService, "evidenceManagementUrl",
-                URL);
+        ReflectionTestUtils.setField(downloadService, "evidenceManagementUrl", URL);
     }
 
     @Test
@@ -66,17 +62,15 @@ public class EvidenceManagementDownloadServiceImplTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-
     @Test(expected = RuntimeException.class)
     public void shouldThrowExceptionIfFileDoesNotExsist() {
 
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("random");
         setupMockEvidenceManagementService(URL.concat("/documents/random"), HttpStatus.NOT_FOUND);
 
-        ResponseEntity<?> response = downloadService.download(fileUrl);
-        assertFalse("Failed to receive exception ", true);
+        downloadService.download(fileUrl);
+        fail("Failed to receive exception ");
     }
-
 
     @Test(expected = ResourceAccessException.class)
     public void shouldPassThruExceptionThrownWhenEvidenceManagementServiceNotFound() {
@@ -90,10 +84,9 @@ public class EvidenceManagementDownloadServiceImplTest {
                         any(),
                         any(Class.class));
 
-        ResponseEntity<?> response = downloadService.download(fileUrl);
-        assertFalse("Failed to receive exception resulting from non-running EM service", true);
+        downloadService.download(fileUrl);
+        fail("Failed to receive exception resulting from non-running EM service");
     }
-
 
     @Test(expected = InvalidURIException.class)
     public void shouldPassThruExceptionThrownWhenInvalidURI() {
@@ -101,8 +94,7 @@ public class EvidenceManagementDownloadServiceImplTest {
         downloadService.download(fileUrl);
     }
 
-    private void setupMockEvidenceManagementService(String fileUrl,
-                                                    HttpStatus httpStatus) {
+    private void setupMockEvidenceManagementService(String fileUrl, HttpStatus httpStatus) {
         when(authTokenGenerator.generate()).thenReturn("xxxx");
 
         doReturn(new ResponseEntity<>(httpStatus))

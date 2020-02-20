@@ -1,15 +1,14 @@
 package uk.gov.hmcts.reform.emclient.validation.validator;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
 import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 @Component
 public class EvidenceFileValidator implements ConstraintValidator<EvidenceFile, MultipartFile> {
@@ -25,23 +24,14 @@ public class EvidenceFileValidator implements ConstraintValidator<EvidenceFile, 
 
     @Override
     public boolean isValid(MultipartFile file, ConstraintValidatorContext constraintValidatorContext) {
-        if (!validFile(file.getOriginalFilename()) || !validMimeType(file.getContentType())) {
-            return false;
-        }
-        return true;
+        return validFile(file.getOriginalFilename()) && validMimeType(file.getContentType());
     }
 
     private boolean validMimeType(final String mimeType) {
-        if (!StringUtils.containsIgnoreCase(allowedMimeTypes, mimeType)) {
-            return false;
-        }
-        return true;
+        return StringUtils.containsIgnoreCase(allowedMimeTypes, mimeType);
     }
 
     private boolean validFile(final String filename) {
-        if (!StringUtils.containsIgnoreCase(allowedFileExtensions, FilenameUtils.getExtension(filename))) {
-            return false;
-        }
-        return true;
+        return StringUtils.containsIgnoreCase(allowedFileExtensions, FilenameUtils.getExtension(filename));
     }
 }

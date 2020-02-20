@@ -54,10 +54,12 @@ public class EvidenceManagementFileDownloadIntegrationTest {
     }
 
     private String uploadFile(){
-        return evidenceManagementTestUtils.uploadFileToEvidenceManagement(FILE_PATH, IMAGE_FILE_CONTENT_TYPE,
-                evidenceManagementClientApiBaseUrl,
-                documentManagementURL,
-                idamTestSupportUtil);
 
+        return evidenceManagementTestUtils.uploadFileToEvidenceManagement(
+            FILE_PATH,
+            IMAGE_FILE_CONTENT_TYPE,
+            evidenceManagementClientApiBaseUrl,
+            documentManagementURL,
+            idamTestSupportUtil);
     }
 }

@@ -23,7 +23,7 @@ import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static java.nio.file.Files.readAllBytes;
@@ -105,18 +105,18 @@ public class EvidenceManagementUploadServiceImplTest {
         expectedException.expect(NullPointerException.class);
         expectedException.expectMessage("files");
         emUploadService.upload(null, authKey(), "ReqId");
-        List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
+        httpEntityReqEntity.getAllValues();
     }
 
-    private ArgumentCaptor<HttpEntity> mockRestTemplate() throws IOException {
+    private void mockRestTemplate() throws IOException {
         this.httpEntityReqEntity = ArgumentCaptor.forClass(HttpEntity.class);
         when(restTemplate.postForObject(eq("emuri"), httpEntityReqEntity.capture(), any())).thenReturn(getResponse());
-        return httpEntityReqEntity;
     }
 
     private HttpHeaders getEMRequestHeaders() {
         return httpEntityReqEntity.getAllValues().get(0).getHeaders();
     }
+
     private ObjectNode getResponse() throws IOException {
         final String response = new String(readAllBytes(get("src/test/resources/fileuploadresponse.txt")));
         return (ObjectNode) new ObjectMapper().readTree(response);
@@ -134,6 +134,6 @@ public class EvidenceManagementUploadServiceImplTest {
     private List<MultipartFile> getMultipartFiles() {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "JDP.pdf",
                 "application/pdf", "This is a test pdf file".getBytes());
-        return Arrays.asList(multipartFile);
+        return Collections.singletonList(multipartFile);
     }
 }

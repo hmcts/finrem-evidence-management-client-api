@@ -1,15 +1,5 @@
 package uk.gov.hmcts.reform.emclient.health;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -22,6 +12,16 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class WebServiceHealthCheckTest {
     private String uri = "http://example.com";
@@ -31,7 +31,7 @@ public class WebServiceHealthCheckTest {
     private TestWebServiceHealthCheck healthCheck = new TestWebServiceHealthCheck(httpEntityFactory, restTemplate, uri);
 
     @Test
-    public void shouldReturnUpWhenServiceReturnsOk() throws Exception {
+    public void shouldReturnUpWhenServiceReturnsOk() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(null);
         ResponseEntity<Object> responseEntity = new ResponseEntity<>(HttpStatus.OK);
 
@@ -49,7 +49,7 @@ public class WebServiceHealthCheckTest {
     }
 
     @Test
-    public void shouldReturnDownWhenServiceReturnsServiceUnavailable() throws Exception {
+    public void shouldReturnDownWhenServiceReturnsServiceUnavailable() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(null);
 
         when(httpEntityFactory.createRequestEntityForHealthCheck()).thenReturn(httpEntity);
@@ -68,7 +68,7 @@ public class WebServiceHealthCheckTest {
     }
 
     @Test
-    public void shouldReturnDownWhenResourceAccessExceptionIsThrown() throws Exception {
+    public void shouldReturnDownWhenResourceAccessExceptionIsThrown() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(null);
 
         when(httpEntityFactory.createRequestEntityForHealthCheck()).thenReturn(httpEntity);
@@ -87,7 +87,7 @@ public class WebServiceHealthCheckTest {
     }
 
     @Test
-    public void shouldReturnUnknownIfExceptionIsThrown() throws Exception {
+    public void shouldReturnUnknownIfExceptionIsThrown() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(null);
 
         when(httpEntityFactory.createRequestEntityForHealthCheck()).thenReturn(httpEntity);
@@ -106,7 +106,7 @@ public class WebServiceHealthCheckTest {
     }
 
     @Test
-    public void shouldReturnUnknownStatusIfUpstreamStatusIsNot200or503() throws Exception {
+    public void shouldReturnUnknownStatusIfUpstreamStatusIsNot200or503() {
         HttpEntity<Object> httpEntity = new HttpEntity<>(null);
         ResponseEntity<Object> responseEntity = new ResponseEntity<>(HttpStatus.MOVED_PERMANENTLY);
 
@@ -124,7 +124,7 @@ public class WebServiceHealthCheckTest {
     }
 
     private static class TestWebServiceHealthCheck extends WebServiceHealthCheck {
-        public TestWebServiceHealthCheck(HttpEntityFactory httpEntityFactory, RestTemplate restTemplate, String uri) {
+        TestWebServiceHealthCheck(HttpEntityFactory httpEntityFactory, RestTemplate restTemplate, String uri) {
             super(httpEntityFactory, restTemplate, uri);
         }
     }

@@ -1,48 +1,53 @@
 # Financial Remedy Evidence Management Client API
 
-
-## A Hypermedia Restful API/HATEOAS Client for Evidence Management Service
-
+## The Evidence Management Client API is responsible for providing an interface between the Financial Remedy services and the HMCTS Document Management Service
 
 ## Introduction
-* This API provides below endpoints
+* This API provides below endpoints:
   * File Upload(s)
   * File Download
-* It uses below technical stack
+* It uses the following tech stack:
   * Java8
   * Spring Boot
-  * Junit, Mockito and SpringBootTest and Powermockito
+  * Junit, Mockito, SpringBootTest and Powermockito
   * Gradle
   * Spring Hateos
   * Traverson
-* Plugins used by project
+* Plugins used by project:
   * Jacoco
   * OWASP dependency check
   * Sonar
 
 ## Project setup
-> * git clone [https://github.com/hmcts/finrem-evidence-management-client-api.git](https://github.com/hmcts/finrem-evidence-management-client-api.git)
-> * cd finrem-evidence-management-client-api
-> * Run `./gradlew bootRun` 
+* git clone [https://github.com/hmcts/finrem-evidence-management-client-api.git](https://github.com/hmcts/finrem-evidence-management-client-api.git)
+
+* cd finrem-evidence-management-client-api
+
+* Run `./gradlew bootRun` 
     (This command will start the spring boot application in an embedded tomcat on port 4006.
     To change the port change the configuration in `application.properties`. 
     This will output 
     `<==========---> 80% EXECUTING [43s]
-     > :bootRun
+     :bootRun
     ` but this is expected behaviour of Gradle and means the project is running.)
-* The following commands are available:
-> `docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonarqube:latest`
-> #### This command will create a local Sonar Qube docker instance on port 9000
 
-> `./gradlew dependencyCheckAnalyze`
-> #### This command will create a dependency check report to identify the use of known vulnerable components.
+## Developing
 
-> `./gradlew sonarqube -Dsonar.host.url=http://localhost:9000`
->  #### This command will generate sonar reports and update it into local sonarqube instance.
+### Unit tests
 
-> `./gradlew check`
->  #### This command will runs all verification tasks in the project, including test.
- 
+To run all unit tests please execute following command:
+
+```bash
+./gradlew test
+```
+
+### Coding style tests
+
+To run all checks (including unit tests) please execute following command:
+
+```bash
+./gradlew check
+```
  
 ## API Consumption
 
@@ -78,15 +83,6 @@
 
 ``` Actual file for the given URL. ```
 
+## License
 
-##  License
-```The MIT License (MIT)
-
-Copyright (c) 2018 HMCTS (HM Courts & Tribunals Service)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-```
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.

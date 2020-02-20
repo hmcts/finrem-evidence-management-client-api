@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.emclient.health;
 
-import java.util.HashMap;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -13,6 +11,8 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+
 import static org.springframework.boot.actuate.health.Health.down;
 import static org.springframework.boot.actuate.health.Health.unknown;
 import static org.springframework.boot.actuate.health.Health.up;
@@ -20,9 +20,9 @@ import static org.springframework.boot.actuate.health.Health.up;
 @Slf4j
 public abstract class WebServiceHealthCheck implements HealthIndicator {
 
-    protected final HttpEntityFactory httpEntityFactory;
     protected final RestTemplate restTemplate;
-    protected final String uri;
+    private final HttpEntityFactory httpEntityFactory;
+    private final String uri;
 
     public WebServiceHealthCheck(HttpEntityFactory httpEntityFactory, RestTemplate restTemplate, String uri) {
         this.httpEntityFactory = httpEntityFactory;
@@ -32,7 +32,7 @@ public abstract class WebServiceHealthCheck implements HealthIndicator {
 
     public Health health() {
         HttpEntity<Object> httpEntity = httpEntityFactory.createRequestEntityForHealthCheck();
-        ResponseEntity<Object> responseEntity = null;
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, Object.class, new HashMap<>());

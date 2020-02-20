@@ -50,13 +50,17 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
                                            String requestId) {
         UserDetails userDetails = userService.getUserDetails(authorizationToken);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(userDetails.getId()));
+
         JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)
                 .path("_embedded").path("documents");
+
         log.info("For Request Id {} and userId {} : File upload response from Evidence Management service is {}", requestId, userDetails.getId(), documents);
+
         return toUploadResponse(documents);
     }
 
     private FileUploadResponse createUploadResponse(JsonNode document) {
+
         return FileUploadResponse.builder()
                 .status(HttpStatus.OK)
                 .fileUrl(new HalLinkDiscoverer()
@@ -74,14 +78,15 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
 
     private List<FileUploadResponse> toUploadResponse(JsonNode documents) {
         Stream<JsonNode> filesStream = stream(documents.spliterator(), false);
+
         return filesStream
                 .map(this::createUploadResponse)
                 .collect(Collectors.toList());
     }
 
     private String getTextFromJsonNode(JsonNode document, String attribute) {
-        return Optional.ofNullable(document)
-                .map(file -> Optional.ofNullable(attribute).map(file::asText).orElse(null))
+
+        return Optional.ofNullable(document).flatMap(file -> Optional.ofNullable(attribute).map(file::asText))
                 .orElse(null);
     }
 
@@ -90,7 +95,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         headers.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
         headers.set("Content-Type", "multipart/form-data");
         headers.set("user-id", userId);
+
         return headers;
     }
-
 }
