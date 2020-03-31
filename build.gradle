@@ -129,7 +129,7 @@ def versions = [
         commonsBeanUtils                        : '1.9.4',
         commonsIo                               : '2.5',
         commonsLang3                            : '3.9',
-        guava                                   : '28.1-jre'
+        guava                                   : '28.1-jre',
         hibernate                               : '6.0.5.Final',
         javaxValidation                         : '2.0.0.Final',
         jaywayJsonPath                          : '2.2.0',
