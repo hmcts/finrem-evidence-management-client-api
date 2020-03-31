@@ -55,11 +55,11 @@ data "azurerm_key_vault" "finrem_key_vault" {
 }
 
 data "azurerm_key_vault_secret" "finrem_doc_s2s_auth_secret" {
-  name      = "finrem-doc-s2s-auth-secret"
-  vault_uri = "${data.azurerm_key_vault.finrem_key_vault.vault_uri}"
+  name         = "finrem-doc-s2s-auth-secret"
+  key_vault_id = "${data.azurerm_key_vault.finrem_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "idam-secret" {
-  name      = "idam-secret"
-  vault_uri = "${data.azurerm_key_vault.finrem_key_vault.vault_uri}"
+  name         = "idam-secret"
+  key_vault_id = "${data.azurerm_key_vault.finrem_key_vault.id}"
 }
