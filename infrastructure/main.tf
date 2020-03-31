@@ -1,3 +1,7 @@
+provider "azurerm" {
+  version = "1.44.0"
+}
+
 locals {
   ase_name       = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
   local_env      = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
@@ -55,11 +59,11 @@ data "azurerm_key_vault" "finrem_key_vault" {
 }
 
 data "azurerm_key_vault_secret" "finrem_doc_s2s_auth_secret" {
-  name      = "finrem-doc-s2s-auth-secret"
-  vault_uri = "${data.azurerm_key_vault.finrem_key_vault.vault_uri}"
+  name         = "finrem-doc-s2s-auth-secret"
+  key_vault_id = "${data.azurerm_key_vault.finrem_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "idam-secret" {
-  name      = "idam-secret"
-  vault_uri = "${data.azurerm_key_vault.finrem_key_vault.vault_uri}"
+  name         = "idam-secret"
+  key_vault_id = "${data.azurerm_key_vault.finrem_key_vault.id}"
 }
