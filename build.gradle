@@ -126,8 +126,10 @@ dependencyCheck {
 }
 
 def versions = [
+        commonsBeanUtils                        : '1.9.4',
         commonsIo                               : '2.5',
         commonsLang3                            : '3.9',
+        guava                                   : '28.1-jre'
         hibernate                               : '6.0.5.Final',
         javaxValidation                         : '2.0.0.Final',
         jaywayJsonPath                          : '2.2.0',
@@ -148,6 +150,7 @@ def versions = [
         springCloud                             : '2.2.1.RELEASE',
         springHateoas                           : '1.0.2.RELEASE',
         springRetry                             : '1.2.5.RELEASE',
+        tomcat                                  : '9.0.31',
         unirestJava                             : '1.4.9',
         wiremockVersion                         : '2.8.0'
 ]
@@ -155,13 +158,17 @@ def versions = [
 dependencyManagement {
     dependencies {
         // CVE-2019-10086
-        dependency group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+        dependency group: 'commons-beanutils', name: 'commons-beanutils', version: versions.commonsBeanUtils
         // CVE-2018-10237
-        dependency group: 'com.google.guava', name: 'guava', version: '28.1-jre'
+        dependency group: 'com.google.guava', name: 'guava', version: versions.guava
         // CVE-2019-17563
-        dependency group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.30'
-        dependency group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el', version: '9.0.30'
-        dependency group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.30'
+        dependencySet(
+                group: 'org.apache.tomcat.embed', version: versions.tomcat
+        ) {
+            entry 'tomcat-embed-core'
+            entry 'tomcat-embed-el'
+            entry 'tomcat-embed-websocket'
+        }
     }
 }
 
