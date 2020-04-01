@@ -139,8 +139,7 @@ def versions = [
         reformHealth                            : '0.0.5',
         reformPropertiesVolume                  : '0.0.4',
         reformsHttpProxySpringBootAutoconfigure : '1.1.0',
-        reformsJavaLogging                      : '5.0.1',
-        reformsJavaLoggingAppinsights           : '5.1.1',
+        reformLogging                           : '5.1.1',
         restAssured                             : '3.3.0',
         serenity                                : '2.0.90',
         serenityCucumber                        : '1.9.49',
@@ -152,7 +151,7 @@ def versions = [
         springRetry                             : '1.2.5.RELEASE',
         tomcat                                  : '9.0.31',
         unirestJava                             : '1.4.9',
-        wiremockVersion                         : '2.8.0'
+        wiremock                                : '2.8.0'
 ]
 
 dependencyManagement {
@@ -173,22 +172,6 @@ dependencyManagement {
 }
 
 dependencies {
-    //integration test
-    integrationTestCompile group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
-    integrationTestCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
-    integrationTestCompile group: 'junit', name: 'junit', version: versions.junit
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-cucumber', version: versions.serenityCucumber
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-    integrationTestCompile group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
-    integrationTestCompile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-    integrationTestCompile group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
-    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
-
     implementation group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
     implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIo
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
@@ -206,24 +189,40 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
+    implementation group: 'org.springframework.security', name: 'spring-security-rsa'
+    implementation group: 'org.springframework.security', name:'spring-security-crypto'
 
     implementation group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: versions.reformHealth
     implementation group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: versions.reformsHttpProxySpringBootAutoconfigure
-    implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLoggingAppinsights
-    implementation group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.reformsJavaLogging
-    implementation group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.reformsJavaLogging
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformLogging
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
-
-    implementation group:  'org.springframework.security', name: 'spring-security-rsa'
-    implementation group: 'org.springframework.security', name:'spring-security-crypto'
-
-    implementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
+    implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceTokenGenerator
 
     testImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-    testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
+    testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremock
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
     }
+
+    //integration test
+    integrationTestCompile group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
+    integrationTestCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
+    integrationTestCompile group: 'junit', name: 'junit', version: versions.junit
+    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-cucumber', version: versions.serenityCucumber
+    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
+    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+    integrationTestCompile group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
+    integrationTestCompile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    integrationTestCompile group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
+    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
+
     testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
     testSmokeImplementation sourceSets.main.runtimeClasspath
     testSmokeImplementation sourceSets.test.runtimeClasspath
