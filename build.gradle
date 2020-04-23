@@ -176,6 +176,7 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIo
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
+    implementation group: 'io.springfox', name: 'springfox-spring-webmvc', version: versions.springfoxSwagger
     implementation group: 'javax.validation', name: 'validation-api', version: versions.javaxValidation
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     implementation group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
