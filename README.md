@@ -31,6 +31,10 @@
      :bootRun
     ` but this is expected behaviour of Gradle and means the project is running.)
 
+### API documentation
+
+API documentation is provided with Swagger. This is available locally at: `http://localhost:4006/swagger-ui.html`
+
 ## Developing
 
 ### Unit tests
