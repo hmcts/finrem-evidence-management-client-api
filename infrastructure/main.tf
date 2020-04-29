@@ -38,6 +38,7 @@ module "finrem-emca" {
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL                  = "${local.idam_s2s_url}"
     AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE             = "${var.auth_provider_service_client_microservice}"
     AUTH_PROVIDER_SERVICE_CLIENT_KEY                      = "${data.azurerm_key_vault_secret.finrem_doc_s2s_auth_secret.value}"
+    IDAM_AUTH_SECRET                                      = "${data.azurerm_key_vault_secret.finrem_doc_s2s_auth_secret.value}"
     AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS = "${var.auth_provider_service_client_tokentimetoliveinseconds}"
 
     DOCUMENT_MANAGEMENT_STORE_URL       = "${local.dm_store_url}"
