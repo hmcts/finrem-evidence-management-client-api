@@ -20,5 +20,4 @@ java:
     finrem:
       secrets:
         - idam-secret
-        - finrem-doc-s2s-auth-secret
         - AppInsightsInstrumentationKey
