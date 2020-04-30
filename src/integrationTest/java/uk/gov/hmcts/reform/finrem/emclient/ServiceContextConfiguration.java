@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.finrem.emclient;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -27,6 +28,7 @@ public class ServiceContextConfiguration {
             @Value("${idam.auth.microservice}") final String microService,
             final ServiceAuthorisationApi serviceAuthorisationApi
     ) {
+        log.info(">>>>>>> Using s2s: {}, microservice: {}", s2sToken, microService);
         return AuthTokenGeneratorFactory.createDefaultGenerator(s2sToken, microService, serviceAuthorisationApi);
     }
 }
