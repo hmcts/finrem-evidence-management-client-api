@@ -36,8 +36,6 @@ public class EvidenceManagementClientApplication {
             @Value("${idam.auth.microservice}") final String microService,
             final ServiceAuthorisationApi serviceAuthorisationApi
     ) {
-        log.info("EMCA App S2S auth : s2sToken='{}', microService='{}', serviceAuthorisationApi='{}' ",
-                s2sToken,  microService, serviceAuthorisationApi);
         return AuthTokenGeneratorFactory.createDefaultGenerator(s2sToken, microService, serviceAuthorisationApi);
     }
 }

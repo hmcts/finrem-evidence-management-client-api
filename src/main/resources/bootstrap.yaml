@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    propertiesvolume:
+      enabled: true
+      prefixed: false
+      paths: /mnt/secrets/finrem
+      aliases:
+        finrem-doc-s2s-auth-secret: idam.auth.secret
+        AppInsightsInstrumentationKey: azure.application-insights.instrumentation-key
