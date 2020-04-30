@@ -1,5 +1,9 @@
 package uk.gov.hmcts.reform.finrem.emclient;
 
+import io.restassured.RestAssured;
+import io.restassured.filter.log.ErrorLoggingFilter;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
@@ -93,6 +97,7 @@ public class EMClientFileUploadTest {
     @SuppressWarnings("unchecked")
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
+        RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter(), new ErrorLoggingFilter());
         Response response = SerenityRest.given()
                 .headers(getAuthenticationTokenHeader())
                 .multiPart("file", file, fileContentType)
@@ -100,9 +105,9 @@ public class EMClientFileUploadTest {
                 .andReturn();
 
         System.out.println("Response Body---->" + response.prettyPrint());
+        assertEquals(HttpStatus.OK.value(), response.statusCode());
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
 
-        assertEquals(HttpStatus.OK.value(), response.statusCode());
         assertEMGetFileResponse(fileToUpload, fileContentType, fileRetrieveUrl(fileUrl));
     }
 

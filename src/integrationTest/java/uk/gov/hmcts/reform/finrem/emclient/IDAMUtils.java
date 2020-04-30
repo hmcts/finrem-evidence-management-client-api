@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.finrem.emclient;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import java.net.URI;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -15,7 +17,7 @@ import java.util.UUID;
 @Service
 public class IDAMUtils {
 
-    @Value("${auth.idam.client.baseUrl}")
+    @Value("${idam.api.url}")
     private String idamUserBaseUrl;
 
     @Value("${auth.idam.client.redirectUri}")
@@ -40,6 +42,7 @@ public class IDAMUtils {
         testUserJwtToken = generateUserTokenWithNoRoles(idamUsername, idamPassword);
     }
 
+    @SneakyThrows
     public void createUserInIdam(String username, String password) {
         CreateUserRequest userRequest = CreateUserRequest.builder()
                 .email(username)
@@ -49,6 +52,8 @@ public class IDAMUtils {
                 .roles(new UserCode[] { UserCode.builder().code("citizen").build() })
                 .userGroup(UserCode.builder().code("citizens").build())
                 .build();
+        
+        RestAssured.proxy(new URI("http://proxyout.reform.hmcts.net:8080"));
 
         RestAssured.given()
                 .header("Content-Type", "application/json")
