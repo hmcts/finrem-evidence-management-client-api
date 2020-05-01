@@ -7,9 +7,8 @@
 
     <suppress>
         <notes><![CDATA[
-   only affects log appender over SMTP, seriously...
+   only affects log appender over SMTP, seriously who does this...
    ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-to\-slf4j@.*$</packageUrl>
         <cve>CVE-2020-9488</cve>
     </suppress>
 </suppressions>
