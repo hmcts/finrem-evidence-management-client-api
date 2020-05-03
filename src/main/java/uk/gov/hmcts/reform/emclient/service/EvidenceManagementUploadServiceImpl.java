@@ -54,7 +54,8 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)
                 .path("_embedded").path("documents");
 
-        log.info("For Request Id {} and userId {} : File upload response from Evidence Management service is {}", requestId, userDetails.getId(), documents);
+        log.info("For Request Id {} and userId {} : File upload response from Evidence Management service is {}",
+            requestId, userDetails.getId(), documents);
 
         return toUploadResponse(documents);
     }

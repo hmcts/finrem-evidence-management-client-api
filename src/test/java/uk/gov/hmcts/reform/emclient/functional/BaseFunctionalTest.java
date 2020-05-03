@@ -19,12 +19,12 @@ public class BaseFunctionalTest {
         }
     }
 
-    protected String getAppBaseUrl(String serverPort){
-        if(StringUtils.isNotEmpty(serverPort)){
+    String getAppBaseUrl(String serverPort) {
+        if (StringUtils.isNotEmpty(serverPort)) {
             String url = new LocalRibbonClientConfiguration().ribbonServerList(Integer.parseInt(serverPort)).getInitialListOfServers().get(0).getId();
 
             return "http://" + url;
-        }else {
+        } else {
             throw new RuntimeException("Server Port config not found in application properties");
         }
     }

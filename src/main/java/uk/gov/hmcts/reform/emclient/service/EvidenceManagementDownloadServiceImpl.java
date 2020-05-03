@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.emclient.exception.InvalidURIException;
+import uk.gov.hmcts.reform.emclient.exception.InvalidUriException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,7 +49,7 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
             url = getUrl(binaryFileUrl);
         } catch (URISyntaxException e) {
             log.error("Failed to rewrite the url for document for {}, error message {}", binaryFileUrl, e.getMessage());
-            throw new InvalidURIException(format("Failed to rewrite the url for document for %s and error %s",
+            throw new InvalidUriException(format("Failed to rewrite the url for document for %s and error %s",
                     binaryFileUrl, e.getMessage()));
         }
 

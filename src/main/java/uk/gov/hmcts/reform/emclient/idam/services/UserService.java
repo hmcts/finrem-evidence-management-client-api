@@ -17,10 +17,9 @@ public class UserService {
     }
 
     public UserDetails getUserDetails(String authorisation) {
-        String BEARER = "Bearer";
-        String authToken = StringUtils.containsIgnoreCase(authorisation, BEARER)
+        String authToken = StringUtils.containsIgnoreCase(authorisation, "Bearer")
                 ? authorisation
-                : String.format("%s %s", BEARER, authorisation);
+                : String.format("%s %s", "Bearer", authorisation);
         return idamApiClient.retrieveUserDetails(authToken);
     }
 }

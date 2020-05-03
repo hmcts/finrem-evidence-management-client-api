@@ -20,7 +20,9 @@ public class EvidenceFileValidator implements ConstraintValidator<EvidenceFile, 
     private String allowedMimeTypes;
 
     @Override
-    public void initialize(EvidenceFile evidenceFile) {}
+    public void initialize(EvidenceFile evidenceFile) {
+        
+    }
 
     @Override
     public boolean isValid(MultipartFile file, ConstraintValidatorContext constraintValidatorContext) {

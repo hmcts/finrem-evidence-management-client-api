@@ -47,7 +47,7 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
-public class EMClientFileUploadTest {
+public class EmClientFileUploadTest {
 
     @Rule
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
@@ -62,7 +62,7 @@ public class EMClientFileUploadTest {
     private String dmStoreBaseUrl;
 
     @Autowired
-    private IDAMUtils idamTestSupportUtil;
+    private IdamUtils idamTestSupportUtil;
 
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
@@ -71,11 +71,10 @@ public class EMClientFileUploadTest {
     private final String fileType;
 
     private static final String[] fileName = {"PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg",
-            "PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg"};
+        "PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg"};
 
     private static final String[] fileContentType = {"image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg",
-            "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
-
+        "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
 
     @TestData
     public static Collection<Object[]> testData() {
@@ -84,18 +83,18 @@ public class EMClientFileUploadTest {
                 .collect(Collectors.toList());
     }
 
-    public EMClientFileUploadTest(String filename, String fileContentType) {
+    public EmClientFileUploadTest(String filename, String fileContentType) {
         this.name = filename;
-        this.fileType= fileContentType;
+        this.fileType = fileContentType;
     }
 
     @Test
     public void uploadFile() {
-        uploadFileToEMStore(this.name, this.fileType);
+        uploadFileToEmStore(this.name, this.fileType);
     }
 
     @SuppressWarnings("unchecked")
-    private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
+    private void uploadFileToEmStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
         RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter(), new ErrorLoggingFilter());
         Response response = SerenityRest.given()
@@ -108,14 +107,14 @@ public class EMClientFileUploadTest {
         assertEquals(HttpStatus.OK.value(), response.statusCode());
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
 
-        assertEMGetFileResponse(fileToUpload, fileContentType, fileRetrieveUrl(fileUrl));
+        assertEmGetFileResponse(fileToUpload, fileContentType, fileRetrieveUrl(fileUrl));
     }
 
     private String fileRetrieveUrl(String url) {
         return dmStoreBaseUrl + "/documents/" + url.substring(url.lastIndexOf('/') + 1);
     }
 
-    private void assertEMGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {
+    private void assertEmGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {
         Response responseFromEvidenceManagement = readDataFromEvidenceManagement(fileUrl);
         assertEquals(HttpStatus.OK.value(), responseFromEvidenceManagement.getStatusCode());
         assertEquals(fileToUpload, responseFromEvidenceManagement.getBody().path("originalDocumentName"));

@@ -17,7 +17,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.emclient.exception.InvalidURIException;
+import uk.gov.hmcts.reform.emclient.exception.InvalidUriException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -88,8 +88,8 @@ public class EvidenceManagementDownloadServiceImplTest {
         fail("Failed to receive exception resulting from non-running EM service");
     }
 
-    @Test(expected = InvalidURIException.class)
-    public void shouldPassThruExceptionThrownWhenInvalidURI() {
+    @Test(expected = InvalidUriException.class)
+    public void shouldPassThruExceptionThrownWhenInvalidUri() {
         String fileUrl = "//><sssssss/>";
         downloadService.download(fileUrl);
     }

@@ -44,8 +44,7 @@ public abstract class WebServiceHealthCheck implements HealthIndicator {
             return unknown().withDetail("uri", uri).build();
         }
 
-        return responseEntity.getStatusCode().equals(HttpStatus.OK) ?
-                up().withDetail("uri", uri).build() :
-                unknown().withDetail("uri", uri).build();
+        return responseEntity.getStatusCode().equals(HttpStatus.OK)
+            ? up().withDetail("uri", uri).build() : unknown().withDetail("uri", uri).build();
     }
 }

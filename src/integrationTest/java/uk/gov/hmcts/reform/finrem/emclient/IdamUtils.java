@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.finrem.emclient;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import java.net.URI;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,11 +10,12 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.finrem.emclient.model.CreateUserRequest;
 import uk.gov.hmcts.reform.finrem.emclient.model.UserCode;
 
+import java.net.URI;
 import java.util.Base64;
 import java.util.UUID;
 
 @Service
-public class IDAMUtils {
+public class IdamUtils {
 
     @Value("${idam.api.url}")
     private String idamUserBaseUrl;
@@ -52,7 +52,7 @@ public class IDAMUtils {
                 .roles(new UserCode[] { UserCode.builder().code("citizen").build() })
                 .userGroup(UserCode.builder().code("citizens").build())
                 .build();
-        
+
         RestAssured.proxy(new URI("http://proxyout.reform.hmcts.net:8080"));
 
         RestAssured.given()
