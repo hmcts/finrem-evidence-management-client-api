@@ -24,12 +24,15 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterceptor;
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
 
+import java.nio.charset.StandardCharsets;
+
 import static java.util.Arrays.asList;
 
 @Configuration
 public class EvidenceManagementClientConfiguration {
 
-    private static final MediaType MEDIA_TYPE_HAL_JSON = new MediaType("application", "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json");
+    private static final MediaType MEDIA_TYPE_HAL_JSON = new MediaType("application",
+        "vnd.uk.gov.hmcts.reform.dm.document-collection.v1+hal+json", StandardCharsets.UTF_8);
 
     @Autowired
     private ObjectMapper objectMapper;
