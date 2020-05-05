@@ -4,4 +4,11 @@
         <notes>Vulnerability applies to Spring Framework 5.0.5, project uses 5.2.0</notes>
         <cve>CVE-2018-1258</cve>
     </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+   only affects log appender over SMTP, seriously who does this...
+   ]]></notes>
+        <cve>CVE-2020-9488</cve>
+    </suppress>
 </suppressions>
