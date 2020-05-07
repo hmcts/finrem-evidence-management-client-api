@@ -32,7 +32,7 @@ import java.util.List;
 
 @Configuration
 @EnableSwagger2WebMvc
-public class SwaggerConfiguration implements WebMvcConfigurer{
+public class SwaggerConfiguration implements WebMvcConfigurer {
 
     @Value("${documentation.swagger.enabled}")
     private boolean swaggerEnabled;

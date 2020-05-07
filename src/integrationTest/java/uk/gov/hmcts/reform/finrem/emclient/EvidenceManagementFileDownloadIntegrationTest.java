@@ -30,13 +30,13 @@ public class EvidenceManagementFileDownloadIntegrationTest {
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
 
     @Autowired
-    private IDAMUtils idamTestSupportUtil;
+    private IdamUtils idamTestSupportUtil;
 
     @Value("${evidence.management.client.api.baseUrl}")
     private String evidenceManagementClientApiBaseUrl;
 
     @Value("${document.management.store.baseUrl}")
-    private String documentManagementURL;
+    private String documentManagementUrl;
 
     @Value("${evidence.management.client.api.endpoint.download}")
     private String evidenceManagementClientApiDownloadUrl;
@@ -53,13 +53,13 @@ public class EvidenceManagementFileDownloadIntegrationTest {
             evidenceManagementClientApiDownloadUrl);
     }
 
-    private String uploadFile(){
+    private String uploadFile() {
 
         return evidenceManagementTestUtils.uploadFileToEvidenceManagement(
             FILE_PATH,
             IMAGE_FILE_CONTENT_TYPE,
             evidenceManagementClientApiBaseUrl,
-            documentManagementURL,
+            documentManagementUrl,
             idamTestSupportUtil);
     }
 }

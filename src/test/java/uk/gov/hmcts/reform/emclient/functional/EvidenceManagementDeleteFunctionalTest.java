@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "service-auth-provider.service.stub.enabled=false",
         "evidence-management-api.service.stub.enabled=false"})
 @AutoConfigureMockMvc
-public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
+public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest {
 
     @Autowired
     private MockMvc webClient;
@@ -49,19 +49,20 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     @Autowired
     private RestTemplate restTemplate;
     private final String docUri = "http://doc-store/1";
-    private String API_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
+    private String apiUrl = "/emclientapi/version/1/deleteFile?fileUrl=";
 
     @Before
     public void before() {
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
 
     }
+
     @Test
     public void givenDocServiceReturnsForbiddenForBadS2SToken_thenReturn() throws Exception {
 
         mockDocumentService(HttpStatus.FORBIDDEN, docUri);
 
-        webClient.perform(delete(getAppBaseUrl(serverPort) + API_URL + docUri)
+        webClient.perform(delete(getAppBaseUrl(serverPort) + apiUrl + docUri)
                 .header(AUTHORIZATION_HEADER_NAME, authToken())
                 .content(""))
                 .andExpect(status().isForbidden())
@@ -75,7 +76,7 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
 
         mockDocumentService(HttpStatus.METHOD_NOT_ALLOWED, "");
 
-        webClient.perform(delete(getAppBaseUrl(serverPort) + API_URL)
+        webClient.perform(delete(getAppBaseUrl(serverPort) + apiUrl)
                 .header(AUTHORIZATION_HEADER_NAME, authToken())
                 .content(""))
                 .andExpect(status().isMethodNotAllowed())
@@ -88,7 +89,7 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     public void givenAllGoesWell_thenReturn() throws Exception {
         mockDocumentService(HttpStatus.NO_CONTENT, docUri);
 
-        webClient.perform(delete(getAppBaseUrl(serverPort)+ API_URL + docUri)
+        webClient.perform(delete(getAppBaseUrl(serverPort) + apiUrl + docUri)
                 .header(AUTHORIZATION_HEADER_NAME, authToken())
                 .content(""))
                 .andExpect(status().isNoContent())
@@ -103,11 +104,11 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     }
 
     private static String authToken() {
-        return "Bearer ***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***";
+        return "Bearer ***REMOVED***"
+            + "***REMOVED***"
+            + "***REMOVED***"
+            + "***REMOVED***"
+            + "***REMOVED***"
+            + "***REMOVED***";
     }
 }

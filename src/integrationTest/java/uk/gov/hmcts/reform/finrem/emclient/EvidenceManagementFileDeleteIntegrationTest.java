@@ -38,13 +38,13 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
 
     @Autowired
-    private IDAMUtils idamTestSupportUtil;
+    private IdamUtils idamTestSupportUtil;
 
     @Value("${evidence.management.client.api.baseUrl}")
     private String evidenceManagementClientApiBaseUrl;
 
     @Value("${document.management.store.baseUrl}")
-    private String documentManagementURL;
+    private String documentManagementUrl;
 
     private EvidenceManagementTestUtils evidenceManagementTestUtils = new EvidenceManagementTestUtils();
 
@@ -55,7 +55,8 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     @Test
     public void verifyDeleteRequestForExistingDocumentIsSuccessful() {
         String fileUrl = uploadFile();
-        Response response = deleteFileFromEvidenceManagement(fileUrl, evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
+        Response response = deleteFileFromEvidenceManagement(fileUrl,
+            evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
 
         assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
     }
@@ -64,7 +65,8 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     public void verifyDeleteRequestForNonExistentDocumentIs404NotFound() {
         String fileUrl = uploadFile();
         String fileUrlAlt = fileUrl.concat("xyzzy");
-        Response response = deleteFileFromEvidenceManagement(fileUrlAlt, evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
+        Response response = deleteFileFromEvidenceManagement(fileUrlAlt,
+            evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
 
         assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
     }
@@ -73,7 +75,8 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     public void verifyDeleteRequestWithMissingDocumentIdIsNotAllowed() {
         String fileUrl = uploadFile();
         String fileUrlAlt = fileUrl.substring(0, fileUrl.lastIndexOf("/") + 1);
-        Response response = deleteFileFromEvidenceManagement(fileUrlAlt, evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
+        Response response = deleteFileFromEvidenceManagement(fileUrlAlt,
+            evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
 
         assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), response.getStatusCode());
     }
@@ -105,10 +108,10 @@ public class EvidenceManagementFileDeleteIntegrationTest {
                 .andReturn();
     }
 
-    private String uploadFile(){
+    private String uploadFile() {
         return evidenceManagementTestUtils.uploadFileToEvidenceManagement(FILE_PATH, IMAGE_FILE_CONTENT_TYPE,
                 evidenceManagementClientApiBaseUrl,
-                documentManagementURL,
+            documentManagementUrl,
                 idamTestSupportUtil);
     }
 }

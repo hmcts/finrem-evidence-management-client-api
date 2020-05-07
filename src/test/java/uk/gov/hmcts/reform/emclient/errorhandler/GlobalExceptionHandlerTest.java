@@ -1,16 +1,5 @@
 package uk.gov.hmcts.reform.emclient.errorhandler;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
-import java.util.Collections;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +15,16 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.Collections;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 @RunWith(MockitoJUnitRunner.class)
 public class GlobalExceptionHandlerTest {
 
@@ -34,9 +33,7 @@ public class GlobalExceptionHandlerTest {
 
     private WebRequest mockHttpServletRequest;
     private HttpServletResponse mockHttpServletResponse;
-
     private GlobalExceptionHandler underTest;
-
 
     @Before
     public void setUp() {
@@ -57,7 +54,9 @@ public class GlobalExceptionHandlerTest {
                 underTest.handleClientException(mockException, mockHttpServletRequest, mockHttpServletResponse);
 
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertEquals("Http Client Exception. Please check service input parameters and also verify the status of service token generator", responseEntity.getBody());
+        assertEquals(
+            "Http Client Exception. Please check service input parameters and also verify the status of service token generator",
+            responseEntity.getBody());
     }
 
     @Test
@@ -68,7 +67,8 @@ public class GlobalExceptionHandlerTest {
                 underTest.handleMaxUploadException(mockException, mockHttpServletRequest);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-        assertEquals("Some server side exception occurred. Please check logs for details", responseEntity.getBody());
+        assertEquals("Some server side exception occurred. Please check logs for details",
+            responseEntity.getBody());
     }
 
     @Test

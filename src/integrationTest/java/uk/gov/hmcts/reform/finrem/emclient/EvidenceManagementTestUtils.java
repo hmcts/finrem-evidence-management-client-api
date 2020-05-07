@@ -14,7 +14,7 @@ class EvidenceManagementTestUtils {
 
     static final String AUTHORIZATION_HEADER_NAME = "Authorization";
 
-    Map<String, Object> getAuthenticationTokenHeader(IDAMUtils idamTestSupportUtil) {
+    Map<String, Object> getAuthenticationTokenHeader(IdamUtils idamTestSupportUtil) {
         String authenticationToken = idamTestSupportUtil.getIdamTestUser();
         Map<String, Object> headers = new HashMap<>();
         headers.put(AUTHORIZATION_HEADER_NAME, authenticationToken);
@@ -30,18 +30,18 @@ class EvidenceManagementTestUtils {
     }
 
     //this is a hack to make this work with the docker container
-    private String getDocumentStoreURI(String uri, String documentManagementURL) {
+    private String getDocumentStoreUri(String uri, String documentManagementUrl) {
         if (uri.contains("http://em-api-gateway-web:3404")) {
-            return uri.replace("http://em-api-gateway-web:3404", documentManagementURL);
+            return uri.replace("http://em-api-gateway-web:3404", documentManagementUrl);
         }
 
         return uri;
     }
 
     @SuppressWarnings("unchecked")
-    String uploadFileToEvidenceManagement(String filePath,
-                                          String fileContentType, String evidenceManagementClientApiBaseUrl,
-                                          String documentManagementURL, IDAMUtils idamTestSupportUtil) {
+    String uploadFileToEvidenceManagement(String filePath, String fileContentType,
+                                          String evidenceManagementClientApiBaseUrl, String documentManagementUrl,
+                                          IdamUtils idamTestSupportUtil) {
 
         File file = new File(filePath);
         Response response = SerenityRest.given()
@@ -51,7 +51,7 @@ class EvidenceManagementTestUtils {
                 .andReturn();
 
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
-        return getDocumentStoreURI(((List<String>) response.getBody().path("fileUrl")).get(0), documentManagementURL);
+        return getDocumentStoreUri(((List<String>) response.getBody().path("fileUrl")).get(0), documentManagementUrl);
     }
 
     void downloadFileToEvidenceManagement(String filePath, String evidenceManagementClientApiDownloadUrl) {

@@ -55,7 +55,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
     "feign.hystrix.enabled=true",
     "eureka.client.enabled=false"
     })
-public class HealthCheckFunctionalTest extends BaseFunctionalTest{
+public class HealthCheckFunctionalTest extends BaseFunctionalTest {
 
     @LocalServerPort
     private int port;
@@ -128,7 +128,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
         assertStatus(EntityUtils.toString(getHealth().getEntity()), "DOWN", "serviceAuthProviderHealthCheck");
     }
 
-    private void stubHealthService( HttpStatus healthStatus, String ... services) throws Exception {
+    private void stubHealthService(HttpStatus healthStatus, String... services) throws Exception {
         String resourceName = "/fixtures/evidence-management-store-api/healthcheck-down.json";
         if (healthStatus == HttpStatus.OK) {
             resourceName = "/fixtures/evidence-management-store-api/healthcheck-up.json";
@@ -136,14 +136,6 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
         for (String service: services) {
             stubHealthService(service, healthStatus, resourceName);
         }
-    }
-
-    private void assertStatus(String body, String checkStatus, String ... onServices) {
-        assertThat(JsonPath.read(body, "$.status").toString(), equalTo(checkStatus));
-        for (String service : onServices) {
-            assertThat(JsonPath.read(body, String.format("$.%s.status", service)).toString(), equalTo(checkStatus));
-        }
-        assertThat(JsonPath.read(body, "$.diskSpace.status").toString(), equalTo("UP"));
     }
 
     private void stubHealthService(String requestUrl, HttpStatus status, String resourceName) throws Exception {
@@ -154,6 +146,14 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
                 .andRespond(withStatus(status)
                         .body(responseBody)
                         .contentType(MediaType.APPLICATION_JSON));
+    }
+
+    private void assertStatus(String body, String checkStatus, String... onServices) {
+        assertThat(JsonPath.read(body, "$.status").toString(), equalTo(checkStatus));
+        for (String service : onServices) {
+            assertThat(JsonPath.read(body, String.format("$.%s.status", service)).toString(), equalTo(checkStatus));
+        }
+        assertThat(JsonPath.read(body, "$.diskSpace.status").toString(), equalTo("UP"));
     }
 
     private void mockServiceAuthFeignHealthCheck() throws URISyntaxException, IOException {

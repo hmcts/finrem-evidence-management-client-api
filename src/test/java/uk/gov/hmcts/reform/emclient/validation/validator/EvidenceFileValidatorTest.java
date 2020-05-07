@@ -24,13 +24,14 @@ import static org.junit.Assert.assertTrue;
 
 @SpringBootTest(classes = {EvidenceManagementClientApplication.class})
 @RunWith(SpringRunner.class)
-@TestPropertySource(value="classpath:application.properties")
+@TestPropertySource(value = "classpath:application.properties")
 public class EvidenceFileValidatorTest {
 
     @Resource
     private Validator validator;
 
-    private static final String INVALID_FILE_ERROR_MSG = "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)";
+    private static final String INVALID_FILE_ERROR_MSG
+        = "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)";
 
     @Test
     public void testJpegFileSuccessValidation() {
@@ -86,7 +87,7 @@ public class EvidenceFileValidatorTest {
 
         assertTrue(constraintViolations.isEmpty());
     }
-    
+
     @Test
     public void testPdfFileSuccessValidation() {
         MockMultipartFile pdfFile = new MockMultipartFile("test.pdf", "test.pdf", "application/pdf", "data".getBytes());
@@ -98,6 +99,7 @@ public class EvidenceFileValidatorTest {
 
         assertTrue(constraintViolations.isEmpty());
     }
+
     @Test
     public void testRestrictedFileFailValidation() {
         MockMultipartFile exeFile = new MockMultipartFile("test.exe", "test.exe", "application/octet-stream", "data".getBytes());
@@ -109,7 +111,7 @@ public class EvidenceFileValidatorTest {
         assertEquals(INVALID_FILE_ERROR_MSG,
                 constraintViolations.iterator().next().getMessage());
     }
-    
+
     @Test
     public void testMimeTypeFailValidation() {
         MockMultipartFile jpgFile = new MockMultipartFile("test.jpg", "test.jpg", "application/octet-stream", "data".getBytes());

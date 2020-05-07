@@ -46,7 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(EvidenceManagementClientController.class)
-@ImportAutoConfiguration( {RibbonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class, FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
+@ImportAutoConfiguration({RibbonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+    FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
 public class EvidenceManagementClientControllerTest {
     private static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
@@ -163,12 +164,13 @@ public class EvidenceManagementClientControllerTest {
             .andExpect(jsonPath("$.status", is(400)))
             .andExpect(jsonPath("$.error", is("Bad Request")))
             .andExpect(jsonPath("$.errorCode", is("invalidFileType")))
-            .andExpect(jsonPath("$.message", is("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)")))
+            .andExpect(jsonPath("$.message", is(
+                "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)")))
             .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEMStoreThrowsHttpServerException()
+    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEmStoreThrowsHttpServerException()
         throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
             .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
@@ -204,12 +206,13 @@ public class EvidenceManagementClientControllerTest {
             .andExpect(jsonPath("$.status", is(400)))
             .andExpect(jsonPath("$.error", is("Bad Request")))
             .andExpect(jsonPath("$.errorCode", is("invalidFileType")))
-            .andExpect(jsonPath("$.message", is("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)")))
+            .andExpect(jsonPath("$.message", is(
+                "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)")))
             .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEMServiceIsUnavailable()
+    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceIsUnavailable()
         throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
             .willThrow(new ResourceAccessException("Evidence management service is currently down"));
@@ -219,7 +222,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEMServiceThrowsHttpServerException()
+    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceThrowsHttpServerException()
         throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
             .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
