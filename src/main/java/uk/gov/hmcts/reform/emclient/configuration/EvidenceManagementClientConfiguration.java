@@ -32,6 +32,8 @@ import static java.util.Arrays.asList;
 public class EvidenceManagementClientConfiguration {
 
     private static final MediaType MEDIA_TYPE_HAL_JSON = new MediaType("application",
+        "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json", StandardCharsets.UTF_8);
+    private static final MediaType MEDIA_TYPE_HAL_JSON_NEW = new MediaType("application",
         "vnd.uk.gov.hmcts.reform.dm.document-collection.v1+hal+json", StandardCharsets.UTF_8);
 
     @Autowired
@@ -52,7 +54,7 @@ public class EvidenceManagementClientConfiguration {
         objectMapper.registerModule(new Jackson2HalModule());
 
         jackson2HttpCoverter.setObjectMapper(objectMapper);
-        jackson2HttpCoverter.setSupportedMediaTypes(ImmutableList.of(MEDIA_TYPE_HAL_JSON,MediaType.APPLICATION_JSON));
+        jackson2HttpCoverter.setSupportedMediaTypes(ImmutableList.of(MediaType.APPLICATION_JSON, MEDIA_TYPE_HAL_JSON, MEDIA_TYPE_HAL_JSON_NEW));
 
         RestTemplate restTemplate = new RestTemplate(asList(jackson2HttpCoverter,
                 new FormHttpMessageConverter(),
