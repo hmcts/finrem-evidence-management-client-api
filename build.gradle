@@ -43,7 +43,7 @@ bootJar {
         attributes 'Implementation-Title': project.name,
                 'Implementation-Version': project.version
     }
-    archiveFileName 'finrem-evidence-management-client-api.jar'
+    archiveFileName = 'finrem-evidence-management-client-api.jar'
 }
 
 
