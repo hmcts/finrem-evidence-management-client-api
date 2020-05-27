@@ -20,6 +20,7 @@ buildscript {
 plugins {
     id 'application'
     id 'checkstyle'
+    id 'com.github.ben-manes.versions' version '0.28.0'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'info.solidsoft.pitest' version "1.4.5"
     id 'jacoco'
@@ -36,7 +37,7 @@ group = 'uk.gov.hmcts.reform.finrem'
 version = '3.0.0'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-jar.archiveName = 'finrem-evidence-management-client-api.jar'
+jar.archiveFileName = 'finrem-evidence-management-client-api.jar'
 
 bootJar {
     manifest {
@@ -69,7 +70,7 @@ sourceSets {
 }
 
 dependencies {
-    integrationTestCompile(sourceSets.test.output)
+    integrationTestImplementation(sourceSets.test.output)
 }
 
 mainClassName = 'uk.gov.hmcts.reform.emclient.EvidenceManagementClientApplication'
@@ -83,7 +84,7 @@ compileTestJava {
 }
 
 configurations {
-    integrationTestCompile.extendsFrom testCompile
+    integrationTestImplementation.extendsFrom testImplementation
     integrationTestRuntime.extendsFrom testRuntime
 }
 
@@ -225,20 +226,20 @@ dependencies {
     }
 
     //integration test
-    integrationTestCompile group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
-    integrationTestCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
-    integrationTestCompile group: 'junit', name: 'junit', version: versions.junit
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-cucumber', version: versions.serenityCucumber
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-    integrationTestCompile group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
-    integrationTestCompile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-    integrationTestCompile group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
-    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
+    integrationTestImplementation group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
+    integrationTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
+    integrationTestImplementation group: 'junit', name: 'junit', version: versions.junit
+    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-cucumber', version: versions.serenityCucumber
+    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
+    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+    integrationTestImplementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
+    integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    integrationTestImplementation group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
 
     testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
     testSmokeImplementation sourceSets.main.runtimeClasspath
