@@ -165,7 +165,7 @@ def versions = [
         springCloud                             : '2.2.1.RELEASE',
         springHateoas                           : '1.0.2.RELEASE',
         springRetry                             : '1.2.5.RELEASE',
-        tomcat                                  : '9.0.31',
+        tomcat                                  : '9.0.35',
         unirestJava                             : '1.4.9',
         wiremock                                : '2.8.0'
 ]
