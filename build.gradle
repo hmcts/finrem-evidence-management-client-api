@@ -7,10 +7,6 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath('info.solidsoft.gradle.pitest:gradle-pitest-plugin:0.32.0') {
-            exclude(group: 'org.pitest')
-        }
-        classpath ('org.pitest:pitest-command-line:0.33')
         classpath("org.springframework.boot:spring-boot-gradle-plugin:versions.springBoot")
         classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.90")
     }
@@ -20,7 +16,7 @@ plugins {
     id 'application'
     id 'checkstyle'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id 'info.solidsoft.pitest' version "1.4.5"
+    id 'info.solidsoft.pitest' version "1.5.1"
     id 'jacoco'
     id 'io.franzbecker.gradle-lombok' version '1.14'
     id 'org.owasp.dependencycheck' version '5.3.0'
@@ -110,12 +106,13 @@ tasks.withType(JavaCompile) {
 }
 
 pitest {
-    targetClasses = ['uk.gov.hmcts.reform.emclient.*']
-    excludedClasses = ['uk.gov.hmcts.reform.emclient.health.*', 'uk.gov.hmcts.reform.emclient.configuration.*', 'uk.gov.hmcts.reform.emclient.response.*']
-    threads = 4
-    outputFormats = ['XML', 'HTML']
-    timestampedReports = false
-    mutationThreshold = 50
+    targetClasses.set(['uk.gov.hmcts.reform.emclient.*'])
+    excludedClasses.set(['uk.gov.hmcts.reform.emclient.health.*', 'uk.gov.hmcts.reform.emclient.configuration.*', 'uk.gov.hmcts.reform.emclient.response.*'])
+    excludedTestClasses.set(['uk.gov.hmcts.reform.emclient.functional.*'])
+    threads.set(4)
+    outputFormats.set(['XML', 'HTML'])
+    timestampedReports.set(false)
+    mutationThreshold.set(50)
 }
 
 

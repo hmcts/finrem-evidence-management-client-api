@@ -83,6 +83,15 @@ To run all checks (including unit tests) please execute following command:
 | /emclientapi/version/1/downloadFile?fileUrl=http://localhost:8080/documents/195 | GET | Required | AuthorizationToken : { User Token }  |
 |  |  | Optional | RequestId :{RequestId} |
 
+
+### Mutation tests
+
+To run all mutation tests execute the following command:
+
+```
+./gradlew pitest
+```
+
 ###### File Download Response:
 
 ``` Actual file for the given URL. ```
