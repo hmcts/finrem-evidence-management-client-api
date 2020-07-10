@@ -5,5 +5,8 @@
   "10023_Information Disclosure - Debug Error Messages_http://finrem-emca-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
   "100000_A Client Error response code was returned by the server_http://finrem-emca-aat.service.core-compute-aat.internal/emclientapi/version/1/upload_POST": "ignore",
   "100000_A Client Error response code was returned by the server_http://finrem-emca-aat.service.core-compute-aat.internal/emclientapi/version/1/deleteFile?fileUrl=fileUrl_DELETE": "ignore",
-  "100000_A Server Error response code was returned by the server_http://finrem-emca-aat.service.core-compute-aat.internal/emclientapi/version/1/download?binaryFileUrl=binaryFileUrl_GET": "ignore"
+  "100000_A Server Error response code was returned by the server_http://finrem-emca-aat.service.core-compute-aat.internal/emclientapi/version/1/download?binaryFileUrl=binaryFileUrl_GET": "ignore",
+  "10010_Cookie No HttpOnly Flag_http://finrem-emca-aat.service.core-compute-aat.internal/emclientapi/version/1/download?binaryFileUrl=binaryFileUrl_GET": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://finrem-emca-aat.service.core-compute-aat.internal/emclientapi/version/1/download?binaryFileUrl=binaryFileUrl_GET": "ignore",
+  "90033_Loosely Scoped Cookie_http://finrem-emca-aat.service.core-compute-aat.internal/emclientapi/version/1/download?binaryFileUrl=binaryFileUrl_GET": "ignore"
 }
