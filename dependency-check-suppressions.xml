@@ -5,11 +5,4 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
     </suppress>
-
-    <suppress>
-        <notes><![CDATA[
-   only affects log appender over SMTP, seriously who does this...
-   ]]></notes>
-        <cve>CVE-2020-9488</cve>
-    </suppress>
 </suppressions>
