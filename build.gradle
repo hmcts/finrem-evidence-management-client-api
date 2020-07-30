@@ -82,7 +82,6 @@ configurations {
 repositories {
     mavenLocal()
     jcenter()
-
     maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
     maven { url "https://repo1.maven.org/maven2/" }
     maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
@@ -140,7 +139,6 @@ def versions = [
         commonsBeanUtils                        : '1.9.4',
         commonsIo                               : '2.7',
         commonsLang3                            : '3.11',
-        guava                                   : '28.1-jre',
         hibernate                               : '6.0.5.Final',
         javaxValidation                         : '2.0.1.Final',
         jaywayJsonPath                          : '2.2.0',
@@ -149,12 +147,11 @@ def versions = [
         lombok                                  : '1.18.12',
         reformHealth                            : '0.0.5',
         reformPropertiesVolume                  : '0.0.4',
-        reformsHttpProxySpringBootAutoconfigure : '1.1.0',
         reformLogging                           : '5.1.6',
         restAssured                             : '3.3.0',
         serenity                                : '2.0.90',
         serenityCucumber                        : '1.9.51',
-        serviceTokenGenerator                   : '3.0.0',
+        serviceTokenGenerator                   : '3.1.1',
         springfoxSwagger                        : '3.0.0',
         springCloud                             : '2.2.1.RELEASE',
         springHateoas                           : '1.0.2.RELEASE',
@@ -169,11 +166,9 @@ dependencyManagement {
         // CVE-2019-10086
         dependency group: 'commons-beanutils', name: 'commons-beanutils', version: versions.commonsBeanUtils
         // CVE-2018-10237
-        dependency group: 'com.google.guava', name: 'guava', version: versions.guava
-        // CVE-2019-17563
-        dependencySet(
-                group: 'org.apache.tomcat.embed', version: versions.tomcat
-        ) {
+        dependency group: 'com.google.guava', name: 'guava', version: '28.1-jre'
+        // CVE-2020-9484
+        dependencySet(group: 'org.apache.tomcat.embed', version: versions.tomcat) {
             entry 'tomcat-embed-core'
             entry 'tomcat-embed-el'
             entry 'tomcat-embed-websocket'
@@ -204,7 +199,6 @@ dependencies {
     implementation group: 'org.springframework.security', name:'spring-security-crypto'
 
     implementation group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: versions.reformHealth
-    implementation group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: versions.reformsHttpProxySpringBootAutoconfigure
     implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformLogging
@@ -257,16 +251,6 @@ task functional(type: Test, description: 'Runs the functional tests', group: 'Ve
         setClasspath(sourceSets.integrationTest.runtimeClasspath)
 }
 
-task printVersion {
-    doLast {
-        print project.version
-    }
-}
-
-task developAddReleaseSuffix() {
-    version = "${version}-SNAPSHOT"
-}
-
 def sonarExclusions = [
         '**uk/gov/hmcts/reform/emclient/exception/*',
         '**uk/gov/hmcts/reform/emclient/configuration/*',
@@ -287,10 +271,6 @@ sonarqube {
 
 project.tasks['sonarqube'].dependsOn test, jacocoTestReport
 project.tasks['sonarqube'].group = "Verification"
-
-task addReleaseSuffixToDevelop() {
-    version = "${version}-SNAPSHOT"
-}
 
 jacocoTestReport {
     executionData(test)
