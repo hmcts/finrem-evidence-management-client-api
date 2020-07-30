@@ -28,8 +28,8 @@ apply plugin: 'net.serenity-bdd.aggregator'
 group = 'uk.gov.hmcts.reform.finrem'
 version = '3.0.0'
 mainClassName = 'uk.gov.hmcts.reform.emclient.EvidenceManagementClientApplication'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
     mavenLocal()
