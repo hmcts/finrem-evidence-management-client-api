@@ -138,7 +138,7 @@ def versions = [
         commonsLang3                            : '3.11',
         hibernate                               : '6.0.5.Final',
         javaxValidation                         : '2.0.1.Final',
-        jaywayJsonPath                          : '2.2.0',
+        jaywayJsonPath                          : '2.4.0',
         jsonAssert                              : '1.5.0',
         junit                                   : '4.13',
         lombok                                  : '1.18.12',
