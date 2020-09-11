@@ -20,6 +20,7 @@ import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,7 +52,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         UserDetails userDetails = userService.getUserDetails(authorizationToken);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(userDetails.getId()));
 
-        JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)
+        JsonNode documents = Objects.requireNonNull(template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class))
                 .path("_embedded").path("documents");
 
         log.info("For Request Id {} and userId {} : File upload response from Evidence Management service is {}",
