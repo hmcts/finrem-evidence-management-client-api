@@ -36,18 +36,15 @@ public class EvidenceManagementDownloadServiceImplTest {
     @ClassRule
     public static ExpectedException expectedException = ExpectedException.none();
 
-    @Mock
-    private RestTemplate restTemplate;
-
-    @Mock
-    private AuthTokenGenerator authTokenGenerator;
+    @Mock private RestTemplate restTemplate;
+    @Mock private AuthTokenGenerator authTokenGenerator;
 
     @InjectMocks
-    private EvidenceManagementDownloadServiceImpl downloadService = new EvidenceManagementDownloadServiceImpl();
+    private EvidenceManagementDownloadServiceImpl downloadService;
 
     @Before
     public void setUp() {
-        ReflectionTestUtils.setField(downloadService, "evidenceManagementUrl", URL);
+        ReflectionTestUtils.setField(downloadService, "documentManagementUrl", URL);
     }
 
     @Test
