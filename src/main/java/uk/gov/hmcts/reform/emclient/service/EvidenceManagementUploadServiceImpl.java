@@ -3,8 +3,8 @@ package uk.gov.hmcts.reform.emclient.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.mediatype.hal.HalLinkDiscoverer;
 import org.springframework.http.HttpEntity;
@@ -29,22 +29,18 @@ import static java.util.stream.StreamSupport.stream;
 import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.param;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUploadService {
 
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
 
-    @Value("${evidence.management.store.upload.file.url}")
-    private String evidenceManagementStoreUrl;
+    private final RestTemplate template;
+    private final AuthTokenGenerator authTokenGenerator;
+    private final UserService userService;
 
-    @Autowired
-    private RestTemplate template;
-
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
-
-    @Autowired
-    private UserService userService;
+    @Value("${document.management.store.upload.file.url}")
+    private String documentManagementStoreUrl;
 
     @Override
     public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, final String authorizationToken,
@@ -52,7 +48,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         UserDetails userDetails = userService.getUserDetails(authorizationToken);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(userDetails.getId()));
 
-        JsonNode documents = Objects.requireNonNull(template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class))
+        JsonNode documents = Objects.requireNonNull(template.postForObject(documentManagementStoreUrl, httpEntity, ObjectNode.class))
                 .path("_embedded").path("documents");
 
         log.info("For Request Id {} and userId {} : File upload response from Evidence Management service is {}",

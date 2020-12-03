@@ -14,8 +14,6 @@ services:
       - "4006:4006"
     environment:
       - AUTH_PROVIDER_SERVICE_CLIENT_BASEURL=http://service-auth-provider-api:8080
-      - EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL=http://em-api-gateway-web:3404/documents
-      - EVIDENCE_MANAGEMENT_HEALTH_URL=http://em-api-gateway-web:3404/health
       - DOCUMENT_MANAGEMENT_STORE_URL=http://document-management-store:8080
       - IDAM_API_URL=http://idam-api:8080
       - AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE=finrem_document_generator

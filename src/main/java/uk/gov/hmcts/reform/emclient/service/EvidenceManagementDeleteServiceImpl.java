@@ -1,9 +1,8 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,22 +14,17 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 
-
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDeleteService {
 
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
     private static final String USER_ID_HEADER = "user-id";
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
+    private final RestTemplate restTemplate;
+    private final UserService userService;
+    private final AuthTokenGenerator authTokenGenerator;
 
     /**
      * This method attempts to delete the document stored in the Evidence Management document store identified by the

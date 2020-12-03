@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static io.restassured.RestAssured.given;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {SmokeTestConfiguration.class})
 public class EmClientSmokeTests {
 
     @Value("${url}")
