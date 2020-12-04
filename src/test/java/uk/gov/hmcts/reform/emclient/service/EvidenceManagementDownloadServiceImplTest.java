@@ -36,14 +36,11 @@ public class EvidenceManagementDownloadServiceImplTest {
     @ClassRule
     public static ExpectedException expectedException = ExpectedException.none();
 
-    @Mock
-    private RestTemplate restTemplate;
-
-    @Mock
-    private AuthTokenGenerator authTokenGenerator;
+    @Mock private RestTemplate restTemplate;
+    @Mock private AuthTokenGenerator authTokenGenerator;
 
     @InjectMocks
-    private EvidenceManagementDownloadServiceImpl downloadService = new EvidenceManagementDownloadServiceImpl();
+    private EvidenceManagementDownloadServiceImpl downloadService;
 
     @Before
     public void setUp() {
@@ -52,7 +49,6 @@ public class EvidenceManagementDownloadServiceImplTest {
 
     @Test
     public void shouldPassThruDocumentDownloadSuccessfullyState() {
-
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(URL.concat("/documents/56"), HttpStatus.OK);
 
@@ -74,7 +70,6 @@ public class EvidenceManagementDownloadServiceImplTest {
 
     @Test(expected = ResourceAccessException.class)
     public void shouldPassThruExceptionThrownWhenEvidenceManagementServiceNotFound() {
-
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
 
         doThrow(ResourceAccessException.class)

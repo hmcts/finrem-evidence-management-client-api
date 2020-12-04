@@ -3,8 +3,8 @@ package uk.gov.hmcts.reform.emclient.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.mediatype.hal.HalLinkDiscoverer;
 import org.springframework.http.HttpEntity;
@@ -29,22 +29,18 @@ import static java.util.stream.StreamSupport.stream;
 import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.param;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUploadService {
 
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
 
-    @Value("${evidence.management.store.upload.file.url}")
+    private final RestTemplate template;
+    private final AuthTokenGenerator authTokenGenerator;
+    private final UserService userService;
+
+    @Value("${evidence.management.store.upload.url}")
     private String evidenceManagementStoreUrl;
-
-    @Autowired
-    private RestTemplate template;
-
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
-
-    @Autowired
-    private UserService userService;
 
     @Override
     public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, final String authorizationToken,
@@ -62,7 +58,6 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     }
 
     private FileUploadResponse createUploadResponse(JsonNode document) {
-
         return FileUploadResponse.builder()
                 .status(HttpStatus.OK)
                 .fileUrl(new HalLinkDiscoverer()
@@ -87,7 +82,6 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     }
 
     private String getTextFromJsonNode(JsonNode document, String attribute) {
-
         return Optional.ofNullable(document).flatMap(file -> Optional.ofNullable(attribute).map(file::asText))
                 .orElse(null);
     }

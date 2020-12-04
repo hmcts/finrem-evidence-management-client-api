@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.emclient.service;
 
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,7 @@ import java.net.URISyntaxException;
 import static java.lang.String.format;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class EvidenceManagementDownloadServiceImpl implements EvidenceManagementDownloadService {
 
@@ -27,11 +29,8 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
     private static final String USER_ROLES = "user-roles";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
+    private final RestTemplate restTemplate;
+    private final AuthTokenGenerator authTokenGenerator;
 
     @Value("${document.management.store.baseUrl}")
     private String evidenceManagementUrl;

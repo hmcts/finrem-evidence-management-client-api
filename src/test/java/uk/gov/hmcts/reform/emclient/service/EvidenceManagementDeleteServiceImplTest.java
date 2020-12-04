@@ -38,7 +38,7 @@ public class EvidenceManagementDeleteServiceImplTest {
     @Mock private AuthTokenGenerator authTokenGenerator;
 
     @InjectMocks
-    private EvidenceManagementDeleteServiceImpl deleteService = new EvidenceManagementDeleteServiceImpl();
+    private EvidenceManagementDeleteServiceImpl deleteService;
 
     @Before
     public void setUp() {
