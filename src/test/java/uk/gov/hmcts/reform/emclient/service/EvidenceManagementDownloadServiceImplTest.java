@@ -44,7 +44,7 @@ public class EvidenceManagementDownloadServiceImplTest {
 
     @Before
     public void setUp() {
-        ReflectionTestUtils.setField(downloadService, "evidenceManagementUrl", URL);
+        ReflectionTestUtils.setField(downloadService, "documentManagementStoreUrl", URL);
     }
 
     @Test

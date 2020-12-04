@@ -36,7 +36,7 @@ public class EvidenceManagementFileDownloadIntegrationTest {
     private String evidenceManagementClientApiBaseUrl;
 
     @Value("${document.management.store.baseUrl}")
-    private String documentManagementUrl;
+    private String documentManagementStoreUrl;
 
     @Value("${evidence.management.client.api.endpoint.download}")
     private String evidenceManagementClientApiDownloadUrl;
@@ -54,12 +54,11 @@ public class EvidenceManagementFileDownloadIntegrationTest {
     }
 
     private String uploadFile() {
-
         return evidenceManagementTestUtils.uploadFileToEvidenceManagement(
             FILE_PATH,
             IMAGE_FILE_CONTENT_TYPE,
             evidenceManagementClientApiBaseUrl,
-            documentManagementUrl,
+            documentManagementStoreUrl,
             idamTestSupportUtil);
     }
 }

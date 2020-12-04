@@ -55,11 +55,8 @@ public class EmClientFileUploadTest {
     @Value("${evidence.management.client.api.baseUrl}")
     private String evidenceManagementClientApiBaseUrl;
 
-    @Value("${evidence.management.client.api.endpoint.uploadwiths2stoken}")
-    private String emClientApiUploadEndpoint;
-
     @Value("${document.management.store.baseUrl}")
-    private String dmStoreBaseUrl;
+    private String documentManagementStoreUrl;
 
     @Autowired
     private IdamUtils idamTestSupportUtil;
@@ -111,7 +108,7 @@ public class EmClientFileUploadTest {
     }
 
     private String fileRetrieveUrl(String url) {
-        return dmStoreBaseUrl + "/documents/" + url.substring(url.lastIndexOf('/') + 1);
+        return documentManagementStoreUrl + "/documents/" + url.substring(url.lastIndexOf('/') + 1);
     }
 
     private void assertEmGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {

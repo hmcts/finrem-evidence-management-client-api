@@ -51,7 +51,7 @@ public class EvidenceManagementUploadServiceImplTest {
 
     @Before
     public void setup() throws IOException {
-        ReflectionTestUtils.setField(emUploadService,"evidenceManagementStoreUrl", "emuri");
+        ReflectionTestUtils.setField(emUploadService,"documentManagementStoreUploadUrl", "emuri");
         when(authTokenGenerator.generate()).thenReturn("xxxx");
         when(userService.getUserDetails(authKey())).thenReturn(UserDetails.builder().id("19").build());
         mockRestTemplate();

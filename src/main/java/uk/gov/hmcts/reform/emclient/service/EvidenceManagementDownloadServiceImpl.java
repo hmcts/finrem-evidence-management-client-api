@@ -32,11 +32,10 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
     private final AuthTokenGenerator authTokenGenerator;
 
     @Value("${document.management.store.baseUrl}")
-    private String evidenceManagementUrl;
+    private String documentManagementStoreUrl;
 
     @Override
     public ResponseEntity<byte[]> download(@NonNull final String binaryFileUrl) {
-
         log.info("Binary url for file download : {} ", binaryFileUrl);
         HttpHeaders headers = new HttpHeaders();
         headers.set(SERVICE_AUTHORIZATION, authTokenGenerator.generate());
@@ -64,6 +63,6 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
     private String getUrl(String binaryFileUrl) throws URISyntaxException {
         URI uri = new URI(binaryFileUrl);
 
-        return evidenceManagementUrl + uri.getPath();
+        return documentManagementStoreUrl + uri.getPath();
     }
 }

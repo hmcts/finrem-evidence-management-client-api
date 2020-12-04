@@ -18,9 +18,9 @@ import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -53,7 +53,6 @@ public class EvidenceManagementDeleteServiceImplTest {
      */
     @Test
     public void shouldPassThruDocumentDeletedSuccessfullyState() {
-
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.OK);
 
@@ -70,10 +69,8 @@ public class EvidenceManagementDeleteServiceImplTest {
      * the caller without any issues or exceptions occurring.
      * <p/>
      */
-
     @Test
     public void shouldPassThruNoDocumentIdIsPassedState() {
-
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.NO_CONTENT);
 
@@ -90,10 +87,8 @@ public class EvidenceManagementDeleteServiceImplTest {
      * evidence management client api to the caller without any issues or exceptions occurring.
      * <p/>
      */
-
     @Test
     public void shouldPassThruNotAuthorisedAuthTokenState() {
-
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.UNAUTHORIZED);
 
@@ -110,10 +105,8 @@ public class EvidenceManagementDeleteServiceImplTest {
      * evidence management client api to the caller without any issues or exceptions occurring.
      * <p/>
      */
-
     @Test
     public void shouldPassThruNotAuthenticatedAuthTokenState() {
-
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.FORBIDDEN);
 
@@ -123,13 +116,11 @@ public class EvidenceManagementDeleteServiceImplTest {
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
 
-
     /**
      * This test issues a document delete request that is expected to cause an exception due to the EM document service
      * being unavailable. It ensures that the expected exception passes cleanly through to the caller.
      * <p/>
      */
-
     @Test(expected = ResourceAccessException.class)
     public void shouldPassThruExceptionThrownWhenEvidenceManagementServiceNotFound() {
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
@@ -165,7 +156,6 @@ public class EvidenceManagementDeleteServiceImplTest {
      * @param fileUrl    a String containing the url for which the mock endpoint will respond
      * @param httpStatus an HttpStatus enum representing the http status value to be returned from the mock endpoint
      */
-
     private void setupMockEvidenceManagementService(String fileUrl, HttpStatus httpStatus) {
         when(authTokenGenerator.generate()).thenReturn("xxxx");
 

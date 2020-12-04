@@ -35,7 +35,6 @@ public class EvidenceFileValidatorTest {
 
     @Test
     public void testJpegFileSuccessValidation() {
-
         MockMultipartFile jpgFile = new MockMultipartFile("test.jpg", "test.jpg", "image/jpeg", "data".getBytes());
         MockMultipartFile jpegFile = new MockMultipartFile("test.jpeg", "test.jpeg", "image/jpeg", "data".getBytes());
         MockMultipartFile capsJpgFile = new MockMultipartFile("test.JPG", "test.JPG", "image/jpeg", "data".getBytes());
@@ -131,7 +130,7 @@ public class EvidenceFileValidatorTest {
     }
 
     @Validated
-    private final class ValidationBean {
+    private final static class ValidationBean {
         private final List<@EvidenceFile MultipartFile> files;
 
         public ValidationBean(List<@EvidenceFile MultipartFile> files) {

@@ -39,8 +39,8 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     private final AuthTokenGenerator authTokenGenerator;
     private final UserService userService;
 
-    @Value("${evidence.management.store.upload.url}")
-    private String evidenceManagementStoreUrl;
+    @Value("${document.management.store.upload.url}")
+    private String documentManagementStoreUploadUrl;
 
     @Override
     public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, final String authorizationToken,
@@ -48,7 +48,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         UserDetails userDetails = userService.getUserDetails(authorizationToken);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(userDetails.getId()));
 
-        JsonNode documents = Objects.requireNonNull(template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class))
+        JsonNode documents = Objects.requireNonNull(template.postForObject(documentManagementStoreUploadUrl, httpEntity, ObjectNode.class))
                 .path("_embedded").path("documents");
 
         log.info("For Request Id {} and userId {} : File upload response from Evidence Management service is {}",
