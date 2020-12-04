@@ -52,7 +52,8 @@ public class EvidenceManagementClientConfiguration {
         objectMapper.registerModule(new Jackson2HalModule());
 
         jackson2HttpMessageConverter.setObjectMapper(objectMapper);
-        jackson2HttpMessageConverter.setSupportedMediaTypes(ImmutableList.of(MediaType.APPLICATION_JSON, MEDIA_TYPE_HAL_JSON, MEDIA_TYPE_HAL_JSON_NEW));
+        jackson2HttpMessageConverter.setSupportedMediaTypes(ImmutableList.of(MediaType.APPLICATION_JSON, MEDIA_TYPE_HAL_JSON,
+            MEDIA_TYPE_HAL_JSON_NEW));
 
         RestTemplate restTemplate = new RestTemplate(asList(jackson2HttpMessageConverter,
                 new FormHttpMessageConverter(),

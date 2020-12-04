@@ -130,7 +130,7 @@ public class EvidenceFileValidatorTest {
     }
 
     @Validated
-    private final static class ValidationBean {
+    private static final class ValidationBean {
         private final List<@EvidenceFile MultipartFile> files;
 
         public ValidationBean(List<@EvidenceFile MultipartFile> files) {
