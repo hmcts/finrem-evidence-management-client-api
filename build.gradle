@@ -246,7 +246,7 @@ task functional(type: Test, description: 'Runs the functional tests', group: 'Ve
 }
 
 def sonarExclusions = [
-        '**uk/gov/hmcts/reform/emclient/*',
+        '**uk/gov/hmcts/reform/emclient/**/*',
         '**uk/gov/hmcts/reform/emclient/exception/*',
         '**uk/gov/hmcts/reform/emclient/configuration/*',
         '**uk/gov/hmcts/reform/emclient/response/*',
