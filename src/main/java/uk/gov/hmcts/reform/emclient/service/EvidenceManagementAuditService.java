@@ -1,8 +1,6 @@
 package uk.gov.hmcts.reform.emclient.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.mediatype.hal.HalLinkDiscoverer;
@@ -10,9 +8,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
@@ -21,10 +17,7 @@ import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-
-import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.param;
 
 @Component
 @RequiredArgsConstructor
