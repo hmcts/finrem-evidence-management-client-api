@@ -170,6 +170,8 @@ dependencyManagement {
             entry 'tomcat-embed-el'
             entry 'tomcat-embed-websocket'
         }
+        // CVE-2020-13956
+        dependency group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
     }
 }
 
