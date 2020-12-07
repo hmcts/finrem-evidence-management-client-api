@@ -1,0 +1,92 @@
+package uk.gov.hmcts.reform.emclient.service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import feign.FeignException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.mediatype.hal.HalLinkDiscoverer;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
+import uk.gov.hmcts.reform.emclient.idam.services.UserService;
+import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.param;
+
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class EvidenceManagementAuditService {
+
+    private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
+    private static final String USER_ID_HEADER = "user-id";
+
+    private final RestTemplate restTemplate;
+    private final UserService userService;
+    private final AuthTokenGenerator authTokenGenerator;
+
+
+    public List<FileUploadResponse> audit(List<String> fileUrls, String authorizationToken) {
+        log.info("Deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrls);
+
+        UserDetails userDetails = userService.getUserDetails(authorizationToken);
+        HttpEntity httpEntity = new HttpEntity(headers(userDetails.getId()));
+
+        List<FileUploadResponse> filesAuditDetails = new ArrayList<>();
+        fileUrls.forEach(fileUrl -> {
+            JsonNode document = restTemplate.exchange(
+                fileUrl,
+                HttpMethod.GET,
+                httpEntity,
+                JsonNode.class).getBody();
+
+            System.out.println(document.toPrettyString());
+
+            filesAuditDetails.add(createUploadResponse(document));
+        });
+
+        return filesAuditDetails;
+    }
+
+    private FileUploadResponse createUploadResponse(JsonNode document) {
+        return FileUploadResponse.builder()
+            .status(HttpStatus.OK)
+            .fileUrl(new HalLinkDiscoverer()
+                .findLinkWithRel("self", document.toString())
+                .orElseThrow(() -> new IllegalStateException("self rel link not found"))
+                .getHref())
+            .fileName(document.get("originalDocumentName").asText())
+            .createdBy(getTextFromJsonNode(document, "createdBy"))
+            .createdOn(document.get("createdOn").asText())
+            .lastModifiedBy(getTextFromJsonNode(document, "lastModifiedBy"))
+            .modifiedOn(getTextFromJsonNode(document, "modifiedOn"))
+            .mimeType(document.get("mimeType").asText())
+            .build();
+    }
+
+    private String getTextFromJsonNode(JsonNode document, String attribute) {
+        return Optional.ofNullable(document).flatMap(file -> Optional.ofNullable(attribute).map(file::asText))
+            .orElse(null);
+    }
+
+    private HttpHeaders headers(String userId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
+        headers.set(USER_ID_HEADER, userId);
+
+        return headers;
+    }
+}

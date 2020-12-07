@@ -50,6 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
 public class EvidenceManagementClientControllerTest {
+
     private static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
     private static final String AUTH_TOKEN = "AAAAAAA";
     private static final String REQUEST_ID = "1234";
@@ -62,19 +63,14 @@ public class EvidenceManagementClientControllerTest {
     private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
     private static final String EM_CLIENT_DOWNLOAD_ENDPOINT_URL = "/emclientapi/version/1/download?binaryFileUrl=";
 
-    @MockBean
-    private EvidenceManagementUploadService emUploadService;
-
-    @MockBean
-    private EvidenceManagementDeleteService emDeleteService;
-
-    @MockBean
-    private EvidenceManagementDownloadService downloadService;
-
-    private MockMvc mockMvc;
+    @MockBean private EvidenceManagementUploadService emUploadService;
+    @MockBean private EvidenceManagementDeleteService emDeleteService;
+    @MockBean private EvidenceManagementDownloadService downloadService;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
+    private MockMvc mockMvc;
 
     @Before
     public void setUp() {
