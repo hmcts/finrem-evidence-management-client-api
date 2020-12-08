@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.emclient.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponseInterceptor;
@@ -24,9 +25,11 @@ import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterc
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 
 @Configuration
@@ -66,7 +69,7 @@ public class EvidenceManagementClientConfiguration {
     }
 
     private List<MediaType> supportedMediaTypes() {
-        List<MediaType> supportedMediaTypes = asList(MediaType.APPLICATION_JSON);
+        List<MediaType> supportedMediaTypes = newArrayList(MediaType.APPLICATION_JSON);
         supportedMediaTypes.addAll(
             SUPPORTED_APPLICATION_SUBTYPES.stream()
             .map(subtype -> new MediaType("application", subtype, StandardCharsets.UTF_8))
