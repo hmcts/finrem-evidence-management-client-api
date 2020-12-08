@@ -53,10 +53,7 @@ public class EvidenceManagementClientConfiguration {
         objectMapper.registerModule(new Jackson2HalModule());
 
         jackson2HttpMessageConverter.setObjectMapper(objectMapper);
-        jackson2HttpMessageConverter.setSupportedMediaTypes(
-            SUPPORTED_APPLICATION_SUBTYPES.stream()
-            .map(subtype -> new MediaType("application", subtype, StandardCharsets.UTF_8))
-            .collect(Collectors.toList()));
+        jackson2HttpMessageConverter.setSupportedMediaTypes(supportedMediaTypes());
 
         RestTemplate restTemplate = new RestTemplate(asList(jackson2HttpMessageConverter,
                 new FormHttpMessageConverter(),
@@ -66,6 +63,16 @@ public class EvidenceManagementClientConfiguration {
         restTemplate.setRequestFactory(getClientHttpRequestFactory());
 
         return restTemplate;
+    }
+
+    private List<MediaType> supportedMediaTypes() {
+        List<MediaType> supportedMediaTypes = asList(MediaType.APPLICATION_JSON);
+        supportedMediaTypes.addAll(
+            SUPPORTED_APPLICATION_SUBTYPES.stream()
+            .map(subtype -> new MediaType("application", subtype, StandardCharsets.UTF_8))
+            .collect(Collectors.toList()));
+
+        return supportedMediaTypes;
     }
 
     private ClientHttpRequestFactory getClientHttpRequestFactory() {
