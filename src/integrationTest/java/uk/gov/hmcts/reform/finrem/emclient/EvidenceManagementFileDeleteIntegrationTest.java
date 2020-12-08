@@ -2,9 +2,10 @@ package uk.gov.hmcts.reform.finrem.emclient;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,12 @@ public class EvidenceManagementFileDeleteIntegrationTest {
 
     private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
     private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";
-    private static final String DELETE_ENDPOINT = "/deleteFile?fileUrl=";
+    static final String DELETE_ENDPOINT = "/deleteFile?fileUrl=";
 
     private final EvidenceManagementTestUtils evidenceManagementTestUtils = new EvidenceManagementTestUtils();
+
+    @Rule
+    public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
 
     @Autowired
     private IdamUtils idamTestSupportUtil;
@@ -61,8 +65,8 @@ public class EvidenceManagementFileDeleteIntegrationTest {
         if (fileUrl != null) {
             deleteFileFromEvidenceManagement(fileUrl, evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
         }
+        idamTestSupportUtil.deleteCreatedUser();
     }
-
 
     @Test
     public void verifyDeleteRequestForExistingDocumentIsSuccessful() {
@@ -115,10 +119,8 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     }
 
     private Response deleteFileFromEvidenceManagement(String fileUrl, Map<String, Object> headers) {
-        return SerenityRest.given()
-                .headers(headers)
-                .delete(evidenceManagementClientApiBaseUrl.concat(DELETE_ENDPOINT + fileUrl))
-                .andReturn();
+        return evidenceManagementTestUtils.deleteFileFromEvidenceManagement(evidenceManagementClientApiBaseUrl.concat(DELETE_ENDPOINT),
+            fileUrl, headers);
     }
 
     private String uploadFile() {

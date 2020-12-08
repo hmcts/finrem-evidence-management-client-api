@@ -63,4 +63,11 @@ class EvidenceManagementTestUtils {
 
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
     }
+
+    Response deleteFileFromEvidenceManagement(String deleteEndpointUrl, String fileUrl, Map<String, Object> headers) {
+        return SerenityRest.given()
+            .headers(headers)
+            .delete(deleteEndpointUrl + fileUrl)
+            .andReturn();
+    }
 }

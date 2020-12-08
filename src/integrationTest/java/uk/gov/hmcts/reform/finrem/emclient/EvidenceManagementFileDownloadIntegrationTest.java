@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.finrem.emclient;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +46,11 @@ public class EvidenceManagementFileDownloadIntegrationTest {
 
     private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
     private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";
+
+    @After
+    public void cleanUp() {
+        idamTestSupportUtil.deleteCreatedUser();
+    }
 
     @Test
     public void verifyEvidenceManagementFileDownload() {

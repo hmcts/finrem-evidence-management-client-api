@@ -70,7 +70,7 @@ public class EvidenceManagementClientController {
 
     @ApiOperation(value = "Handles file deletion from Evidence Management Document Store.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Files deleted successfully",
+            @ApiResponse(code = 204, message = "Files deleted successfully",
                     response = List.class),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Internal Server Error")

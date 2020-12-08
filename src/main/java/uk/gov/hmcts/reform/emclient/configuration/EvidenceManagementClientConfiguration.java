@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.emclient.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.common.collect.ImmutableList;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponseInterceptor;
@@ -25,6 +24,8 @@ import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterc
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -32,10 +33,10 @@ import static java.util.Arrays.asList;
 @RequiredArgsConstructor
 public class EvidenceManagementClientConfiguration {
 
-    private static final MediaType MEDIA_TYPE_HAL_JSON = new MediaType("application",
-        "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json", StandardCharsets.UTF_8);
-    private static final MediaType MEDIA_TYPE_HAL_JSON_NEW = new MediaType("application",
-        "vnd.uk.gov.hmcts.reform.dm.document-collection.v1+hal+json", StandardCharsets.UTF_8);
+    public static final List<String> SUPPORTED_APPLICATION_SUBTYPES = asList(
+        "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json",
+        "vnd.uk.gov.hmcts.reform.dm.document-collection.v1+hal+json",
+        "vnd.uk.gov.hmcts.dm.document.v1+hal+json");
 
     private final ObjectMapper objectMapper;
     private final MappingJackson2HttpMessageConverter jackson2HttpMessageConverter;
@@ -52,8 +53,10 @@ public class EvidenceManagementClientConfiguration {
         objectMapper.registerModule(new Jackson2HalModule());
 
         jackson2HttpMessageConverter.setObjectMapper(objectMapper);
-        jackson2HttpMessageConverter.setSupportedMediaTypes(ImmutableList.of(MediaType.APPLICATION_JSON, MEDIA_TYPE_HAL_JSON,
-            MEDIA_TYPE_HAL_JSON_NEW));
+        jackson2HttpMessageConverter.setSupportedMediaTypes(
+            SUPPORTED_APPLICATION_SUBTYPES.stream()
+            .map(subtype -> new MediaType("application", subtype, StandardCharsets.UTF_8))
+            .collect(Collectors.toList()));
 
         RestTemplate restTemplate = new RestTemplate(asList(jackson2HttpMessageConverter,
                 new FormHttpMessageConverter(),
