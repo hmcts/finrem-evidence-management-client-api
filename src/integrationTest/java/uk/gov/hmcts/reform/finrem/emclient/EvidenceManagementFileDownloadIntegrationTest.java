@@ -47,15 +47,25 @@ public class EvidenceManagementFileDownloadIntegrationTest {
     private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
     private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";
 
+    private String fileUrl;
+
     @After
     public void cleanUp() {
+        if (fileUrl != null) {
+            evidenceManagementTestUtils.deleteFileFromEvidenceManagement(
+                evidenceManagementClientApiBaseUrl + EvidenceManagementFileDeleteIntegrationTest.DELETE_ENDPOINT,
+                fileUrl,
+                evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
+            fileUrl = null;
+        }
         idamTestSupportUtil.deleteCreatedUser();
     }
 
     @Test
     public void verifyEvidenceManagementFileDownload() {
+        fileUrl = uploadFile();
         evidenceManagementTestUtils.downloadFileToEvidenceManagement(
-            uploadFile(),
+            fileUrl + "/binary",
             evidenceManagementClientApiDownloadUrl);
     }
 

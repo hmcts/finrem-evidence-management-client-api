@@ -102,21 +102,15 @@ public class EmClientFileUploadTest {
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
 
-        System.out.println("Response Body---->" + response.prettyPrint());
         assertEquals(HttpStatus.OK.value(), response.statusCode());
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
 
         assertEmGetFileResponse(fileToUpload, fileContentType, fileRetrieveUrl(fileUrl));
 
-        System.out.printf("fileUrl: " + fileUrl);
-        response = evidenceManagementTestUtils.deleteFileFromEvidenceManagement(
+        evidenceManagementTestUtils.deleteFileFromEvidenceManagement(
             evidenceManagementClientApiBaseUrl + EvidenceManagementFileDeleteIntegrationTest.DELETE_ENDPOINT,
             fileUrl,
             evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
-
-        System.out.println("--------- DELETE ------------");
-        System.out.println(response.prettyPrint());
-        System.out.println("-----------------------------");
     }
 
     private String fileRetrieveUrl(String url) {
@@ -154,7 +148,6 @@ public class EmClientFileUploadTest {
 
     private Map<String, Object> getAuthenticationTokenHeader() {
         String authenticationToken = idamTestSupportUtil.getIdamTestUser();
-        System.out.println("Authentication Token---->" + authenticationToken);
 
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);

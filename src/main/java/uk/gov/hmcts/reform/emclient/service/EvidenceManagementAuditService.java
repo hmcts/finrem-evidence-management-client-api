@@ -17,7 +17,7 @@ import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -55,6 +55,10 @@ public class EvidenceManagementAuditService {
     }
 
     private FileUploadResponse createUploadResponse(JsonNode document) {
+        Stream.of("originalDocumentName", "createdBy", "createdOn", "lastModifiedBy", "modifiedOn")
+            .map(document::get)
+            .forEach(System.out::println);
+
         return FileUploadResponse.builder()
             .status(HttpStatus.OK)
             .fileUrl(new HalLinkDiscoverer()
@@ -62,17 +66,12 @@ public class EvidenceManagementAuditService {
                 .orElseThrow(() -> new IllegalStateException("self rel link not found"))
                 .getHref())
             .fileName(document.get("originalDocumentName").asText())
-            .createdBy(getTextFromJsonNode(document, "createdBy"))
+            .createdBy(document.get("createdBy").asText())
             .createdOn(document.get("createdOn").asText())
-            .lastModifiedBy(getTextFromJsonNode(document, "lastModifiedBy"))
-            .modifiedOn(getTextFromJsonNode(document, "modifiedOn"))
+            .lastModifiedBy(document.get("lastModifiedBy").asText())
+            .modifiedOn(document.get("modifiedOn").asText())
             .mimeType(document.get("mimeType").asText())
             .build();
-    }
-
-    private String getTextFromJsonNode(JsonNode document, String attribute) {
-        return Optional.ofNullable(document).flatMap(file -> Optional.ofNullable(attribute).map(file::asText))
-            .orElse(null);
     }
 
     private HttpHeaders headers(String userId) {

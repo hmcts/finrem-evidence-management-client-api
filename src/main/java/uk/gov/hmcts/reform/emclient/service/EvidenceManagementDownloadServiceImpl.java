@@ -61,8 +61,6 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
     }
 
     private String getUrl(String binaryFileUrl) throws URISyntaxException {
-        URI uri = new URI(binaryFileUrl);
-
-        return documentManagementStoreUrl + uri.getPath();
+        return documentManagementStoreUrl + new URI(binaryFileUrl).getPath();
     }
 }
