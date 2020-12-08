@@ -23,6 +23,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
+import java.nio.file.Paths;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -81,6 +82,7 @@ public class EvidenceManagementFileAuditIntegrationTest {
 
         List<FileUploadResponse> auditResponses = new ObjectMapper().readValue(response.getBody().asString(), new TypeReference<>() {});
         assertThat(auditResponses, hasSize(2));
+        auditResponses.forEach(auditResponse -> assertThat(auditResponse.getFileName(), is(Paths.get(FILE_PATH).getFileName().toString())));
     }
 
     private String uploadFile() {

@@ -17,7 +17,6 @@ import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -46,8 +45,6 @@ public class EvidenceManagementAuditService {
                 httpEntity,
                 JsonNode.class).getBody();
 
-            System.out.println(document.toPrettyString());
-
             filesAuditDetails.add(createUploadResponse(document));
         });
 
@@ -55,10 +52,6 @@ public class EvidenceManagementAuditService {
     }
 
     private FileUploadResponse createUploadResponse(JsonNode document) {
-        Stream.of("originalDocumentName", "createdBy", "createdOn", "lastModifiedBy", "modifiedOn")
-            .map(document::get)
-            .forEach(System.out::println);
-
         return FileUploadResponse.builder()
             .status(HttpStatus.OK)
             .fileUrl(new HalLinkDiscoverer()
