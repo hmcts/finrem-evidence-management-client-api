@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.emclient.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponseInterceptor;
@@ -25,7 +24,6 @@ import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterc
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
