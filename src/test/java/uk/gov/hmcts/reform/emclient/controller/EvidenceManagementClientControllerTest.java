@@ -26,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.emclient.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementAuditService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
@@ -33,8 +34,12 @@ import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -62,10 +67,12 @@ public class EvidenceManagementClientControllerTest {
     private static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
     private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
     private static final String EM_CLIENT_DOWNLOAD_ENDPOINT_URL = "/emclientapi/version/1/download?binaryFileUrl=";
+    private static final String EM_CLIENT_AUDIT_ENDPOINT_URL = "/emclientapi/version/1/audit?fileUrls=";
 
     @MockBean private EvidenceManagementUploadService emUploadService;
     @MockBean private EvidenceManagementDeleteService emDeleteService;
     @MockBean private EvidenceManagementDownloadService downloadService;
+    @MockBean private EvidenceManagementAuditService auditService;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -134,8 +141,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileUploadWithS2STokenIsInvokedWithInvalidAuthToken()
-        throws Exception {
+    public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileUploadWithS2STokenIsInvokedWithInvalidAuthToken() throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
             .willThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
 
@@ -166,8 +172,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEmStoreThrowsHttpServerException()
-        throws Exception {
+    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEmStoreThrowsHttpServerException() throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
             .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
@@ -176,8 +181,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileIsInvokedWithInvalidAuthToken()
-        throws Exception {
+    public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileIsInvokedWithInvalidAuthToken() throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
             .willThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
 
@@ -208,8 +212,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceIsUnavailable()
-        throws Exception {
+    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceIsUnavailable() throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
             .willThrow(new ResourceAccessException("Evidence management service is currently down"));
 
@@ -218,8 +221,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceThrowsHttpServerException()
-        throws Exception {
+    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceThrowsHttpServerException() throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
             .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
@@ -276,6 +278,16 @@ public class EvidenceManagementClientControllerTest {
             .andExpect(status().isInternalServerError());
     }
 
+    @Test
+    public void shouldInvokeAuditService_whenAuditEndpointCalled() throws Exception {
+        mockMvc.perform(get(EM_CLIENT_AUDIT_ENDPOINT_URL + "mockFileUrl")
+            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN))
+            .andExpect(status().isOk())
+            .andReturn();
+
+        verify(auditService, times(1)).audit(eq(singletonList("mockFileUrl")), any());
+    }
+
     private List<FileUploadResponse> prepareFileUploadResponse() {
         FileUploadResponse fileUploadResponse;
         fileUploadResponse = FileUploadResponse.builder().status(HttpStatus.OK)
@@ -287,17 +299,15 @@ public class EvidenceManagementClientControllerTest {
             .lastModifiedBy("testuser")
             .mimeType(MediaType.TEXT_PLAIN_VALUE).build();
 
-        return Collections.singletonList(fileUploadResponse);
+        return singletonList(fileUploadResponse);
     }
 
     private MockMultipartFile textMultipartFile() {
-
         return new MockMultipartFile("file", "test.txt", "multipart/form-data",
             "This is a test file".getBytes());
     }
 
     private MockMultipartFile jpegMultipartFile() {
-
         return new MockMultipartFile("image", "image.jpeg", "image/jpeg", new byte[0]);
     }
 
