@@ -32,7 +32,7 @@ public class EvidenceManagementAuditService {
 
 
     public List<FileUploadResponse> audit(List<String> fileUrls, String authorizationToken) {
-        log.info("Deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrls);
+        log.info("Audit requested for documents: fileUrls={}", fileUrls);
 
         UserDetails userDetails = userService.getUserDetails(authorizationToken);
         HttpEntity httpEntity = new HttpEntity(headers(userDetails.getId()));
@@ -45,7 +45,10 @@ public class EvidenceManagementAuditService {
                 httpEntity,
                 JsonNode.class).getBody();
 
-            filesAuditDetails.add(createUploadResponse(document));
+            FileUploadResponse fileAuditResponse = createUploadResponse(document);
+            filesAuditDetails.add(fileAuditResponse);
+
+            log.info("Audit for {}: {}", fileUrl, fileAuditResponse);
         });
 
         return filesAuditDetails;

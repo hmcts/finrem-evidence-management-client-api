@@ -85,7 +85,7 @@ public class EvidenceManagementClientController {
 
     @ApiOperation(value = "Handles file auditing with Document Management Store")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Files uploaded successfully",
+        @ApiResponse(code = 200, message = "Files audited successfully",
             response = List.class),
         @ApiResponse(code = 400, message = "Bad Request"),
         @ApiResponse(code = 500, message = "Internal Server Error")
