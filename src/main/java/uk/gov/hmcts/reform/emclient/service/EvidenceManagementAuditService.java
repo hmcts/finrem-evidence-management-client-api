@@ -25,6 +25,7 @@ public class EvidenceManagementAuditService {
 
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
     private static final String USER_ID_HEADER = "user-id";
+    private static final String USER_ROLES_HEADER = "user-roles";
 
     private final RestTemplate restTemplate;
     private final UserService userService;
@@ -35,7 +36,7 @@ public class EvidenceManagementAuditService {
         log.info("Audit requested for documents: fileUrls={}", fileUrls);
 
         UserDetails userDetails = userService.getUserDetails(authorizationToken);
-        HttpEntity httpEntity = new HttpEntity(headers(userDetails.getId()));
+        HttpEntity httpEntity = new HttpEntity(headers(userDetails));
 
         List<FileUploadResponse> filesAuditDetails = new ArrayList<>();
         fileUrls.forEach(fileUrl -> {
@@ -70,10 +71,13 @@ public class EvidenceManagementAuditService {
             .build();
     }
 
-    private HttpHeaders headers(String userId) {
+    private HttpHeaders headers(UserDetails userDetails) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
-        headers.set(USER_ID_HEADER, userId);
+        headers.set(USER_ID_HEADER, userDetails.getId());
+        if (userDetails.getRoles() != null && !userDetails.getRoles().isEmpty()) {
+            headers.set(USER_ROLES_HEADER, String.join(",", userDetails.getRoles()));
+        }
 
         return headers;
     }
