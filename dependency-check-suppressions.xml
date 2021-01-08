@@ -20,9 +20,4 @@
         <packageUrl regex="true">^pkg:maven/org.yaml/snakeyaml@.*$</packageUrl>
         <cve>CVE-2017-18640</cve>
     </suppress>
-    <suppress>
-        <notes>Suppress HTTP Client as we don't use this library directly</notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.httpcomponents/httpclient@.*$</packageUrl>
-        <cve>CVE-2020-13956</cve>
-    </suppress>
 </suppressions>
