@@ -3,6 +3,8 @@ package uk.gov.hmcts.reform.finrem.emclient;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import net.serenitybdd.rest.SerenityRest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -15,6 +17,7 @@ import java.util.Base64;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class IdamUtils {
 
     @Value("${idam.api.url}")
@@ -82,6 +85,30 @@ public class IdamUtils {
                 .header("Content-Type", "application/json")
                 .body(ResourceLoader.objectToJson(userRequest))
                 .post(idamCreateUrl());
+    }
+
+    public void deleteCreatedUser() {
+        if (idamUsername != null) {
+            deleteTestUser(idamUsername);
+            idamUsername = null;
+            testUserJwtToken = null;
+        }
+    }
+
+    public void deleteTestUser(String username) {
+        Response response = SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .delete(idamDeleteUserUrl(username));
+
+        if (response.getStatusCode() < 300) {
+            log.info("Deleted test user {}", username);
+        } else {
+            log.error("Failed to delete test user {}", username);
+        }
+    }
+
+    private String idamDeleteUserUrl(String username) {
+        return idamUserBaseUrl + "/testing-support/accounts/" + username;
     }
 
     private String idamCreateUrl() {

@@ -1,8 +1,8 @@
 package uk.gov.hmcts.reform.emclient.service;
 
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import static java.lang.String.format;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class EvidenceManagementDownloadServiceImpl implements EvidenceManagementDownloadService {
 
@@ -27,18 +28,14 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
     private static final String USER_ROLES = "user-roles";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
+    private final RestTemplate restTemplate;
+    private final AuthTokenGenerator authTokenGenerator;
 
     @Value("${document.management.store.baseUrl}")
-    private String evidenceManagementUrl;
+    private String documentManagementStoreUrl;
 
     @Override
     public ResponseEntity<byte[]> download(@NonNull final String binaryFileUrl) {
-
         log.info("Binary url for file download : {} ", binaryFileUrl);
         HttpHeaders headers = new HttpHeaders();
         headers.set(SERVICE_AUTHORIZATION, authTokenGenerator.generate());
@@ -64,8 +61,6 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
     }
 
     private String getUrl(String binaryFileUrl) throws URISyntaxException {
-        URI uri = new URI(binaryFileUrl);
-
-        return evidenceManagementUrl + uri.getPath();
+        return documentManagementStoreUrl + new URI(binaryFileUrl).getPath();
     }
 }

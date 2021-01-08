@@ -42,7 +42,6 @@ class EvidenceManagementTestUtils {
     String uploadFileToEvidenceManagement(String filePath, String fileContentType,
                                           String evidenceManagementClientApiBaseUrl, String documentManagementUrl,
                                           IdamUtils idamTestSupportUtil) {
-
         File file = new File(filePath);
         Response response = SerenityRest.given()
                 .headers(getAuthenticationTokenHeader(idamTestSupportUtil))
@@ -55,12 +54,18 @@ class EvidenceManagementTestUtils {
     }
 
     void downloadFileToEvidenceManagement(String filePath, String evidenceManagementClientApiDownloadUrl) {
-
         Response response = SerenityRest.given()
                 .queryParam("binaryFileUrl",filePath)
                 .get(evidenceManagementClientApiDownloadUrl)
                 .andReturn();
 
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+    }
+
+    Response deleteFileFromEvidenceManagement(String deleteEndpointUrl, String fileUrl, Map<String, Object> headers) {
+        return SerenityRest.given()
+            .headers(headers)
+            .delete(deleteEndpointUrl + fileUrl)
+            .andReturn();
     }
 }
