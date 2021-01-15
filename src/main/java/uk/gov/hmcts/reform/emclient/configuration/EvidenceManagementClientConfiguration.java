@@ -2,13 +2,12 @@ package uk.gov.hmcts.reform.emclient.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.common.collect.ImmutableList;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,22 +24,23 @@ import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterc
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 
 @Configuration
+@RequiredArgsConstructor
 public class EvidenceManagementClientConfiguration {
 
-    private static final MediaType MEDIA_TYPE_HAL_JSON = new MediaType("application",
-        "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json", StandardCharsets.UTF_8);
-    private static final MediaType MEDIA_TYPE_HAL_JSON_NEW = new MediaType("application",
-        "vnd.uk.gov.hmcts.reform.dm.document-collection.v1+hal+json", StandardCharsets.UTF_8);
+    public static final List<String> SUPPORTED_APPLICATION_SUBTYPES = asList(
+        "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json",
+        "vnd.uk.gov.hmcts.reform.dm.document-collection.v1+hal+json",
+        "vnd.uk.gov.hmcts.dm.document.v1+hal+json");
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private MappingJackson2HttpMessageConverter jackson2HttpCoverter;
+    private final ObjectMapper objectMapper;
+    private final MappingJackson2HttpMessageConverter jackson2HttpMessageConverter;
 
     @Value("${http.connect.timeout}")
     private int httpConnectTimeout;
@@ -53,10 +53,10 @@ public class EvidenceManagementClientConfiguration {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.registerModule(new Jackson2HalModule());
 
-        jackson2HttpCoverter.setObjectMapper(objectMapper);
-        jackson2HttpCoverter.setSupportedMediaTypes(ImmutableList.of(MediaType.APPLICATION_JSON, MEDIA_TYPE_HAL_JSON, MEDIA_TYPE_HAL_JSON_NEW));
+        jackson2HttpMessageConverter.setObjectMapper(objectMapper);
+        jackson2HttpMessageConverter.setSupportedMediaTypes(supportedMediaTypes());
 
-        RestTemplate restTemplate = new RestTemplate(asList(jackson2HttpCoverter,
+        RestTemplate restTemplate = new RestTemplate(asList(jackson2HttpMessageConverter,
                 new FormHttpMessageConverter(),
                 new ResourceHttpMessageConverter(),
                 new ByteArrayHttpMessageConverter()));
@@ -64,6 +64,16 @@ public class EvidenceManagementClientConfiguration {
         restTemplate.setRequestFactory(getClientHttpRequestFactory());
 
         return restTemplate;
+    }
+
+    private List<MediaType> supportedMediaTypes() {
+        List<MediaType> supportedMediaTypes = newArrayList(MediaType.APPLICATION_JSON);
+        supportedMediaTypes.addAll(
+            SUPPORTED_APPLICATION_SUBTYPES.stream()
+            .map(subtype -> new MediaType("application", subtype, StandardCharsets.UTF_8))
+            .collect(Collectors.toList()));
+
+        return supportedMediaTypes;
     }
 
     private ClientHttpRequestFactory getClientHttpRequestFactory() {

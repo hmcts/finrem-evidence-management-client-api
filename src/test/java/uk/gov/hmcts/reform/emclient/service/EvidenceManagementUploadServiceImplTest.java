@@ -37,17 +37,12 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class EvidenceManagementUploadServiceImplTest {
 
-    @Mock
-    private RestTemplate restTemplate;
-
-    @Mock
-    private AuthTokenGenerator authTokenGenerator;
+    @Mock private RestTemplate restTemplate;
+    @Mock private AuthTokenGenerator authTokenGenerator;
+    @Mock private UserService userService;
 
     @InjectMocks
     private EvidenceManagementUploadServiceImpl emUploadService;
-
-    @Mock
-    private UserService userService;
 
     private ArgumentCaptor<HttpEntity> httpEntityReqEntity;
 
@@ -56,7 +51,7 @@ public class EvidenceManagementUploadServiceImplTest {
 
     @Before
     public void setup() throws IOException {
-        ReflectionTestUtils.setField(emUploadService,"evidenceManagementStoreUrl", "emuri");
+        ReflectionTestUtils.setField(emUploadService,"documentManagementStoreUploadUrl", "emuri");
         when(authTokenGenerator.generate()).thenReturn("xxxx");
         when(userService.getUserDetails(authKey())).thenReturn(UserDetails.builder().id("19").build());
         mockRestTemplate();
