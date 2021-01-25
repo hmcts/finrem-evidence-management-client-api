@@ -20,15 +20,10 @@ plugins {
     id 'org.owasp.dependencycheck' version '6.0.5'
     id 'org.sonarqube' version '3.0'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
-    id "nebula.lint" version "16.17.0"
 }
 
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'net.serenity-bdd.aggregator'
-apply plugin :"nebula.lint"
-gradleLint {
-    rules=['unused-dependency']
-}
 
 group = 'uk.gov.hmcts.reform.finrem'
 version = '3.0.0'
