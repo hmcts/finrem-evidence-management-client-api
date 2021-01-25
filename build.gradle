@@ -12,12 +12,12 @@ buildscript {
 plugins {
     id 'application'
     id 'checkstyle'
-    id 'com.github.ben-manes.versions' version '0.33.0'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'com.github.ben-manes.versions' version '0.36.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'info.solidsoft.pitest' version "1.5.2"
     id 'jacoco'
     id 'io.franzbecker.gradle-lombok' version '4.0.0'
-    id 'org.owasp.dependencycheck' version '6.0.3'
+    id 'org.owasp.dependencycheck' version '6.0.5'
     id 'org.sonarqube' version '3.0'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
 }
@@ -141,7 +141,7 @@ def versions = [
         jaywayJsonPath                          : '2.5.0',
         jsonAssert                              : '1.5.0',
         junit                                   : '4.13.1',
-        lombok                                  : '1.18.12',
+        lombok                                  : '1.18.16',
         reformHealth                            : '0.0.5',
         reformPropertiesVolume                  : '0.1.0',
         reformLogging                           : '5.1.7',
