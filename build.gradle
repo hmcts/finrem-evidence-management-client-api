@@ -146,11 +146,9 @@ def versions = [
         junit                                   : '4.13.1',
         lombok                                  : '1.18.16',
         reformHealth                            : '0.0.5',
-        reformPropertiesVolume                  : '0.1.0',
         reformLogging                           : '5.1.7',
         restAssured                             : '3.3.0',
         serenity                                : '2.2.12',
-        serenityCucumber                        : '1.9.51',
         serviceTokenGenerator                   : '3.1.1',
         springfoxSwagger                        : '3.0.0',
         springCloud                             : '2.2.3.RELEASE',
@@ -195,13 +193,11 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
-    implementation group: 'org.springframework.security', name: 'spring-security-rsa'
 
     implementation group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: versions.reformHealth
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformLogging
-    implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
     implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceTokenGenerator
 
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremock
@@ -211,8 +207,6 @@ dependencies {
     integrationTestImplementation group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
     integrationTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
     integrationTestImplementation group: 'junit', name: 'junit', version: versions.junit
-    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-cucumber', version: versions.serenityCucumber
-    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
