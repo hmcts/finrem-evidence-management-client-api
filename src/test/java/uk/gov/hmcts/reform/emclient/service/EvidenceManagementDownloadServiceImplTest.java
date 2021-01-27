@@ -2,9 +2,7 @@ package uk.gov.hmcts.reform.emclient.service;
 
 
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -32,9 +30,6 @@ public class EvidenceManagementDownloadServiceImplTest {
 
     private static final String EVIDENCE_MANAGEMENT_SERVICE_URL = "http://localhost:8080/documents/";
     private static final String URL = "http://dm-store-demo.service.core-compute-demo.internal/";
-
-    @ClassRule
-    public static ExpectedException expectedException = ExpectedException.none();
 
     @Mock private RestTemplate restTemplate;
     @Mock private AuthTokenGenerator authTokenGenerator;

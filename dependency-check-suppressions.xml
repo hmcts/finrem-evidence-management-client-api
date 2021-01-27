@@ -5,19 +5,4 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
     </suppress>
-    <suppress>
-        <notes><![CDATA[ file name: servo-core-0.10.1.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/com\.netflix\.servo/servo\-core@.*$</packageUrl>
-        <cpe>cpe:/a:docker:docker</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[file name: servo-internal-0.10.1.jar]]></notes>
-        <packageUrl regex="true">^pkg:maven/com\.netflix\.servo/servo\-internal@.*$</packageUrl>
-        <cpe>cpe:/a:docker:docker</cpe>
-    </suppress>
-    <suppress>
-        <notes>Snakeyaml</notes>
-        <packageUrl regex="true">^pkg:maven/org.yaml/snakeyaml@.*$</packageUrl>
-        <cve>CVE-2017-18640</cve>
-    </suppress>
 </suppressions>
