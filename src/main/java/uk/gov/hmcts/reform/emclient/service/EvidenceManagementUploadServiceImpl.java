@@ -82,8 +82,9 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     }
 
     private String getTextFromJsonNode(JsonNode document, String attribute) {
-        return Optional.ofNullable(document).flatMap(file -> Optional.ofNullable(attribute).map(file::asText))
-                .orElse(null);
+        return Optional.ofNullable(document)
+                        .flatMap(file -> Optional.ofNullable(attribute).map(file::asText))
+                        .orElse(null);
     }
 
     private HttpHeaders headers(String userId) {
