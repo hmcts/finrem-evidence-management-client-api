@@ -28,7 +28,8 @@ import static org.mockito.BDDMockito.given;
 public class EvidenceManagementDownloadServiceConsumerTest extends BaseTest {
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
     private final String someServiceAuthToken = "someServiceAuthToken";
-    private static final String DOWNLOAD_FILE_URL = "/5000/binary";
+    private static final String DOCUMENT_ID = "5c3c3906-2b51-468e-8cbb-a4002eded075";
+    private static final String DOWNLOAD_FILE_URL = "/" + DOCUMENT_ID + "/binary";
     private static final String USER_ROLES = "user-roles";
     private static final String FINANCIAL_REMEDY_COURT_ADMIN = "caseworker-divorce-financialremedy-courtadmin";
 

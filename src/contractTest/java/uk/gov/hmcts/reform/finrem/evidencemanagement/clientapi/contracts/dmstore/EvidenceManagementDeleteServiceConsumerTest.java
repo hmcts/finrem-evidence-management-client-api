@@ -36,7 +36,8 @@ public class EvidenceManagementDeleteServiceConsumerTest extends BaseTest {
     public static final String REQUEST_ID = "reqId";
     private final String someServiceAuthToken = "someServiceAuthToken";
     private static final String USER_ID_HEADER = "user-id";
-    private static final String DELETE_FILE_URL = "/version/1/deleteFile";
+    private static final String DOCUMENT_ID = "5c3c3906-2b51-468e-8cbb-a4002eded075";
+    private static final String DELETE_FILE_URL = "/documents/" + DOCUMENT_ID;
 
     @MockBean
     private UserService userService;
@@ -86,7 +87,7 @@ public class EvidenceManagementDeleteServiceConsumerTest extends BaseTest {
         given(authTokenGenerator.generate()).willReturn(someServiceAuthToken);
 
         final ResponseEntity<String> responseFromOperation  =  evidenceManagementDeleteService
-            .deleteFile(documentManagementStoreDeleteUrl,authorizationToken, REQUEST_ID);
+            .deleteFile(documentManagementStoreDeleteUrl + "/" + DOCUMENT_ID,authorizationToken, REQUEST_ID);
         assertNotNull(responseFromOperation);
         assertTrue(responseFromOperation.getStatusCode().value() == HttpStatus.SC_NO_CONTENT);
     }
