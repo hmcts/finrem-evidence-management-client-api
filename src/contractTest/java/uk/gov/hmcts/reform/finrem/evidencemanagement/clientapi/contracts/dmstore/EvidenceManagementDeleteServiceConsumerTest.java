@@ -10,17 +10,15 @@ import org.json.JSONException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.emclient.BaseTest;
-import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
 import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
+
 import java.io.IOException;
 
 import static org.junit.Assert.assertNotNull;
@@ -42,23 +40,15 @@ public class EvidenceManagementDeleteServiceConsumerTest extends BaseTest {
     @MockBean
     private UserService userService;
 
-    @MockBean
-    private IdamApiClient idamApiClient;
-
-    @Mock
-    private UserDetails mockUserDetails;
-
     @Autowired
     private EvidenceManagementDeleteService evidenceManagementDeleteService;
 
     @Autowired
     RestTemplate restTemplate;
 
-    @Value("${document.management.store.delete.url}")
-    private String documentManagementStoreDeleteUrl;
 
     @Rule
-      public PactProviderRule mockProvider = new PactProviderRule("em_dm_store", "localhost", 8889, this);
+    public PactProviderRule mockProvider = new PactProviderRule("em_dm_store", "localhost", 8889, this);
 
     @BeforeEach
     public void setUpEachTest() throws InterruptedException {
@@ -66,28 +56,28 @@ public class EvidenceManagementDeleteServiceConsumerTest extends BaseTest {
     }
 
     @Pact(provider = "em_dm_store", consumer = "fr_evidenceManagementClient")
-      public RequestResponsePact generatePactFragment(final PactDslWithProvider builder) throws JSONException, IOException {
+    public RequestResponsePact generatePactFragment(final PactDslWithProvider builder) throws JSONException, IOException {
         // @formatter:off
         return builder
-          .given("A document to upload exists")
-          .uponReceiving("A request to Delete the  document from dm-store")
-          .method("DELETE")
-          .headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken,USER_ID_HEADER, "1000")
-          .path(DELETE_FILE_URL)
-          .willRespondWith()
-          .status(HttpStatus.SC_NO_CONTENT)
-          .toPact();
+            .given("I have existing document")
+            .uponReceiving("A request to Delete a document")
+            .method("DELETE")
+            .headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken, USER_ID_HEADER, "1000")
+            .path(DELETE_FILE_URL)
+            .willRespondWith()
+            .status(HttpStatus.SC_NO_CONTENT)
+            .toPact();
     }
 
     @Test
     @PactVerification()
-      public void verifyDocumentDeletedInDmStore() throws Exception {
-        final UserDetails userDetails  = UserDetails.builder().id(USER_ID_VALUE).build();
+    public void verifyDocumentDeletedInDmStore() throws Exception {
+        final UserDetails userDetails = UserDetails.builder().id(USER_ID_VALUE).build();
         given(userService.getUserDetails(anyString())).willReturn(userDetails);
         given(authTokenGenerator.generate()).willReturn(someServiceAuthToken);
 
-        final ResponseEntity<String> responseFromOperation  =  evidenceManagementDeleteService
-            .deleteFile(documentManagementStoreDeleteUrl + "/" + DOCUMENT_ID,authorizationToken, REQUEST_ID);
+        final ResponseEntity<String> responseFromOperation = evidenceManagementDeleteService
+            .deleteFile("http://localhost:8889" + DELETE_FILE_URL, authorizationToken, REQUEST_ID);
         assertNotNull(responseFromOperation);
         assertTrue(responseFromOperation.getStatusCode().value() == HttpStatus.SC_NO_CONTENT);
     }
