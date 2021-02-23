@@ -19,7 +19,8 @@ import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
 
 @SpringBootApplication(exclude = {HypermediaAutoConfiguration.class})
 @ComponentScan(basePackages = "uk.gov.hmcts", excludeFilters = {
-    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ServiceAuthHealthIndicator.class) })
+    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ServiceAuthHealthIndicator.class) }
+   )
 @EnableRetry(proxyTargetClass = true)
 @EnableFeignClients(basePackageClasses = {IdamApiClient.class})
 @EnableCircuitBreaker

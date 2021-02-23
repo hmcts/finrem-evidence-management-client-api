@@ -10,6 +10,7 @@ buildscript {
 }
 
 plugins {
+    id 'au.com.dius.pact' version '4.1.0'
     id 'application'
     id 'checkstyle'
     id 'com.github.ben-manes.versions' version '0.36.0'
@@ -22,6 +23,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.4.RELEASE'
 }
 
+apply plugin: 'au.com.dius.pact'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'net.serenity-bdd.aggregator'
 
@@ -65,6 +67,17 @@ sourceSets {
             srcDir('src/integrationTest/resources')
         }
     }
+
+  contractTest {
+    java {
+      compileClasspath += main.output + test.output
+      runtimeClasspath += main.output + test.output
+      srcDirs = ['src/contractTest/java']
+    }
+    resources {
+      srcDir('src/contractTest/resources')
+    }
+  }
 }
 
 dependencies {
@@ -140,6 +153,8 @@ def versions = [
         javaxValidation                         : '2.0.1.Final',
         junit                                   : '4.13.1',
         lombok                                  : '1.18.16',
+        pact_version                            : '4.1.11',
+        reformHealth                            : '0.0.5',
         reformPropertiesVolume                  : '0.1.0',
         reformLogging                           : '5.1.7',
         restAssured                             : '3.3.0',
@@ -222,6 +237,17 @@ dependencies {
     testSmokeImplementation sourceSets.main.runtimeClasspath
     testSmokeImplementation sourceSets.test.runtimeClasspath
 
+    contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit', version: '4.1.11'
+    contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: '4.1.11'
+
+    contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit', version: '4.1.11'
+    contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8', version: '4.1.11'
+
+    contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+    contractTestImplementation sourceSets.main.runtimeClasspath
+    contractTestImplementation sourceSets.test.runtimeClasspath
+
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -230,6 +256,16 @@ dependencies {
 test {
     exclude '**/*FunctionalTest.class'
 }
+
+pact {
+  publish {
+    pactDirectory = 'pacts'
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+    tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
+    version = '4.1.11'
+  }
+}
+
 
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {
     testClassesDirs = sourceSets.testSmoke.output.classesDirs
@@ -240,6 +276,15 @@ task functional(type: Test, description: 'Runs the functional tests', group: 'Ve
         setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
         setClasspath(sourceSets.integrationTest.runtimeClasspath)
 }
+
+task contractTest(type: Test) {
+  group = 'Delivery pipeline'
+  description = 'Runs the consumer Pact tests'
+  setTestClassesDirs(sourceSets.contractTest.output.classesDirs)
+  setClasspath(sourceSets.contractTest.runtimeClasspath)
+  systemProperty 'pact.rootDir', "pacts"
+}
+
 
 def sonarExclusions = [
         '**uk/gov/hmcts/reform/emclient/exception/*',
@@ -287,4 +332,23 @@ run {
     if (debug == 'true') {
         jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5010']
     }
+}
+
+project.ext {
+    pactVersion = getCheckedOutGitCommitHash()
+}
+
+task runAndPublishConsumerPactTests(type: Test){
+    logger.lifecycle("Runs pact Tests")
+    testClassesDirs = sourceSets.contractTest.output.classesDirs
+    classpath = sourceSets.contractTest.runtimeClasspath
+
+}
+
+runAndPublishConsumerPactTests.dependsOn contractTest
+
+runAndPublishConsumerPactTests.finalizedBy pactPublish
+
+def getCheckedOutGitCommitHash() {
+    'git rev-parse --verify --short HEAD'.execute().text.trim()
 }
