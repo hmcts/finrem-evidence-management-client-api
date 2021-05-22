@@ -59,6 +59,9 @@ withPipeline(type, product, component) {
     enableSlackNotifications(channel)
 
     onMaster() {
-        enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+        enablePactAs([AppPipelineDsl.PactRoles.CONSUMER, AppPipelineDsl.PactRoles.CONSUMER_DEPLOY_CHECK])
+    }
+    onPR() {
+        enablePactAs([AppPipelineDsl.PactRoles.CONSUMER, AppPipelineDsl.PactRoles.CONSUMER_DEPLOY_CHECK])
     }
 }

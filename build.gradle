@@ -257,16 +257,6 @@ test {
     exclude '**/*FunctionalTest.class'
 }
 
-pact {
-  publish {
-    pactDirectory = 'pacts'
-    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
-    tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
-    version = '4.1.11'
-  }
-}
-
-
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {
     testClassesDirs = sourceSets.testSmoke.output.classesDirs
     classpath = sourceSets.testSmoke.runtimeClasspath
@@ -335,19 +325,29 @@ run {
 }
 
 project.ext {
-    pactVersion = getCheckedOutGitCommitHash()
+    pacticipant = 'fr_evidenceManagementClient'
+    pacticipantVersion = getCheckedOutGitCommitHash()
 }
 
 task runAndPublishConsumerPactTests(type: Test){
     logger.lifecycle("Runs pact Tests")
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
-
+    systemProperty 'pact.rootDir', "pacts"
 }
 
-runAndPublishConsumerPactTests.dependsOn contractTest
-
 runAndPublishConsumerPactTests.finalizedBy pactPublish
+
+pact {
+    broker {
+        pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+    }
+    publish {
+        pactDirectory = 'pacts'
+        tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
+        version = project.pacticipantVersion
+    }
+}
 
 def getCheckedOutGitCommitHash() {
     'git rev-parse --verify --short HEAD'.execute().text.trim()
