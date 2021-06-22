@@ -23,13 +23,14 @@
 
 * cd finrem-evidence-management-client-api
 
-* Run `./gradlew bootRun` 
-    (This command will start the spring boot application in an embedded tomcat on port 4006.
-    To change the port change the configuration in `application.properties`. 
-    This will output 
-    `<==========---> 80% EXECUTING [43s]
-     :bootRun
-    ` but this is expected behaviour of Gradle and means the project is running.)
+* Run `./gradlew bootRun`<br> This command will start the spring boot application in an embedded tomcat on port 4006.
+To change the port change the configuration in `application.properties`. 
+This will output:
+```bash
+<==========---> 80% EXECUTING [43s]
+ :bootRun
+```
+this is an expected behaviour of Gradle and means the project is running.
 
 ### API documentation
 
@@ -63,7 +64,8 @@ To run all checks (including unit tests) please execute following command:
 
 ###### File Upload Response:
 
-``` [
+```JSON 
+[
     {
         "fileUrl": "http://localhost:8080/documents/214",
         "fileName": "file",
@@ -75,7 +77,6 @@ To run all checks (including unit tests) please execute following command:
         "status": "OK"
     }
 ] 
-
 ```
 
 | File Download Endpoint | HTTP Protocol | Header Attribute  Condition | Headers |
@@ -88,7 +89,7 @@ To run all checks (including unit tests) please execute following command:
 
 To run all mutation tests execute the following command:
 
-```
+```bash
 ./gradlew pitest
 ```
 
