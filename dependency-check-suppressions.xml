@@ -5,4 +5,8 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
     </suppress>
+    <suppress until="2022-11-01Z">
+        <notes><![CDATA[Suppress tomcat CVE as there is no updated version.]]></notes>
+        <vulnerabilityName>CVE-2021-42340</vulnerabilityName>
+    </suppress>
 </suppressions>
