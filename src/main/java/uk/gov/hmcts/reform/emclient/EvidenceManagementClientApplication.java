@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
 import uk.gov.hmcts.reform.authorisation.healthcheck.ServiceAuthHealthIndicator;
 import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
+import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClientApi;
 
 @SpringBootApplication(exclude = {HypermediaAutoConfiguration.class})
 @ComponentScan(basePackages = "uk.gov.hmcts", excludeFilters = {

@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
