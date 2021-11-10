@@ -48,6 +48,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.springframework.cloud.commons.httpclient.ApacheHttpClientConnectionManagerFactory;
+import org.springframework.cloud.commons.httpclient.ApacheHttpClientFactory;
+import org.springframework.test.context.TestPropertySource;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(EvidenceManagementClientController.class)
@@ -69,10 +75,25 @@ public class EvidenceManagementClientControllerTest {
     private static final String EM_CLIENT_DOWNLOAD_ENDPOINT_URL = "/emclientapi/version/1/download?binaryFileUrl=";
     private static final String EM_CLIENT_AUDIT_ENDPOINT_URL = "/emclientapi/version/1/audit?fileUrls=";
 
-    @MockBean private EvidenceManagementUploadService emUploadService;
-    @MockBean private EvidenceManagementDeleteService emDeleteService;
+    @MockBean protected EvidenceManagementUploadService emUploadService;
+    @MockBean protected EvidenceManagementDeleteService emDeleteService;
     @MockBean private EvidenceManagementDownloadService downloadService;
     @MockBean private EvidenceManagementAuditService auditService;
+
+    @MockBean
+    protected EvidenceManagementSecureDocStoreService emSecureDocService;
+
+    @MockBean
+    private ApacheHttpClientFactory apacheHttpClientFactory;
+
+    @MockBean
+    private ApacheHttpClientConnectionManagerFactory apacheHttpClientConnectionManagerFactory;
+
+    @MockBean
+    private HttpClientConnectionManager httpClientConnectionManager;
+
+    @MockBean
+    private CloseableHttpClient closeableHttpClient;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -288,7 +309,7 @@ public class EvidenceManagementClientControllerTest {
         verify(auditService, times(1)).audit(eq(singletonList("mockFileUrl")), any());
     }
 
-    private List<FileUploadResponse> prepareFileUploadResponse() {
+    protected List<FileUploadResponse> prepareFileUploadResponse() {
         FileUploadResponse fileUploadResponse;
         fileUploadResponse = FileUploadResponse.builder().status(HttpStatus.OK)
             .fileUrl(UPLOADED_FILE_URL)
@@ -302,16 +323,16 @@ public class EvidenceManagementClientControllerTest {
         return singletonList(fileUploadResponse);
     }
 
-    private MockMultipartFile textMultipartFile() {
+    protected MockMultipartFile textMultipartFile() {
         return new MockMultipartFile("file", "test.txt", "multipart/form-data",
             "This is a test file".getBytes());
     }
 
-    private MockMultipartFile jpegMultipartFile() {
+    protected MockMultipartFile jpegMultipartFile() {
         return new MockMultipartFile("image", "image.jpeg", "image/jpeg", new byte[0]);
     }
 
-    private void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
+    protected void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(jpegMultipartFile())
             .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)

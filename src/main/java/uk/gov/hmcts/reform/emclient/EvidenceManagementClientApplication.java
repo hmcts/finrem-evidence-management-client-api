@@ -22,7 +22,7 @@ import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
     @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ServiceAuthHealthIndicator.class) }
    )
 @EnableRetry(proxyTargetClass = true)
-@EnableFeignClients(basePackageClasses = {IdamApiClient.class})
+@EnableFeignClients(basePackageClasses = {IdamApiClient.class, CaseDocumentClientApi.class})
 @EnableCircuitBreaker
 @Slf4j
 public class EvidenceManagementClientApplication {

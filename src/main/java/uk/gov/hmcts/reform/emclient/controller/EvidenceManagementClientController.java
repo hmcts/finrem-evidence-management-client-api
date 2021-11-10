@@ -22,6 +22,10 @@ import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import uk.gov.hmcts.reform.emclient.idam.services.UserService;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService;
 
 import java.util.List;
 
@@ -35,6 +39,15 @@ public class EvidenceManagementClientController {
     private final EvidenceManagementUploadService emUploadService;
     private final EvidenceManagementDownloadService emReadService;
     private final EvidenceManagementAuditService emAuditService;
+
+    @Autowired
+    private EvidenceManagementSecureDocStoreService evidenceManagementSecureDocStoreService;
+
+    @Autowired
+    private UserService userService;
+
+    @Value("${feature.secure-doc-store:false}")
+    protected boolean secureDocStoreEnabled;
 
     @ApiOperation(value = "Handles file upload to Evidence Management Document Store")
     @ApiResponses(value = {
@@ -51,7 +64,11 @@ public class EvidenceManagementClientController {
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 
-        return emUploadService.upload(files, authorizationToken, requestId);
+            if (secureDocStoreEnabled) {
+                return evidenceManagementSecureDocStoreService.upload(files, userService.getIdamTokens(authorizationToken));
+            } else {
+                return emUploadService.upload(files, authorizationToken, requestId);
+            }
     }
 
     @ApiOperation(value = "Downloads file from Evidence Management Document Store.")
@@ -78,9 +95,14 @@ public class EvidenceManagementClientController {
     @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
-                                        @RequestHeader(value = "requestId", required = false) String requestId,
-                                        @RequestParam("fileUrl") String fileUrl) {
-        return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
+                @RequestHeader(value = "requestId", required = false) String requestId,
+                @RequestParam("fileUrl") String fileUrl) {
+        if (secureDocStoreEnabled) {
+            evidenceManagementSecureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
+        }
     }
 
     @ApiOperation(value = "Handles file auditing with Document Management Store")
