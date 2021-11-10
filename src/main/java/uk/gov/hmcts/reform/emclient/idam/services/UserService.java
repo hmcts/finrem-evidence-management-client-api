@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.emclient.idam.models.IdamTokens;
 public class UserService {
 
     private final IdamApiClient idamApiClient;
+    private final AuthTokenGenerator authTokenGenerator;
 
     @Autowired
     public UserService(IdamApiClient idamApiClient, AuthTokenGenerator authTokenGenerator) {
