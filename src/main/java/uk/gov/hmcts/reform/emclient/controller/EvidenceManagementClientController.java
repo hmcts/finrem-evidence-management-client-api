@@ -4,6 +4,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,19 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementAuditService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/emclientapi")
@@ -65,11 +64,11 @@ public class EvidenceManagementClientController {
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 
-            if (secureDocStoreEnabled) {
-                return evidenceManagementSecureDocStoreService.upload(files, userService.getIdamTokens(authorizationToken));
-            } else {
-                return emUploadService.upload(files, authorizationToken, requestId);
-            }
+        if (secureDocStoreEnabled) {
+            return evidenceManagementSecureDocStoreService.upload(files, userService.getIdamTokens(authorizationToken));
+        } else {
+            return emUploadService.upload(files, authorizationToken, requestId);
+        }
     }
 
     @ApiOperation(value = "Downloads file from Evidence Management Document Store.")

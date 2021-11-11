@@ -3,10 +3,10 @@ package uk.gov.hmcts.reform.emclient.idam.services;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
-import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
 import uk.gov.hmcts.reform.emclient.idam.models.IdamTokens;
+import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 
 @Component
 public class UserService {
