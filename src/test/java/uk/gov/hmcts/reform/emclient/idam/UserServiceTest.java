@@ -32,6 +32,7 @@ public class UserServiceTest {
     private UserService testObj;
 
     private static final String SERVICE_AUTH_TOKEN = "someServiceAuthToken";
+    private static final String BEARER_AUTH_TOKEN = "Bearer authTokenValue";
 
     @Test
     public void userServiceReturnUserDetails() {
