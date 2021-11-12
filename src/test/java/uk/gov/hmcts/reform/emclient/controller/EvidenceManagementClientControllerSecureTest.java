@@ -24,7 +24,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
-import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
+import uk.gov.hmcts.reform.emclient.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.idam.models.IdamTokens;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
