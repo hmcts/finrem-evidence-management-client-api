@@ -164,23 +164,32 @@ def versions = [
         restAssured                             : '3.3.0',
         serenity                                : '2.2.12',
         serenityCucumber                        : '1.9.51',
-        serviceTokenGenerator                   : '3.1.1',
+        serviceTokenGenerator                   : '4.0.0',
         springfoxSwagger                        : '3.0.0',
         springfoxWebmvc                         : '2.10.5',
-        springCloud                             : '2.2.6.RELEASE',
-        springHateoas                           : '1.1.0.RELEASE',
+        springCloud                             : 'Hoxton.SR12',
+        springHateoas                           : '0.25.2.RELEASE',
         springRetry                             : '1.3.0',
         tomcat                                  : '9.0.48',
         unirestJava                             : '1.4.9',
-        wiremock                                : '2.27.2'
+        wiremock                                : '2.27.2',
+        guava                                   : '30.0-jre'
 ]
 
+ext {
+    springCloudVersion = 'Hoxton.SR12'
+}
+
+
 dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
     dependencies {
         // CVE-2019-10086
         dependency group: 'commons-beanutils', name: 'commons-beanutils', version: versions.commonsBeanUtils
         // CVE-2018-10237
-        dependency group: 'com.google.guava', name: 'guava', version: '30.1-jre'
+        // dependency group: 'com.google.guava', name: 'guava', version: '30.1-jre'
         // CVE-2020-9484
         dependencySet(group: 'org.apache.tomcat.embed', version: versions.tomcat) {
             entry 'tomcat-embed-core'
@@ -211,8 +220,6 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springCloud
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
     implementation group: 'org.springframework.security', name: 'spring-security-rsa'
@@ -223,8 +230,19 @@ dependencies {
     implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
     implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceTokenGenerator
 
+    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '11.6'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.2'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+    implementation group: 'com.netflix.ribbon', name: 'ribbon-loadbalancer', version: '2.7.18'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: '2.2.9.RELEASE'
+    implementation (group: 'com.google.guava', name: 'guava', version: versions.guava) {
+        force = true
+    }
+    implementation("com.github.hmcts:ccd-case-document-am-client:1.7.3")
+
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremock
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot
+    testImplementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
 
     //integration test
     integrationTestImplementation group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
@@ -235,11 +253,11 @@ dependencies {
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-    integrationTestImplementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
+    integrationTestImplementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
 
     testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
     testSmokeImplementation sourceSets.main.runtimeClasspath
@@ -261,6 +279,8 @@ dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+
+    runtimeOnly group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
 }
 
 test {
@@ -302,6 +322,7 @@ def sonarExclusions = [
         '**uk/gov/hmcts/reform/emclient/response/*',
         '**uk/gov/hmcts/reform/emclient/service/UploadRequestBuilder.java',
         '**uk/gov/hmcts/reform/emclient/exception/TemporaryStoreFailureException.java',
+        '**uk/gov/hmcts/reform/emclient/idam/models/IdamTokens.java',
         '**uk/gov/hmcts/reform/emclient/application/EvidenceManagementClientApplication.java'
 ]
 

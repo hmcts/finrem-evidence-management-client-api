@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.emclient.controller;
 
+import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +10,8 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.commons.httpclient.ApacheHttpClientConnectionManagerFactory;
+import org.springframework.cloud.commons.httpclient.ApacheHttpClientFactory;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
@@ -16,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +34,7 @@ import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementAuditService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 
 import java.util.Collections;
@@ -54,6 +60,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ImportAutoConfiguration({RibbonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
     FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
+@TestPropertySource(properties = {"feature.secure-doc-store=false", "feign.httpclient.enabled=false"})
 public class EvidenceManagementClientControllerTest {
 
     private static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
@@ -69,10 +76,10 @@ public class EvidenceManagementClientControllerTest {
     private static final String EM_CLIENT_DOWNLOAD_ENDPOINT_URL = "/emclientapi/version/1/download?binaryFileUrl=";
     private static final String EM_CLIENT_AUDIT_ENDPOINT_URL = "/emclientapi/version/1/audit?fileUrls=";
 
-    @MockBean private EvidenceManagementUploadService emUploadService;
-    @MockBean private EvidenceManagementDeleteService emDeleteService;
-    @MockBean private EvidenceManagementDownloadService downloadService;
-    @MockBean private EvidenceManagementAuditService auditService;
+    @MockBean protected EvidenceManagementUploadService emUploadService;
+    @MockBean protected EvidenceManagementDeleteService emDeleteService;
+    @MockBean protected EvidenceManagementDownloadService downloadService;
+    @MockBean protected EvidenceManagementAuditService auditService;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -288,7 +295,7 @@ public class EvidenceManagementClientControllerTest {
         verify(auditService, times(1)).audit(eq(singletonList("mockFileUrl")), any());
     }
 
-    private List<FileUploadResponse> prepareFileUploadResponse() {
+    protected List<FileUploadResponse> prepareFileUploadResponse() {
         FileUploadResponse fileUploadResponse;
         fileUploadResponse = FileUploadResponse.builder().status(HttpStatus.OK)
             .fileUrl(UPLOADED_FILE_URL)
@@ -302,16 +309,16 @@ public class EvidenceManagementClientControllerTest {
         return singletonList(fileUploadResponse);
     }
 
-    private MockMultipartFile textMultipartFile() {
+    protected MockMultipartFile textMultipartFile() {
         return new MockMultipartFile("file", "test.txt", "multipart/form-data",
             "This is a test file".getBytes());
     }
 
-    private MockMultipartFile jpegMultipartFile() {
+    protected MockMultipartFile jpegMultipartFile() {
         return new MockMultipartFile("image", "image.jpeg", "image/jpeg", new byte[0]);
     }
 
-    private void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
+    protected void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(jpegMultipartFile())
             .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)

@@ -4,6 +4,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,9 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
+import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementAuditService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
 
@@ -30,9 +35,24 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 public class EvidenceManagementClientController {
+    @Autowired
+    private EvidenceManagementDeleteService emDeleteService;
 
-    private final EvidenceManagementDeleteService emDeleteService;
-    private final EvidenceManagementUploadService emUploadService;
+    @Autowired
+    private EvidenceManagementUploadService emUploadService;
+
+    @Autowired
+    private EvidenceManagementDownloadService emDownloadService;
+
+    @Autowired
+    private EvidenceManagementSecureDocStoreService evidenceManagementSecureDocStoreService;
+
+    @Autowired
+    private UserService userService;
+
+    @Value("${feature.secure-doc-store:false}")
+    protected boolean secureDocStoreEnabled;
+    
     private final EvidenceManagementDownloadService emReadService;
     private final EvidenceManagementAuditService emAuditService;
 
@@ -51,7 +71,11 @@ public class EvidenceManagementClientController {
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 
-        return emUploadService.upload(files, authorizationToken, requestId);
+        if (secureDocStoreEnabled) {
+            return evidenceManagementSecureDocStoreService.upload(files, userService.getIdamTokens(authorizationToken));
+        } else {
+            return emUploadService.upload(files, authorizationToken, requestId);
+        }
     }
 
     @ApiOperation(value = "Downloads file from Evidence Management Document Store.")
@@ -80,7 +104,12 @@ public class EvidenceManagementClientController {
     public ResponseEntity<String> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
                                         @RequestHeader(value = "requestId", required = false) String requestId,
                                         @RequestParam("fileUrl") String fileUrl) {
-        return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
+            if (secureDocStoreEnabled) {
+                evidenceManagementSecureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
+            }
     }
 
     @ApiOperation(value = "Handles file auditing with Document Management Store")
