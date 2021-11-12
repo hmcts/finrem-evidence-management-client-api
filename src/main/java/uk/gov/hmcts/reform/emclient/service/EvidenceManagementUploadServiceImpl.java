@@ -6,7 +6,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.hateoas.mediatype.hal.HalLinkDiscoverer;
+import org.springframework.hateoas.hal.HalLinkDiscoverer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -62,7 +62,6 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
                 .status(HttpStatus.OK)
                 .fileUrl(new HalLinkDiscoverer()
                     .findLinkWithRel("self", document.toString())
-                    .orElseThrow(() -> new IllegalStateException("self rel link not found"))
                     .getHref())
                 .fileName(document.get("originalDocumentName").asText())
                 .createdBy(getTextFromJsonNode(document, "createdBy"))

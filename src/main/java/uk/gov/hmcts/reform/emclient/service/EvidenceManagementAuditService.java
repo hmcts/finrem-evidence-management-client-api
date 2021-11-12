@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.emclient.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.hateoas.mediatype.hal.HalLinkDiscoverer;
+import org.springframework.hateoas.hal.HalLinkDiscoverer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -60,7 +60,6 @@ public class EvidenceManagementAuditService {
             .status(HttpStatus.OK)
             .fileUrl(new HalLinkDiscoverer()
                 .findLinkWithRel("self", document.toString())
-                .orElseThrow(() -> new IllegalStateException("self rel link not found"))
                 .getHref())
             .fileName(document.get("originalDocumentName").asText())
             .createdBy(document.get("createdBy").asText())
