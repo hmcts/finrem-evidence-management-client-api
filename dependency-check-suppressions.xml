@@ -16,4 +16,9 @@
                 ]]></notes>
         <cve>CVE-2021-22096</cve>
     </suppress>
+     <suppress>
+        <notes><![CDATA[file name: kotlin-stdlib-1.3.72.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin-stdlib*@.*$</packageUrl>
+        <cpe>CVE-2020-29582</cpe>
+    </suppress>
 </suppressions>
