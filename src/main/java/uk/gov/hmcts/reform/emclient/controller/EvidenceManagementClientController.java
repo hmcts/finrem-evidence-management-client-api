@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
+import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementAuditService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
@@ -104,12 +104,12 @@ public class EvidenceManagementClientController {
     public ResponseEntity<String> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
                                         @RequestHeader(value = "requestId", required = false) String requestId,
                                         @RequestParam("fileUrl") String fileUrl) {
-            if (secureDocStoreEnabled) {
-                evidenceManagementSecureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else {
-                return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
-            }
+        if (secureDocStoreEnabled) {
+            evidenceManagementSecureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
+        }
     }
 
     @ApiOperation(value = "Handles file auditing with Document Management Store")
