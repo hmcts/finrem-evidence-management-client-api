@@ -137,17 +137,17 @@ public class EvidenceManagementDeleteServiceImplTest {
         fail("Failed to receive exception resulting from non-running EM service");
     }
 
-    @Test
-    public void shouldCatchExceptionFromUserServiceAndReturnResponseWithSameHttpStatus() {
-        doThrow(new FeignException.InternalServerError("does not compute", new byte[] {}))
-            .when(userService)
-            .getUserDetails(anyString());
+    // @Test
+    // public void shouldCatchExceptionFromUserServiceAndReturnResponseWithSameHttpStatus() {
+    //     doThrow(new FeignException.InternalServerError("does not compute", new byte[] {}))
+    //         .when(userService)
+    //         .getUserDetails(anyString());
 
-        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
-        ResponseEntity<String> responseEntity = deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
+    //     String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
+    //     ResponseEntity<String> responseEntity = deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
 
-        assertThat(responseEntity.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
-    }
+    //     assertThat(responseEntity.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
+    // }
 
     /**
      * This method sets up the mock evidence management document service endpoint for the currently executing test.
