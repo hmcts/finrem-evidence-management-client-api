@@ -88,11 +88,11 @@ public class EvidenceManagementClientController {
     })
     @GetMapping(value = "/version/1/download", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<byte[]> download(
+    public ResponseEntity<byte[]> download(@RequestHeader(value = "Authorization") String authorizationToken,
         @RequestParam("binaryFileUrl") String binaryFileUrl) {
         log.info("Call to download doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
-            byte[] bytes = evidenceManagementSecureDocStoreService.download(fileId, userService.getIdamTokens(authorizationToken));
+            byte[] bytes = evidenceManagementSecureDocStoreService.download(binaryFileUrl, userService.getIdamTokens(authorizationToken));
             return new ResponseEntity<>(bytes, HttpStatus.OK);
 
         } else {
