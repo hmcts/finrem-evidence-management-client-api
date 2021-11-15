@@ -95,8 +95,8 @@ public class EvidenceManagementSecureDocStoreService {
     private ResponseEntity<Resource> downloadResource(String selfHref, IdamTokens idamTokens) {
         String documentHref = URI.create(selfHref).getPath().replaceFirst("/", "");
         log.info("Request for userId {} and downloadUrl {}: File download request from Case Doc AM  is {}",
-        idamTokens.getEmail(),
-        documentHref);
+            idamTokens.getEmail(),
+            documentHref);
         return caseDocumentClient.getDocumentBinary(idamTokens.getIdamOauth2Token(),
             idamTokens.getServiceAuthorization(), documentHref);
     }
