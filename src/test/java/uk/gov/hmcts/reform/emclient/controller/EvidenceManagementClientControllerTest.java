@@ -30,7 +30,6 @@ import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementAuditService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
-import uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 
 import java.util.Collections;
