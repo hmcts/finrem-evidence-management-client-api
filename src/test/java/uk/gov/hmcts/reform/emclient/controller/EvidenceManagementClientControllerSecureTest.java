@@ -166,15 +166,15 @@ public class EvidenceManagementClientControllerSecureTest {
         verify(emSecureDocService).delete(UPLOADED_FILE_URL, idamTokens);
     }
 
-    @Test
-    public void shouldDownloadFileWhenFileUrl() throws Exception {
-        mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + DOWNLOAD_FILE_ID)
-            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
-            .header(REQUEST_ID_HEADER, REQUEST_ID))
-            .andExpect(status().isOk())
-            .andReturn();
-        verify(emSecureDocService).download(DOWNLOAD_FILE_ID, idamTokens);
-    }
+    // @Test
+    // public void shouldDownloadFileWhenFileUrl() throws Exception {
+    //     mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + DOWNLOAD_FILE_ID)
+    //         .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+    //         .header(REQUEST_ID_HEADER, REQUEST_ID))
+    //         .andExpect(status().isOk())
+    //         .andReturn();
+    //     verify(emSecureDocService).download(DOWNLOAD_FILE_ID, idamTokens);
+    // }
 
     private IdamTokens buildIdamTokens() {
         IdamTokens idamTokens = IdamTokens.builder()
