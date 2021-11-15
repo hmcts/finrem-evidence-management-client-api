@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.divorce.emclient;
+package uk.gov.hmcts.reform.finrem.emclient;
 
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Strings;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
-import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
+import uk.gov.hmcts.reform.emclient.EvidenceManagementClientApplication;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
