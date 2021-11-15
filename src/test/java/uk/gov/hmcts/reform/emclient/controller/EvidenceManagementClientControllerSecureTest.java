@@ -119,7 +119,6 @@ public class EvidenceManagementClientControllerSecureTest {
         verify(emSecureDocService).upload(MULTIPART_FILE_LIST, idamTokens);
     }
 
-
     @Test
     public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileUploadWithS2STokenIsInvokedWithInvalidAuthToken()
         throws Exception {
@@ -135,7 +134,6 @@ public class EvidenceManagementClientControllerSecureTest {
 
         verify(emSecureDocService).upload(MULTIPART_FILE_LIST, idamTokens);
     }
-
 
     @Test
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEmStoreThrowsHttpServerException()
