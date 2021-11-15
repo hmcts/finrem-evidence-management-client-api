@@ -87,7 +87,7 @@ public class EvidenceManagementClientControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-   @Test
+    @Test
     public void shouldDownloadFileWhenDownloadFileIsInvokedWithFileUrl() throws Exception {
         // given(downloadService.download(UPLOADED_FILE_URL))
         //     .willReturn(new ResponseEntity<>(HttpStatus.OK));
