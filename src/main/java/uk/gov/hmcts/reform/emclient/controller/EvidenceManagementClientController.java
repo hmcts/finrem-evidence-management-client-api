@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.emclient.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,7 @@ import java.util.List;
 @RequestMapping(path = "/emclientapi")
 @Validated
 @RequiredArgsConstructor
+@Slf4j
 public class EvidenceManagementClientController {
     @Autowired
     private EvidenceManagementDeleteService emDeleteService;
@@ -53,7 +55,6 @@ public class EvidenceManagementClientController {
     @Value("${feature.secure-doc-store:false}")
     protected boolean secureDocStoreEnabled;
     
-    private final EvidenceManagementDownloadService emReadService;
     private final EvidenceManagementAuditService emAuditService;
 
     @ApiOperation(value = "Handles file upload to Evidence Management Document Store")
@@ -70,7 +71,7 @@ public class EvidenceManagementClientController {
             @RequestHeader(value = "Authorization", required = false) String authorizationToken,
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
-
+        log.info("Call to upload doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
             return evidenceManagementSecureDocStoreService.upload(files, userService.getIdamTokens(authorizationToken));
         } else {
@@ -89,7 +90,15 @@ public class EvidenceManagementClientController {
     @ResponseBody
     public ResponseEntity<byte[]> download(
         @RequestParam("binaryFileUrl") String binaryFileUrl) {
-        return emReadService.download(binaryFileUrl);
+        log.info("Call to download doc received with secure flag {} ", secureDocStoreEnabled);
+        if (secureDocStoreEnabled) {
+            byte[] bytes = evidenceManagementSecureDocStoreService.download(fileId, userService.getIdamTokens(authorizationToken));
+            return new ResponseEntity<>(bytes, HttpStatus.OK);
+
+        } else {
+            return emDownloadService.download(binaryFileUrl);
+        }
+        
     }
 
     @ApiOperation(value = "Handles file deletion from Evidence Management Document Store.")
@@ -104,9 +113,10 @@ public class EvidenceManagementClientController {
     public ResponseEntity<String> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
                                         @RequestHeader(value = "requestId", required = false) String requestId,
                                         @RequestParam("fileUrl") String fileUrl) {
+        log.info("Call to delete doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
             evidenceManagementSecureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
         }
