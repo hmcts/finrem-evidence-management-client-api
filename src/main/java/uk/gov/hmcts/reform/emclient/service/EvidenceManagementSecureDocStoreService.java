@@ -40,6 +40,8 @@ public class EvidenceManagementSecureDocStoreService {
     }
 
     public List<FileUploadResponse> upload(List<MultipartFile> files, IdamTokens idamTokens) throws HttpClientErrorException {
+        log.info("EvidenceManagementSecureDocStoreService upload file: {}", files.toString());
+        log.info("EvidenceManagementSecureDocStoreService idam tokens: {}", idamTokens.toString());
         UploadResponse uploadResponse = caseDocumentClient
             .uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), "Divorce", "Divorce", files);
         log.info("For userId {} : File upload response from Case Doc AM  is {}",
