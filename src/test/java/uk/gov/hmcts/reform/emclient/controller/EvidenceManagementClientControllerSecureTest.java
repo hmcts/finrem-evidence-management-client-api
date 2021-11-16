@@ -53,7 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     FeignRibbonClientAutoConfiguration.class,
     FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
-@TestPropertySource(properties = {"feature.secure-doc-store=true", "feign.httpclient.enabled=false"})
+@TestPropertySource(properties = {"feature.secure-doc-store=false", "feign.httpclient.enabled=false"})
 public class EvidenceManagementClientControllerSecureTest {
 
     private static final String AUTH_TOKEN = "AAAAAAA";
