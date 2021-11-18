@@ -216,7 +216,6 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     implementation group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-    implementation group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
     
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
