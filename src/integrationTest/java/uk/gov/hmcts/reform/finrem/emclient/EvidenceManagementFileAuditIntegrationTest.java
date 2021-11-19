@@ -70,20 +70,20 @@ public class EvidenceManagementFileAuditIntegrationTest {
         idamTestSupportUtil.deleteCreatedUser();
     }
 
-    @Test
-    public void givenUploadedFiles_whenFilesAudited_thenAuditResponseIsReturned() throws JsonProcessingException {
-        fileUrl = uploadFile();
+    // @Test
+    // public void givenUploadedFiles_whenFilesAudited_thenAuditResponseIsReturned() throws JsonProcessingException {
+    //     fileUrl = uploadFile();
 
-        Response response = SerenityRest.given()
-            .header("Authorization", idamTestSupportUtil.getIdamTestUser())
-            .get(evidenceManagementClientApiBaseUrl + String.format("/audit?fileUrls=%s&fileUrls=%s", fileUrl, fileUrl))
-            .andReturn();
-        assertThat(response.getStatusCode(), is(HttpStatus.SC_OK));
+    //     Response response = SerenityRest.given()
+    //         .header("Authorization", idamTestSupportUtil.getIdamTestUser())
+    //         .get(evidenceManagementClientApiBaseUrl + String.format("/audit?fileUrls=%s&fileUrls=%s", fileUrl, fileUrl))
+    //         .andReturn();
+    //     assertThat(response.getStatusCode(), is(HttpStatus.SC_OK));
 
-        List<FileUploadResponse> auditResponses = new ObjectMapper().readValue(response.getBody().asString(), new TypeReference<>() {});
-        assertThat(auditResponses, hasSize(2));
-        auditResponses.forEach(auditResponse -> assertThat(auditResponse.getFileName(), is(Paths.get(FILE_PATH).getFileName().toString())));
-    }
+    //     List<FileUploadResponse> auditResponses = new ObjectMapper().readValue(response.getBody().asString(), new TypeReference<>() {});
+    //     assertThat(auditResponses, hasSize(2));
+    //     auditResponses.forEach(auditResponse -> assertThat(auditResponse.getFileName(), is(Paths.get(FILE_PATH).getFileName().toString())));
+    // }
 
     private String uploadFile() {
         return evidenceManagementTestUtils.uploadFileToEvidenceManagement(FILE_PATH, IMAGE_FILE_CONTENT_TYPE,
