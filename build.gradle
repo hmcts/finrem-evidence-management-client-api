@@ -239,7 +239,8 @@ dependencies {
         force = true
     }
     implementation("com.github.hmcts:ccd-case-document-am-client:1.7.3")
-
+    implementation group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
+    
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremock
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot
     testImplementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
