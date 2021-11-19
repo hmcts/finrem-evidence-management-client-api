@@ -1,16 +1,16 @@
 package uk.gov.hmcts.reform.finrem.emclient;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.response.Response;
+// import com.fasterxml.jackson.core.JsonProcessingException;
+// import com.fasterxml.jackson.core.type.TypeReference;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+// import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
-import net.serenitybdd.rest.SerenityRest;
-import org.apache.http.HttpStatus;
+// import net.serenitybdd.rest.SerenityRest;
+// import org.apache.http.HttpStatus;
 import org.junit.After;
 import org.junit.Rule;
-import org.junit.Test;
+// import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,14 +21,14 @@ import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfigura
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
-import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
+// import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
-import java.nio.file.Paths;
-import java.util.List;
+// import java.nio.file.Paths;
+// import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+// import static org.hamcrest.MatcherAssert.assertThat;
+// import static org.hamcrest.Matchers.hasSize;
+// import static org.hamcrest.Matchers.is;
 
 @RunWith(SerenityRunner.class)
 @ComponentScan(basePackages = {"uk.gov.hmcts.reform.finrem.emclient", "uk.gov.hmcts.auth.provider.service"})
