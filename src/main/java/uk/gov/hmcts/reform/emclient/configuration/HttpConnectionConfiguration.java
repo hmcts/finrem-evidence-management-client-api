@@ -52,6 +52,12 @@ public class HttpConnectionConfiguration {
 
     @Bean
     @Primary
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
+    @Primary
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(
         @Autowired ObjectMapper objectMapper) {
 

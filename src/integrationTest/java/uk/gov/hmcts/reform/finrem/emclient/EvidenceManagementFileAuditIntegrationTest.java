@@ -48,9 +48,6 @@ public class EvidenceManagementFileAuditIntegrationTest {
 
     private final EvidenceManagementTestUtils evidenceManagementTestUtils = new EvidenceManagementTestUtils();
 
-    @MockBean
-    ObjectMapper objectMapper;
-
     @Rule
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
 

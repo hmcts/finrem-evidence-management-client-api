@@ -13,7 +13,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
+import org.springframework.cloud.openfeign.FeignAutoConfiguration;
+import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import uk.gov.hmcts.reform.emclient.EvidenceManagementClientApplication;
 
 import java.io.File;
 import java.net.URI;
@@ -31,9 +42,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SerenityParameterizedRunner.class)
+@Lazy
 @Slf4j
-public class EmClientFileTest extends IntegrationTest {
+@ComponentScan(basePackages = {"uk.gov.hmcts.reform.divorce.emclient", "uk.gov.hmcts.auth.provider.service"})
+@ImportAutoConfiguration({RibbonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+    FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
+@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application-${env}.properties")
+@ContextConfiguration(classes = {EvidenceManagementClientApplication.class})
+@TestPropertySource(properties = {"feign.httpclient.enabled=false"})
+@RunWith(SerenityParameterizedRunner.class)
+public class EmClientFileIntegrationTest {
 
     @Rule
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
@@ -66,7 +85,7 @@ public class EmClientFileTest extends IntegrationTest {
             .collect(Collectors.toList());
     }
 
-    public EmClientFileTest(String filename, String fileContentType) {
+    public EmClientFileIntegrationTest(String filename, String fileContentType) {
         this.name = filename;
         this.fileType = fileContentType;
     }
@@ -114,7 +133,7 @@ public class EmClientFileTest extends IntegrationTest {
         log.info("File download test with documentId {}", documentId);
         Response response = SerenityRest.given()
             .headers(getAuthenticationTokenHeader())
-            .multiPart("file", file,fileContentType)
+            .multiPart("file", file, fileContentType)
             .get(evidenceManagementClientApiBaseUrl.concat("/download/" + documentId.toString()))
             .andReturn();
 
