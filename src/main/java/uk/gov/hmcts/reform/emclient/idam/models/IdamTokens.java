@@ -7,7 +7,8 @@ import lombok.extern.jackson.Jacksonized;
 import java.util.List;
 
 @Data
-@Jacksonized @Builder
+@Jacksonized
+@Builder
 public class IdamTokens {
     String idamOauth2Token;
     String serviceAuthorization;

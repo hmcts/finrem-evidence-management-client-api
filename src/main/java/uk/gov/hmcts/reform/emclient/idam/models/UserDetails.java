@@ -8,7 +8,8 @@ import lombok.extern.jackson.Jacksonized;
 import java.util.List;
 
 @Getter
-@Jacksonized @Builder
+@Jacksonized
+@Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDetails {
 
