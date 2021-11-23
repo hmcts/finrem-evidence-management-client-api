@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.emclient.config;
+package uk.gov.hmcts.reform.emclient.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
