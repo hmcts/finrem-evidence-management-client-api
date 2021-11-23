@@ -1,9 +1,7 @@
 package uk.gov.hmcts.reform.emclient.config;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.ImmutableList;
 import feign.Client;
 import feign.httpclient.ApacheHttpClient;
