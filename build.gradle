@@ -264,6 +264,8 @@ dependencies {
     integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
     integrationTestImplementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
 
+    integrationTestImplementation group: 'org.glassfish', name: 'jakarta.el', version: '3.0.4'
+
     testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
     testSmokeImplementation sourceSets.main.runtimeClasspath
     testSmokeImplementation sourceSets.test.runtimeClasspath
