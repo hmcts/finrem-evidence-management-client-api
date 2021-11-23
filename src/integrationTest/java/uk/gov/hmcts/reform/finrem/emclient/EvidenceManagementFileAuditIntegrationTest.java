@@ -23,6 +23,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
+import uk.gov.hmcts.reform.emclient.configuration.HttpConnectionConfiguration;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import java.nio.file.Paths;
@@ -35,7 +36,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(SerenityRunner.class)
 @ComponentScan(basePackages = {"uk.gov.hmcts.reform.finrem.emclient", "uk.gov.hmcts.auth.provider.service"})
 @ImportAutoConfiguration({FeignRibbonClientAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-    FeignAutoConfiguration.class, uk.gov.hmcts.reform.emclient.config.HttpConnectionConfiguration.class})
+    FeignAutoConfiguration.class, HttpConnectionConfiguration.class})
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
