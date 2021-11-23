@@ -39,7 +39,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -166,15 +166,15 @@ public class EvidenceManagementClientControllerSecureTest {
         verify(emSecureDocService).delete(UPLOADED_FILE_URL, idamTokens);
     }
 
-    // @Test
-    // public void shouldDownloadFileWhenFileUrl() throws Exception {
-    //     mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + DOWNLOAD_FILE_ID)
-    //         .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
-    //         .header(REQUEST_ID_HEADER, REQUEST_ID))
-    //         .andExpect(status().isOk())
-    //         .andReturn();
-    //     verify(emSecureDocService).download(DOWNLOAD_FILE_ID, idamTokens);
-    // }
+    @Test
+    public void shouldDownloadFileWhenFileUrl() throws Exception {
+        mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL)
+            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+            .param("binaryFileUrl", DOWNLOAD_FILE_ID))
+            .andExpect(status().isOk())
+            .andReturn();
+        verify(emSecureDocService).download(DOWNLOAD_FILE_ID, idamTokens);
+    }
 
     private IdamTokens buildIdamTokens() {
         IdamTokens idamTokens = IdamTokens.builder()

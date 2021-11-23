@@ -16,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 @Lazy
 @RunWith(SerenityRunner.class)
@@ -25,6 +26,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
+@TestPropertySource(properties = {"feign.httpclient.enabled=false"})
 public class EvidenceManagementFileDownloadIntegrationTest {
 
     @Rule

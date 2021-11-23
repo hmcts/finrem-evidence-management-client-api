@@ -149,6 +149,10 @@ tasks.withType(Checkstyle).each { checkstyleTask ->
     }
 }
 
+configurations {
+    integrationTestImplementation.extendsFrom implementation
+}
+
 def versions = [
         commonsBeanUtils                        : '1.9.4',
         commonsIo                               : '2.7',
