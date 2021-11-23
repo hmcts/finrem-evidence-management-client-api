@@ -8,9 +8,8 @@ import lombok.extern.jackson.Jacksonized;
 import java.util.List;
 
 @Getter
-@Builder
+@Jacksonized @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Jacksonized
 public class UserDetails {
 
     private String id;
