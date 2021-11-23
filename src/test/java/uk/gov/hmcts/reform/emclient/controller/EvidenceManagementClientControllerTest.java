@@ -93,7 +93,7 @@ public class EvidenceManagementClientControllerTest {
 
     @Test
     public void shouldDownloadFileWhenDownloadFileIsInvokedWithFileUrl() throws Exception {
-        given(downloadService.download( DOWNLOAD_FILE_ID))
+        given(downloadService.download(DOWNLOAD_FILE_ID))
             .willReturn(new ResponseEntity<>(HttpStatus.OK));
 
         mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL)
