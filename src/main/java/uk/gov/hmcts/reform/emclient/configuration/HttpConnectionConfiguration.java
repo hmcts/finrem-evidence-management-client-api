@@ -27,6 +27,7 @@ import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterc
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 
 import static java.util.Arrays.asList;
 
@@ -67,8 +68,7 @@ public class HttpConnectionConfiguration {
         MappingJackson2HttpMessageConverter jackson2HttpConverter
             = new MappingJackson2HttpMessageConverter(objectMapper);
         jackson2HttpConverter.setObjectMapper(objectMapper);
-        jackson2HttpConverter.setSupportedMediaTypes(ImmutableList.of(MEDIA_TYPE_HAL_JSON, MediaType.APPLICATION_JSON));
-
+        jackson2HttpConverter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
         return jackson2HttpConverter;
     }
 
