@@ -59,15 +59,13 @@ public class EvidenceManagementSecureDocStoreService {
         ByteArrayResource resource = (ByteArrayResource) responseEntity.getBody();
 
         return (resource != null) ? resource.getByteArray() : new byte[0];
-
     }
 
     public void delete(String selfHref, IdamTokens idamTokens) throws HttpClientErrorException {
         log.info("Request for userId {} and deleteDocUrl {} and docId {} : File delete request from Case Doc AM",
             idamTokens.getEmail(), selfHref, getDocumentIdFromSelfHref(selfHref));
 
-        caseDocumentClient.deleteDocument(idamTokens.getIdamOauth2Token(),
-            idamTokens.getServiceAuthorization(),
+        caseDocumentClient.deleteDocument(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(),
             getDocumentIdFromSelfHref(selfHref), Boolean.TRUE);
     }
 
@@ -77,9 +75,8 @@ public class EvidenceManagementSecureDocStoreService {
 
     private List<FileUploadResponse> toUploadResponse(UploadResponse uploadResponse) {
         Stream<Document> documentStream = stream(uploadResponse.getDocuments().spliterator(), false);
-        return documentStream
-            .map(this::createUploadResponse)
-            .collect(Collectors.toList());
+
+        return documentStream.map(this::createUploadResponse).collect(Collectors.toList());
     }
 
     private FileUploadResponse createUploadResponse(Document document) {
