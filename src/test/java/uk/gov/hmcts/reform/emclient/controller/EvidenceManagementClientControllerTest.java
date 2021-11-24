@@ -10,12 +10,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
-import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -51,9 +51,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(EvidenceManagementClientController.class)
-@ImportAutoConfiguration({RibbonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-    FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
+@ImportAutoConfiguration({RibbonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class, FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
+@TestPropertySource(properties = {"feature.secure-doc-store=false"})
 public class EvidenceManagementClientControllerTest {
 
     private static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
@@ -86,41 +86,40 @@ public class EvidenceManagementClientControllerTest {
 
     @Test
     public void shouldDownloadFileWhenDownloadFileIsInvokedWithFileUrl() throws Exception {
-        given(downloadService.download(UPLOADED_FILE_URL))
-            .willReturn(new ResponseEntity<>(HttpStatus.OK));
+        given(downloadService.download(UPLOADED_FILE_URL)).willReturn(new ResponseEntity<>(HttpStatus.OK));
 
         mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + UPLOADED_FILE_URL)
-            .header(REQUEST_ID_HEADER, REQUEST_ID))
+            .header(REQUEST_ID_HEADER, REQUEST_ID)
+            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN))
             .andExpect(status().isOk())
             .andReturn();
     }
 
     @Test
     public void shouldDoNothingWhenDownloadFileIsInvokedWithoutFileUrl() throws Exception {
-        given(downloadService.download(UPLOADED_FILE_URL))
-            .willReturn(new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        given(downloadService.download(UPLOADED_FILE_URL)).willReturn(new ResponseEntity<>(HttpStatus.NO_CONTENT));
 
         mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + UPLOADED_FILE_URL)
-            .header(REQUEST_ID_HEADER, REQUEST_ID))
+            .header(REQUEST_ID_HEADER, REQUEST_ID)
+            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN))
             .andExpect(status().isNoContent())
             .andReturn();
     }
 
     @Test
     public void shouldReceiveExceptionWhenDownloadFileIsInvokedAgainstDeadEmService() throws Exception {
-        given(downloadService.download(UPLOADED_FILE_URL))
-            .willThrow(new ResourceAccessException("Service not found"));
+        given(downloadService.download(UPLOADED_FILE_URL)).willThrow(new ResourceAccessException("Service not found"));
 
         mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + UPLOADED_FILE_URL)
-            .header(REQUEST_ID_HEADER, REQUEST_ID))
+            .header(REQUEST_ID_HEADER, REQUEST_ID)
+            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN))
             .andExpect(status().isInternalServerError());
     }
 
 
     @Test
     public void shouldUploadFileTokenWhenHandleFileUploadIsInvokedWithValidInputs() throws Exception {
-        given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
-            .willReturn(prepareFileUploadResponse());
+        given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID)).willReturn(prepareFileUploadResponse());
 
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(jpegMultipartFile())

@@ -15,14 +15,15 @@ import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
 import uk.gov.hmcts.reform.authorisation.healthcheck.ServiceAuthHealthIndicator;
+import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClientApi;
 import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
 
 @SpringBootApplication(exclude = {HypermediaAutoConfiguration.class})
 @ComponentScan(basePackages = "uk.gov.hmcts", excludeFilters = {
-    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ServiceAuthHealthIndicator.class) }
-   )
+    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ServiceAuthHealthIndicator.class)
+})
 @EnableRetry(proxyTargetClass = true)
-@EnableFeignClients(basePackageClasses = {IdamApiClient.class})
+@EnableFeignClients(basePackageClasses = {IdamApiClient.class, ServiceAuthorisationApi.class, CaseDocumentClientApi.class})
 @EnableCircuitBreaker
 @Slf4j
 public class EvidenceManagementClientApplication {
@@ -32,7 +33,7 @@ public class EvidenceManagementClientApplication {
     }
 
     @Bean
-    public AuthTokenGenerator serviceAuthTokenGenerator(
+    public AuthTokenGenerator authTokenGenerator(
             @Value("${idam.auth.secret}") final String s2sToken,
             @Value("${idam.auth.microservice}") final String microService,
             final ServiceAuthorisationApi serviceAuthorisationApi

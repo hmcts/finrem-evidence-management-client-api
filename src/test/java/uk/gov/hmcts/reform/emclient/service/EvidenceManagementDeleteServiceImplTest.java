@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-import feign.FeignException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +16,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -135,18 +132,6 @@ public class EvidenceManagementDeleteServiceImplTest {
         deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
 
         fail("Failed to receive exception resulting from non-running EM service");
-    }
-
-    @Test
-    public void shouldCatchExceptionFromUserServiceAndReturnResponseWithSameHttpStatus() {
-        doThrow(new FeignException.InternalServerError("does not compute", new byte[] {}))
-            .when(userService)
-            .getUserDetails(anyString());
-
-        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
-        ResponseEntity<String> responseEntity = deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
-
-        assertThat(responseEntity.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     /**
