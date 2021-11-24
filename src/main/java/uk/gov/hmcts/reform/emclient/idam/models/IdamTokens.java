@@ -1,13 +1,15 @@
 package uk.gov.hmcts.reform.emclient.idam.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
-@Jacksonized
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class IdamTokens {
     String idamOauth2Token;
