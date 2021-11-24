@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.emclient.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.common.collect.ImmutableList;
 import feign.Client;
 import feign.httpclient.ApacheHttpClient;
 import org.apache.http.HttpRequestInterceptor;
