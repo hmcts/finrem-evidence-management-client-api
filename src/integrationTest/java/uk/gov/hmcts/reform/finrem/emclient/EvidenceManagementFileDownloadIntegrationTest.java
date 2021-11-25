@@ -53,13 +53,6 @@ public class EvidenceManagementFileDownloadIntegrationTest {
 
     @After
     public void cleanUp() {
-        if (fileUrl != null) {
-            evidenceManagementTestUtils.deleteFileFromEvidenceManagement(
-                evidenceManagementClientApiBaseUrl + EvidenceManagementFileDeleteIntegrationTest.DELETE_ENDPOINT,
-                fileUrl,
-                evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
-            fileUrl = null;
-        }
         idamTestSupportUtil.deleteCreatedUser();
     }
 
