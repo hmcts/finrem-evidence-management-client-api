@@ -16,15 +16,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 @Lazy
 @RunWith(SerenityRunner.class)
 @ComponentScan(basePackages = {"uk.gov.hmcts.reform.finrem.emclient", "uk.gov.hmcts.auth.provider.service"})
-@ImportAutoConfiguration({FeignRibbonClientAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class,
+@ImportAutoConfiguration({FeignRibbonClientAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
         FeignAutoConfiguration.class})
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
+@TestPropertySource(properties = {"feign.httpclient.enabled=false"})
 public class EvidenceManagementFileDownloadIntegrationTest {
 
     @Rule
@@ -66,7 +68,8 @@ public class EvidenceManagementFileDownloadIntegrationTest {
         fileUrl = uploadFile();
         evidenceManagementTestUtils.downloadFileToEvidenceManagement(
             fileUrl + "/binary",
-            evidenceManagementClientApiDownloadUrl);
+            evidenceManagementClientApiDownloadUrl,
+            idamTestSupportUtil);
     }
 
     private String uploadFile() {
