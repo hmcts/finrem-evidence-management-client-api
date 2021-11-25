@@ -28,7 +28,6 @@ public class UserService {
     }
 
     public IdamTokens getIdamTokens(String authorisation) {
-
         UserDetails userDetails = getUserDetails(authorisation);
 
         return IdamTokens.builder()
