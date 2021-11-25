@@ -31,6 +31,7 @@ import static java.util.stream.StreamSupport.stream;
 @Slf4j
 public class EvidenceManagementSecureDocStoreService {
 
+    protected static final String JURISDICTION_ID = "DIVORCE";
     private final CaseDocumentClient caseDocumentClient;
     private static final int DOC_UUID_LENGTH = 36;
 
@@ -44,7 +45,7 @@ public class EvidenceManagementSecureDocStoreService {
         log.info("EvidenceManagementSecureDocStoreService idam tokens: {}", idamTokens.toString());
 
         UploadResponse uploadResponse = caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(),
-            idamTokens.getServiceAuthorization(), "Divorce", "Divorce", files);
+            idamTokens.getServiceAuthorization(), "FinancialRemedyContested", JURISDICTION_ID, files);
 
         log.info("For userId {} : File upload response from Case Doc AM  is {}", idamTokens.getEmail(), uploadResponse);
         if (uploadResponse != null) {
