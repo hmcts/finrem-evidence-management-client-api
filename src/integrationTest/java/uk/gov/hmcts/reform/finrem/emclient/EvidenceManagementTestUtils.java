@@ -53,9 +53,10 @@ class EvidenceManagementTestUtils {
         return getDocumentStoreUri(((List<String>) response.getBody().path("fileUrl")).get(0), documentManagementUrl);
     }
 
-    void downloadFileToEvidenceManagement(String filePath, String evidenceManagementClientApiDownloadUrl) {
+    void downloadFileToEvidenceManagement(String filePath, String evidenceManagementClientApiDownloadUrl, IdamUtils idamTestSupportUtil) {
         Response response = SerenityRest.given()
-                .queryParam("binaryFileUrl",filePath)
+                .headers(getAuthenticationTokenHeader(idamTestSupportUtil))
+                .queryParam("binaryFileUrl", filePath)
                 .get(evidenceManagementClientApiDownloadUrl)
                 .andReturn();
 

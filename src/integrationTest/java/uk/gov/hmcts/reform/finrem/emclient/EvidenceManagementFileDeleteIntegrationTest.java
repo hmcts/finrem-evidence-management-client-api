@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.Map;
 
@@ -33,6 +34,7 @@ import static uk.gov.hmcts.reform.finrem.emclient.EvidenceManagementTestUtils.AU
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
+@TestPropertySource(properties = {"feign.httpclient.enabled=false"})
 public class EvidenceManagementFileDeleteIntegrationTest {
 
     private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
