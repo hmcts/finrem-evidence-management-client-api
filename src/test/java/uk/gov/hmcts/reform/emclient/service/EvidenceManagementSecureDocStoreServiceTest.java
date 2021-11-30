@@ -30,6 +30,7 @@ import static uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocSt
 
 @RunWith(MockitoJUnitRunner.class)
 public class EvidenceManagementSecureDocStoreServiceTest {
+    private static final String CASE_TYPE_ID = "FinancialRemedyContested";
 
     private EvidenceManagementSecureDocStoreService evidenceManagementSecureDocStoreService;
 
@@ -51,10 +52,10 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         UploadResponse uploadResponse = new UploadResponse(Arrays.asList(document));
 
         when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(),
-            idamTokens.getServiceAuthorization(), "FinancialRemedyContested", JURISDICTION_ID, files))
+            idamTokens.getServiceAuthorization(), CASE_TYPE_ID, JURISDICTION_ID, files))
             .thenReturn(uploadResponse);
 
-        List<FileUploadResponse> result = evidenceManagementSecureDocStoreService.upload(files, idamTokens);
+        List<FileUploadResponse> result = evidenceManagementSecureDocStoreService.upload(files, idamTokens, CASE_TYPE_ID);
         FileUploadResponse response = result.get(0);
 
         assertFileUploadResponse(response);
@@ -66,10 +67,10 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         List<MultipartFile> files = Arrays.asList(mockFile);
 
         when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(),
-            idamTokens.getServiceAuthorization(), "FinancialRemedyContested", JURISDICTION_ID, files))
+            idamTokens.getServiceAuthorization(), CASE_TYPE_ID, JURISDICTION_ID, files))
             .thenReturn(null);
 
-        List<FileUploadResponse> result = evidenceManagementSecureDocStoreService.upload(files, idamTokens);
+        List<FileUploadResponse> result = evidenceManagementSecureDocStoreService.upload(files, idamTokens, CASE_TYPE_ID);
 
         assertNull(result);
     }
@@ -80,10 +81,10 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         List<MultipartFile> files = Arrays.asList(mockFile);
 
         when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(),
-            idamTokens.getServiceAuthorization(), "FinancialRemedyContested", JURISDICTION_ID, files))
+            idamTokens.getServiceAuthorization(), CASE_TYPE_ID, JURISDICTION_ID, files))
             .thenThrow(HttpClientErrorException.class);
 
-        evidenceManagementSecureDocStoreService.upload(files, idamTokens);
+        evidenceManagementSecureDocStoreService.upload(files, idamTokens, CASE_TYPE_ID);
     }
 
     @Test

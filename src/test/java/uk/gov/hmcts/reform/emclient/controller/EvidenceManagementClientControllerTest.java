@@ -60,6 +60,8 @@ public class EvidenceManagementClientControllerTest {
     private static final String AUTH_TOKEN = "AAAAAAA";
     private static final String REQUEST_ID = "1234";
     private static final String AUTHORIZATION_TOKEN_HEADER = "Authorization";
+    private static final String CASE_TYPE_ID = "caseTypeId";
+    private static final String CASE_TYPE = "FinancialRemedyContested";
     private static final String REQUEST_ID_HEADER = "requestId";
     private static final String CONTENT_TYPE_HEADER = "content-type";
     private static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
@@ -124,6 +126,7 @@ public class EvidenceManagementClientControllerTest {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(jpegMultipartFile())
             .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+            .header(CASE_TYPE_ID, CASE_TYPE)
             .header(REQUEST_ID_HEADER, REQUEST_ID)
             .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
             .andExpect(status().isOk())
@@ -147,6 +150,7 @@ public class EvidenceManagementClientControllerTest {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(jpegMultipartFile())
             .header(AUTHORIZATION_TOKEN_HEADER, INVALID_AUTH_TOKEN)
+            .header(CASE_TYPE_ID, CASE_TYPE)
             .header(REQUEST_ID_HEADER, REQUEST_ID)
             .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
             .andExpect(status().is4xxClientError());
@@ -159,6 +163,7 @@ public class EvidenceManagementClientControllerTest {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(textMultipartFile())
             .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+            .header(CASE_TYPE_ID, CASE_TYPE)
             .header(REQUEST_ID_HEADER, REQUEST_ID)
             .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
             .andDo(print())
@@ -187,6 +192,7 @@ public class EvidenceManagementClientControllerTest {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(jpegMultipartFile())
             .header(AUTHORIZATION_TOKEN_HEADER, INVALID_AUTH_TOKEN)
+            .header(CASE_TYPE_ID, CASE_TYPE)
             .header(REQUEST_ID_HEADER, REQUEST_ID)
             .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
             .andExpect(status().is4xxClientError());
@@ -199,6 +205,7 @@ public class EvidenceManagementClientControllerTest {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(textMultipartFile())
             .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+            .header(CASE_TYPE_ID, CASE_TYPE)
             .header(REQUEST_ID_HEADER, REQUEST_ID)
             .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
             .andDo(print())
@@ -314,6 +321,7 @@ public class EvidenceManagementClientControllerTest {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(jpegMultipartFile())
             .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+            .header(CASE_TYPE_ID, CASE_TYPE)
             .header(REQUEST_ID_HEADER, REQUEST_ID)
             .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
             .andExpect(status().is5xxServerError())

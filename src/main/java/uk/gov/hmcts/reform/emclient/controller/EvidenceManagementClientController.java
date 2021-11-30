@@ -57,12 +57,13 @@ public class EvidenceManagementClientController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public List<FileUploadResponse> upload(
-        @RequestHeader(value = "Authorization", required = false) String authorizationToken,
+        @RequestHeader(value = "Authorization") String authorizationToken,
+        @RequestHeader(value = "caseTypeId") String caseTypeId,
         @RequestHeader(value = "requestId", required = false) String requestId,
         @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
         log.info("Call to upload doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
-            return secureDocStoreService.upload(files, userService.getIdamTokens(authorizationToken));
+            return secureDocStoreService.upload(files, userService.getIdamTokens(authorizationToken), caseTypeId);
         }
 
         return emUploadService.upload(files, authorizationToken, requestId);
@@ -74,7 +75,8 @@ public class EvidenceManagementClientController {
         @ApiResponse(code = 400, message = "Bad Request"),
         @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    @GetMapping(value = "/version/1/download", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/version/1/download",
+        produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
     @ResponseBody
     public ResponseEntity<byte[]> download(
         @RequestHeader(value = "Authorization") String authorizationToken,
