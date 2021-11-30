@@ -42,17 +42,18 @@ public class EvidenceManagementSecureDocStoreService {
 
     public List<FileUploadResponse> upload(List<MultipartFile> files, IdamTokens idamTokens) throws HttpClientErrorException {
         log.info("EvidenceManagementSecureDocStoreService upload file: {}", files.toString());
-        log.info("EvidenceManagementSecureDocStoreService idam tokens: {}", idamTokens.toString());
+        log.info("EvidenceManagementSecureDocStoreService IDAM tokens: {}", idamTokens.toString());
 
         UploadResponse uploadResponse = caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(),
             idamTokens.getServiceAuthorization(), "FinancialRemedyContested", JURISDICTION_ID, files);
 
-        log.info("For userId {} : File upload response from Case Doc AM  is {}", idamTokens.getEmail(), uploadResponse);
-        if (uploadResponse != null) {
-            return toUploadResponse(uploadResponse);
+        log.info("For userId {} : File upload response from Case Doc AM is {}", idamTokens.getEmail(), uploadResponse);
+
+        if (uploadResponse == null) {
+            return null; // TODO: refactor to return empty list instead
         }
 
-        return null;
+        return toUploadResponse(uploadResponse);
     }
 
     public byte[] download(String selfHref, IdamTokens idamTokens) throws HttpClientErrorException {
@@ -63,7 +64,7 @@ public class EvidenceManagementSecureDocStoreService {
     }
 
     public void delete(String selfHref, IdamTokens idamTokens) throws HttpClientErrorException {
-        log.info("Request for userId {} and deleteDocUrl {} and docId {} : File delete request from Case Doc AM",
+        log.info("Request for userId {} and deleteDocUrl {} and docId {}",
             idamTokens.getEmail(), selfHref, getDocumentIdFromSelfHref(selfHref));
 
         caseDocumentClient.deleteDocument(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(),
@@ -95,8 +96,7 @@ public class EvidenceManagementSecureDocStoreService {
 
     private ResponseEntity<Resource> downloadResource(String selfHref, IdamTokens idamTokens) {
         String documentHref = URI.create(selfHref).getPath().replaceFirst("/", "");
-        log.info("Request for userId {} and downloadUrl {}: File download request from Case Doc AM  is {}",
-            idamTokens.getEmail(), documentHref);
+        log.info("Request for userId {} and downloadUrl {}", idamTokens.getEmail(), documentHref);
 
         return caseDocumentClient.getDocumentBinary(idamTokens.getIdamOauth2Token(),
             idamTokens.getServiceAuthorization(), documentHref);

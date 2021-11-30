@@ -59,32 +59,30 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
 
     private FileUploadResponse createUploadResponse(JsonNode document) {
         return FileUploadResponse.builder()
-                .status(HttpStatus.OK)
-                .fileUrl(new HalLinkDiscoverer()
-                    .findLinkWithRel("self", document.toString())
-                    .orElseThrow(() -> new IllegalStateException("self rel link not found"))
-                    .getHref())
-                .fileName(document.get("originalDocumentName").asText())
-                .createdBy(getTextFromJsonNode(document, "createdBy"))
-                .createdOn(document.get("createdOn").asText())
-                .lastModifiedBy(getTextFromJsonNode(document, "lastModifiedBy"))
-                .modifiedOn(getTextFromJsonNode(document, "modifiedOn"))
-                .mimeType(document.get("mimeType").asText())
-                .build();
+            .status(HttpStatus.OK)
+            .fileUrl(new HalLinkDiscoverer()
+                .findLinkWithRel("self", document.toString())
+                .orElseThrow(() -> new IllegalStateException("self rel link not found"))
+                .getHref())
+            .fileName(document.get("originalDocumentName").asText())
+            .createdBy(getTextFromJsonNode(document, "createdBy"))
+            .createdOn(document.get("createdOn").asText())
+            .lastModifiedBy(getTextFromJsonNode(document, "lastModifiedBy"))
+            .modifiedOn(getTextFromJsonNode(document, "modifiedOn"))
+            .mimeType(document.get("mimeType").asText())
+            .build();
     }
 
     private List<FileUploadResponse> toUploadResponse(JsonNode documents) {
         Stream<JsonNode> filesStream = stream(documents.spliterator(), false);
 
-        return filesStream
-                .map(this::createUploadResponse)
-                .collect(Collectors.toList());
+        return filesStream.map(this::createUploadResponse).collect(Collectors.toList());
     }
 
     private String getTextFromJsonNode(JsonNode document, String attribute) {
         return Optional.ofNullable(document)
-                        .flatMap(file -> Optional.ofNullable(attribute).map(file::asText))
-                        .orElse(null);
+            .flatMap(file -> Optional.ofNullable(attribute).map(file::asText))
+            .orElse(null);
     }
 
     private HttpHeaders headers(String userId) {
