@@ -40,18 +40,20 @@ public class EvidenceManagementSecureDocStoreService {
         this.caseDocumentClient = caseDocumentClient;
     }
 
-    public List<FileUploadResponse> upload(List<MultipartFile> files, IdamTokens idamTokens) throws HttpClientErrorException {
-        log.info("EvidenceManagementSecureDocStoreService upload file: {}", files.toString());
-        log.info("EvidenceManagementSecureDocStoreService IDAM tokens: {}", idamTokens.toString());
+    public List<FileUploadResponse> upload(List<MultipartFile> files, IdamTokens idamTokens, String caseTypeId)
+        throws HttpClientErrorException {
+        log.info("EvidenceManagementSecureDocStoreService upload file: {} with case id: {}",
+            files.toString(), caseTypeId);
 
         UploadResponse uploadResponse = caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(),
-            idamTokens.getServiceAuthorization(), "FinancialRemedyContested", JURISDICTION_ID, files);
-
-        log.info("For userId {} : File upload response from Case Doc AM is {}", idamTokens.getEmail(), uploadResponse);
+            idamTokens.getServiceAuthorization(), caseTypeId, JURISDICTION_ID, files);
 
         if (uploadResponse == null) {
             return null; // TODO: refactor to return empty list instead
         }
+
+        log.info("For userId {} : Files uploaded response from Case Doc AM is {}", idamTokens.getEmail(),
+            uploadResponse.getDocuments().stream().map(e -> e.links.binary.href).collect(Collectors.toList()));
 
         return toUploadResponse(uploadResponse);
     }
