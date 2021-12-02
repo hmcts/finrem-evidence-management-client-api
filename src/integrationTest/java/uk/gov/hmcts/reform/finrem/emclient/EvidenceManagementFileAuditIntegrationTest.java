@@ -41,6 +41,7 @@ public class EvidenceManagementFileAuditIntegrationTest {
 
     private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
     private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";
+    private static final String CASE_TYPE = "FinancialRemedyContested";
 
     private final EvidenceManagementTestUtils evidenceManagementTestUtils = new EvidenceManagementTestUtils();
 
@@ -80,6 +81,6 @@ public class EvidenceManagementFileAuditIntegrationTest {
 
     private String uploadFile() {
         return evidenceManagementTestUtils.uploadFileToEvidenceManagement(FILE_PATH, IMAGE_FILE_CONTENT_TYPE,
-            evidenceManagementClientApiBaseUrl, documentManagementStoreUrl, idamTestSupportUtil);
+            evidenceManagementClientApiBaseUrl, documentManagementStoreUrl, idamTestSupportUtil, CASE_TYPE);
     }
 }
