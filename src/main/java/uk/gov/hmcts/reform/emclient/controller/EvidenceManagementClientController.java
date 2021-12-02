@@ -75,8 +75,7 @@ public class EvidenceManagementClientController {
         @ApiResponse(code = 400, message = "Bad Request"),
         @ApiResponse(code = 500, message = "Internal Server Error")
     })
-    @GetMapping(value = "/version/1/download",
-        produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    @GetMapping(value = "/version/1/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody
     public ResponseEntity<byte[]> download(
         @RequestHeader(value = "Authorization") String authorizationToken,
