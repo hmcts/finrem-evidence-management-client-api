@@ -29,6 +29,10 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {"feign.httpclient.enabled=false"})
 public class EvidenceManagementFileDownloadIntegrationTest {
 
+    private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
+    private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";
+    private static final String CASE_TYPE = "FinancialRemedyContested";
+
     @Rule
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
 
@@ -45,9 +49,6 @@ public class EvidenceManagementFileDownloadIntegrationTest {
     private String evidenceManagementClientApiDownloadUrl;
 
     private EvidenceManagementTestUtils evidenceManagementTestUtils = new EvidenceManagementTestUtils();
-
-    private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
-    private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";
 
     private String fileUrl;
 
@@ -71,6 +72,7 @@ public class EvidenceManagementFileDownloadIntegrationTest {
             IMAGE_FILE_CONTENT_TYPE,
             evidenceManagementClientApiBaseUrl,
             documentManagementStoreUrl,
-            idamTestSupportUtil);
+            idamTestSupportUtil,
+            CASE_TYPE);
     }
 }

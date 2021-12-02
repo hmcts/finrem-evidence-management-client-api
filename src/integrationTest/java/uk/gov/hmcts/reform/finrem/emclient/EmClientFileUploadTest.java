@@ -97,10 +97,10 @@ public class EmClientFileUploadTest {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
         RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter(), new ErrorLoggingFilter());
         Response response = SerenityRest.given()
-                .headers(getAuthenticationTokenHeader())
-                .multiPart("file", file, fileContentType)
-                .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
-                .andReturn();
+            .headers(getHeaders())
+            .multiPart("file", file, fileContentType)
+            .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
+            .andReturn();
 
         assertEquals(HttpStatus.OK.value(), response.statusCode());
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
@@ -141,11 +141,12 @@ public class EmClientFileUploadTest {
         return response;
     }
 
-    private Map<String, Object> getAuthenticationTokenHeader() {
+    private Map<String, Object> getHeaders() {
         String authenticationToken = idamTestSupportUtil.getIdamTestUser();
 
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);
+        headers.put("caseTypeId", "FinancialRemedyContested");
         headers.put("Content-Type", "multipart/form-data");
 
         return headers;
