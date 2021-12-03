@@ -14,6 +14,21 @@ class EvidenceManagementTestUtils {
 
     static final String AUTHORIZATION_HEADER_NAME = "Authorization";
 
+    Map<String, Object> getAuthenticationTokenHeader(IdamUtils idamTestSupportUtil) {
+        String authenticationToken = idamTestSupportUtil.getIdamTestUser();
+        Map<String, Object> headers = new HashMap<>();
+        headers.put(AUTHORIZATION_HEADER_NAME, authenticationToken);
+        return headers;
+    }
+
+    Map<String, Object> getInvalidAuthenticationTokenHeader() {
+        Map<String, Object> headers = new HashMap<>();
+        headers.put(AUTHORIZATION_HEADER_NAME, "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+            + ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ"
+            + ".SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5cinvalid");
+        return headers;
+    }
+
     //this is a hack to make this work with the docker container
     private String getDocumentStoreUri(String uri, String documentManagementUrl) {
         if (uri.contains("http://em-api-gateway-web:3404")) {
@@ -49,10 +64,7 @@ class EvidenceManagementTestUtils {
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
     }
 
-    private Map<String, Object> getAuthenticationTokenHeader(IdamUtils idamTestSupportUtil) {
-        String authenticationToken = idamTestSupportUtil.getIdamTestUser();
-        Map<String, Object> headers = new HashMap<>();
-        headers.put(AUTHORIZATION_HEADER_NAME, authenticationToken);
-        return headers;
+    Response deleteFileFromEvidenceManagement(String deleteEndpointUrl, String fileUrl, Map<String, Object> headers) {
+        return SerenityRest.given().headers(headers).delete(deleteEndpointUrl + fileUrl).andReturn();
     }
 }

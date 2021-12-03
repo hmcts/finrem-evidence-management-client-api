@@ -106,6 +106,11 @@ public class EmClientFileUploadTest {
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
 
         assertEmGetFileResponse(fileToUpload, fileContentType, fileRetrieveUrl(fileUrl));
+
+        evidenceManagementTestUtils.deleteFileFromEvidenceManagement(
+            evidenceManagementClientApiBaseUrl + EvidenceManagementFileDeleteIntegrationTest.DELETE_ENDPOINT,
+            fileUrl,
+            evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
     }
 
     private String fileRetrieveUrl(String url) {
