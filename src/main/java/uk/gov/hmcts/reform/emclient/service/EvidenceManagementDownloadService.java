@@ -5,5 +5,4 @@ import org.springframework.http.ResponseEntity;
 public interface EvidenceManagementDownloadService {
 
     ResponseEntity<byte[]> download(final String fileUrl);
-
 }

@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -53,7 +52,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(EvidenceManagementClientController.class)
 @ImportAutoConfiguration({RibbonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class, FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
-@TestPropertySource(properties = {"feature.secure-doc-store=false"})
 public class EvidenceManagementClientControllerTest {
 
     private static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";

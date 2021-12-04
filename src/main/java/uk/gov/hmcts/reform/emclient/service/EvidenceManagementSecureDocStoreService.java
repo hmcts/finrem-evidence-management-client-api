@@ -31,9 +31,9 @@ import static java.util.stream.StreamSupport.stream;
 @Slf4j
 public class EvidenceManagementSecureDocStoreService {
 
-    protected static final String JURISDICTION_ID = "DIVORCE";
     private final CaseDocumentClient caseDocumentClient;
     private static final int DOC_UUID_LENGTH = 36;
+    protected static final String JURISDICTION_ID = "DIVORCE";
 
     @Autowired
     public EvidenceManagementSecureDocStoreService(CaseDocumentClient caseDocumentClient) {
@@ -42,39 +42,41 @@ public class EvidenceManagementSecureDocStoreService {
 
     public List<FileUploadResponse> upload(List<MultipartFile> files, IdamTokens idamTokens, String caseTypeId)
         throws HttpClientErrorException {
-        log.info("EvidenceManagementSecureDocStoreService upload file: {} with case id: {}",
-            files.toString(), caseTypeId);
+        log.info("EMSDocStore Upload files: {} with user: {} and case id: {}",
+            files.toString(), idamTokens.getEmail(), caseTypeId);
 
         UploadResponse uploadResponse = caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(),
             idamTokens.getServiceAuthorization(), caseTypeId, JURISDICTION_ID, files);
 
         if (uploadResponse == null) {
+            log.info("EMSDocStore Failed to upload files");
             return null; // TODO: refactor to return empty list instead
         }
 
-        log.info("For userId {} : Files uploaded response from Case Doc AM is {}", idamTokens.getEmail(),
-            uploadResponse.getDocuments().stream().map(e -> e.links.binary.href).collect(Collectors.toList()));
+        log.info("EMSDocStore Uploaded files are: {} with user: {} and case id: {}",
+            uploadResponse.getDocuments().stream().map(e -> e.links.binary.href).collect(Collectors.toList()),
+            idamTokens.getEmail(), caseTypeId);
 
         return toUploadResponse(uploadResponse);
     }
 
-    public byte[] download(String selfHref, IdamTokens idamTokens) throws HttpClientErrorException {
-        ResponseEntity<Resource> responseEntity = downloadResource(selfHref, idamTokens);
+    public byte[] download(String binaryFileUrl, IdamTokens idamTokens) throws HttpClientErrorException {
+        ResponseEntity<Resource> responseEntity = downloadResource(binaryFileUrl, idamTokens);
         ByteArrayResource resource = (ByteArrayResource) responseEntity.getBody();
 
         return (resource != null) ? resource.getByteArray() : new byte[0];
     }
 
-    public void delete(String selfHref, IdamTokens idamTokens) throws HttpClientErrorException {
-        log.info("Request for userId {} and deleteDocUrl {} and docId {}",
-            idamTokens.getEmail(), selfHref, getDocumentIdFromSelfHref(selfHref));
+    public void delete(String fileUrl, IdamTokens idamTokens) throws HttpClientErrorException {
+        log.info("EMSDocStore Delete file: {} with user: {} and docId: {}",
+            fileUrl, idamTokens.getEmail(), getDocumentIdFromFileUrl(fileUrl));
 
         caseDocumentClient.deleteDocument(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(),
-            getDocumentIdFromSelfHref(selfHref), Boolean.TRUE);
+            getDocumentIdFromFileUrl(fileUrl), Boolean.TRUE);
     }
 
-    protected UUID getDocumentIdFromSelfHref(String selfHref) {
-        return UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
+    protected UUID getDocumentIdFromFileUrl(String fileUrl) {
+        return UUID.fromString(fileUrl.substring(fileUrl.length() - DOC_UUID_LENGTH));
     }
 
     private List<FileUploadResponse> toUploadResponse(UploadResponse uploadResponse) {
@@ -96,9 +98,9 @@ public class EvidenceManagementSecureDocStoreService {
             .build();
     }
 
-    private ResponseEntity<Resource> downloadResource(String selfHref, IdamTokens idamTokens) {
-        String documentHref = URI.create(selfHref).getPath().replaceFirst("/", "");
-        log.info("Request for userId {} and downloadUrl {}", idamTokens.getEmail(), documentHref);
+    private ResponseEntity<Resource> downloadResource(String binaryFileUrl, IdamTokens idamTokens) {
+        String documentHref = URI.create(binaryFileUrl).getPath().replaceFirst("/", "");
+        log.info("EMSDocStore Download file: {} with user: {}", documentHref, idamTokens.getEmail());
 
         return caseDocumentClient.getDocumentBinary(idamTokens.getIdamOauth2Token(),
             idamTokens.getServiceAuthorization(), documentHref);

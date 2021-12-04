@@ -60,7 +60,8 @@ public class EvidenceManagementClientController {
         @RequestHeader(value = "Authorization") String authorizationToken,
         @RequestHeader(value = "caseTypeId") String caseTypeId,
         @RequestHeader(value = "requestId", required = false) String requestId,
-        @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
+        @RequestParam("file") List<@EvidenceFile MultipartFile> files
+    ) {
         log.info("Call to upload doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
             return secureDocStoreService.upload(files, userService.getIdamTokens(authorizationToken), caseTypeId);
@@ -79,7 +80,8 @@ public class EvidenceManagementClientController {
     @ResponseBody
     public ResponseEntity<byte[]> download(
         @RequestHeader(value = "Authorization") String authorizationToken,
-        @RequestParam("binaryFileUrl") String binaryFileUrl) {
+        @RequestParam("binaryFileUrl") String binaryFileUrl
+    ) {
         log.info("Call to download doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
             byte[] bytes = secureDocStoreService.download(binaryFileUrl, userService.getIdamTokens(authorizationToken));
@@ -97,9 +99,11 @@ public class EvidenceManagementClientController {
     })
     @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<String> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
-                                        @RequestHeader(value = "requestId", required = false) String requestId,
-                                        @RequestParam("fileUrl") String fileUrl) {
+    public ResponseEntity<String> deleteFile(
+        @RequestHeader(value = "Authorization") String authorizationToken,
+        @RequestHeader(value = "requestId", required = false) String requestId,
+        @RequestParam("fileUrl") String fileUrl
+    ) {
         log.info("Call to delete doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
             secureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
@@ -119,8 +123,8 @@ public class EvidenceManagementClientController {
     @ResponseBody
     public List<FileUploadResponse> audit(
         @RequestHeader(value = "Authorization") String authorizationToken,
-        @RequestParam List<String> fileUrls) {
-
+        @RequestParam List<String> fileUrls
+    ) {
         return emAuditService.audit(fileUrls, authorizationToken);
     }
 }
