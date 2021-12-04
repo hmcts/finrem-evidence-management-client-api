@@ -16,7 +16,5 @@ public interface EvidenceManagementDeleteService {
      * @return a ResponseEntity instance containing the response received from the Evidence Management service
      */
 
-    ResponseEntity<String> deleteFile(String fileUrl,
-                                 String authorizationToken,
-                                 String requestId);
+    ResponseEntity<String> deleteFile(String fileUrl, String authorizationToken, String requestId);
 }

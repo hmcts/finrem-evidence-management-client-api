@@ -29,19 +29,9 @@ class EvidenceManagementTestUtils {
         return headers;
     }
 
-    //this is a hack to make this work with the docker container
-    private String getDocumentStoreUri(String uri, String documentManagementUrl) {
-        if (uri.contains("http://em-api-gateway-web:3404")) {
-            return uri.replace("http://em-api-gateway-web:3404", documentManagementUrl);
-        }
-
-        return uri;
-    }
-
     @SuppressWarnings("unchecked")
-    String uploadFileToEvidenceManagement(String filePath, String fileContentType,
-                                          String evidenceManagementClientApiBaseUrl, String documentManagementUrl,
-                                          IdamUtils idamTestSupportUtil, String caseTypeId) {
+    String uploadFileToEvidenceManagement(String filePath, String fileContentType, String evidenceManagementClientApiBaseUrl,
+                                          String documentManagementUrl, IdamUtils idamTestSupportUtil, String caseTypeId) {
         File file = new File(filePath);
         Response response = SerenityRest.given()
             .headers(getAuthenticationTokenHeader(idamTestSupportUtil))
@@ -52,6 +42,15 @@ class EvidenceManagementTestUtils {
 
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
         return getDocumentStoreUri(((List<String>) response.getBody().path("fileUrl")).get(0), documentManagementUrl);
+    }
+
+    //this is a hack to make this work with the docker container
+    private String getDocumentStoreUri(String uri, String documentManagementUrl) {
+        if (uri.contains("http://em-api-gateway-web:3404")) {
+            return uri.replace("http://em-api-gateway-web:3404", documentManagementUrl);
+        }
+
+        return uri;
     }
 
     void downloadFileToEvidenceManagement(String filePath, String evidenceManagementClientApiDownloadUrl, IdamUtils idamTestSupportUtil) {

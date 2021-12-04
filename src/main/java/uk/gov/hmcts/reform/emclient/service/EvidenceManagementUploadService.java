@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface EvidenceManagementUploadService {
 
-    List<FileUploadResponse> upload(List<MultipartFile> files,
-                                    String authorizationToken,
-                                    String requestId);
+    List<FileUploadResponse> upload(List<MultipartFile> files, String authorizationToken, String requestId);
 }

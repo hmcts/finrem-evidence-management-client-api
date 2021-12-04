@@ -16,7 +16,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 
 @Lazy
 @RunWith(SerenityRunner.class)
@@ -26,12 +25,11 @@ import org.springframework.test.context.TestPropertySource;
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
-@TestPropertySource(properties = {"feign.httpclient.enabled=false"})
 public class EvidenceManagementFileDownloadIntegrationTest {
 
+    private static final String CASE_TYPE = "FinancialRemedyContested";
     private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
     private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";
-    private static final String CASE_TYPE = "FinancialRemedyContested";
 
     @Rule
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
@@ -70,7 +68,8 @@ public class EvidenceManagementFileDownloadIntegrationTest {
         evidenceManagementTestUtils.downloadFileToEvidenceManagement(
             fileUrl + "/binary",
             evidenceManagementClientApiDownloadUrl,
-            idamTestSupportUtil);
+            idamTestSupportUtil
+        );
     }
 
     private String uploadFile() {
@@ -80,6 +79,7 @@ public class EvidenceManagementFileDownloadIntegrationTest {
             evidenceManagementClientApiBaseUrl,
             documentManagementStoreUrl,
             idamTestSupportUtil,
-            CASE_TYPE);
+            CASE_TYPE
+        );
     }
 }
