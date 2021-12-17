@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.emclient.controller;
 
+import feign.FeignException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -106,7 +107,13 @@ public class EvidenceManagementClientController {
     ) {
         log.info("Call to delete doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
-            secureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
+            try {
+                secureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
+            } catch (FeignException e) {
+                log.info("FeignException status: {}, message: {}", e.status(), e.getMessage());
+                return new ResponseEntity<>(e.contentUTF8(), HttpStatus.valueOf(e.status()));
+            }
+
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 

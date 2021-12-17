@@ -124,7 +124,7 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         evidenceManagementSecureDocStoreService.delete(binaryHref, idamTokens);
 
         verify(caseDocumentClient).deleteDocument(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(),
-            evidenceManagementSecureDocStoreService.getDocumentIdFromFileUrl(binaryHref),Boolean.TRUE);
+            evidenceManagementSecureDocStoreService.getDocumentIdFromFileUrl(binaryHref), Boolean.TRUE);
     }
 
     private void assertFileUploadResponse(FileUploadResponse response) {
