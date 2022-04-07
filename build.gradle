@@ -195,7 +195,7 @@ dependencyManagement {
         dependency group: 'com.netflix.servo', name: 'servo-core', version: '0.13.0'
 
         dependency group: 'org.glassfish', name: 'jakarta.el', version: '3.0.4'
-        //CVE-2021-22060
+        //CVE-2022-22965
         dependencySet(group: 'org.springframework', version: '5.2.20.RELEASE') {
             entry 'spring-aop'
             entry 'spring-beans'
