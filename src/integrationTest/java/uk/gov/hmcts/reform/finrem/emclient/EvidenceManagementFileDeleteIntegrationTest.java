@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.finrem.emclient;
 
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
@@ -70,6 +71,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
 
     @Test
     public void verifyDeleteRequestForExistingDocumentIsSuccessful() {
+        RestAssured.useRelaxedHTTPSValidation();
         fileUrl = uploadFile();
         Response response = deleteFileFromEvidenceManagement(fileUrl,
             evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
