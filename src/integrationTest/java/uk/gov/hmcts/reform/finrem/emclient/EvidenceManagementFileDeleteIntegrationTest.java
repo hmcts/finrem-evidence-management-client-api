@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.finrem.emclient;
 
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
@@ -70,6 +71,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
 
     @Test
     public void verifyDeleteRequestForExistingDocumentIsSuccessful() {
+        RestAssured.useRelaxedHTTPSValidation();
         fileUrl = uploadFile();
         Response response = deleteFileFromEvidenceManagement(fileUrl,
             evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
@@ -99,14 +101,14 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     }
 
     @Test
-    public void verifyDeleteRequestWithInvalidAuthorizationHeaderIsInternalServerError() {
+    public void verifyDeleteRequestWithInvalidAuthorizationHeaderIsUnauthorized() {
         fileUrl = uploadFile();
         Map<String, Object> headers = evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil);
         String invalidToken = "x".concat(headers.get(AUTHORIZATION_HEADER_NAME).toString()).concat("x");
         headers.put(AUTHORIZATION_HEADER_NAME, invalidToken);
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
 
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
     }
 
     @Test
