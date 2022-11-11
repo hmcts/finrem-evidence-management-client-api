@@ -46,7 +46,6 @@ public class EvidenceManagementDeleteServiceConsumerTest extends BaseTest {
     @Autowired
     RestTemplate restTemplate;
 
-
     @Rule
     public PactProviderRule mockProvider = new PactProviderRule("em_dm_store", "localhost", 8889, this);
 
