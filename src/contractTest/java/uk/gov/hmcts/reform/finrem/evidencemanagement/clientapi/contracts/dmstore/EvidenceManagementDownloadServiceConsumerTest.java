@@ -40,7 +40,7 @@ public class EvidenceManagementDownloadServiceConsumerTest extends BaseTest {
         Thread.sleep(2000);
     }
 
-    @Pact(provider = "em_dm_store", consumer = "fr_evidenceManagementClient")
+    @Pact(provider = "em_dm_store", consumer = "fr_evidenceManagementClientDownload")
     public RequestResponsePact generatePactFragment(final PactDslWithProvider builder) throws JSONException {
         // @formatter:off
         return builder

@@ -54,7 +54,7 @@ public class EvidenceManagementDeleteServiceConsumerTest extends BaseTest {
         Thread.sleep(2000);
     }
 
-    @Pact(provider = "em_dm_store", consumer = "fr_evidenceManagementClient")
+    @Pact(provider = "em_dm_store", consumer = "fr_evidenceManagementClientDelete")
     public RequestResponsePact generatePactFragment(final PactDslWithProvider builder) throws JSONException, IOException {
         // @formatter:off
         return builder
