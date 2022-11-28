@@ -10,7 +10,7 @@ buildscript {
 }
 
 plugins {
-    id 'au.com.dius.pact' version '4.1.0'
+    id 'au.com.dius.pact' version '4.4.0-beta.2'
     id 'application'
     id 'checkstyle'
     id 'com.github.ben-manes.versions' version '0.36.0'
@@ -157,7 +157,7 @@ def versions = [
         javaxValidation                         : '2.0.1.Final',
         junit                                   : '4.13.1',
         lombok                                  : '1.18.16',
-        pact_version                            : '4.1.11',
+        pact_version                            : '4.4.0-beta.2',
         reformHealth                            : '0.0.5',
         reformPropertiesVolume                  : '0.1.0',
         reformLogging                           : '5.1.7',
@@ -288,11 +288,11 @@ dependencies {
 
     testCompile('com.github.hmcts:fortify-client:1.2.2:all')
 
-    contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit', version: '4.1.11'
-    contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: '4.1.11'
+    contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit', version: versions.pact_version
+    contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
 
-    contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit', version: '4.1.11'
-    contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8', version: '4.1.11'
+    contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit', version: versions.pact_version
+    contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
 
     contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
@@ -313,7 +313,7 @@ pact {
     pactDirectory = 'pacts'
     pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
     tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
-    version = '4.1.11'
+    version = versions.pact_version
   }
 }
 
