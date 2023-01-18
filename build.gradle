@@ -151,8 +151,8 @@ tasks.withType(Checkstyle).each { checkstyleTask ->
 
 def versions = [
         commonsBeanUtils                        : '1.9.4',
-        commonsIo                               : '2.7',
-        commonsLang3                            : '3.11',
+        commonsIo                               : '2.11',
+        commonsLang3                            : '3.12',
         hibernate                               : '6.0.5.Final',
         javaxValidation                         : '2.0.1.Final',
         junit                                   : '4.13.1',
@@ -245,6 +245,9 @@ dependencies {
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
     implementation group: 'org.springframework.security', name: 'spring-security-rsa'
+
+    //CVE-2021-37533
+    implementation group: 'commons-net', name: 'commons-net', version: '3.9.0'
 
     implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.reformLogging
     implementation group: 'com.github.hmcts.java-logging', name: 'logging-spring', version: versions.reformLogging
