@@ -246,9 +246,6 @@ dependencies {
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
     implementation group: 'org.springframework.security', name: 'spring-security-rsa'
 
-    //CVE-2021-37533
-    implementation group: 'commons-net', name: 'commons-net', version: '3.9.0'
-
     implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.reformLogging
     implementation group: 'com.github.hmcts.java-logging', name: 'logging-spring', version: versions.reformLogging
     implementation group: 'com.github.hmcts', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
