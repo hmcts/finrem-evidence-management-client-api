@@ -151,8 +151,8 @@ tasks.withType(Checkstyle).each { checkstyleTask ->
 
 def versions = [
         commonsBeanUtils                        : '1.9.4',
-        commonsIo                               : '2.11',
-        commonsLang3                            : '3.12',
+        commonsIo                               : '2.7',
+        commonsLang3                            : '3.11',
         hibernate                               : '6.0.5.Final',
         javaxValidation                         : '2.0.1.Final',
         junit                                   : '4.13.1',
