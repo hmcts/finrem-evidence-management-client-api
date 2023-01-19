@@ -89,6 +89,7 @@ public class EmClientFileUploadTest {
 
     @Test
     public void uploadFile() {
+        RestAssured.useRelaxedHTTPSValidation();
         uploadFileToEmStore(this.name, this.fileType);
     }
 
