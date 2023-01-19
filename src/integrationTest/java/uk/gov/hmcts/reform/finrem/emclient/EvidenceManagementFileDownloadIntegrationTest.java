@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.finrem.emclient;
 
+import io.restassured.RestAssured;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import org.junit.After;
@@ -64,6 +65,7 @@ public class EvidenceManagementFileDownloadIntegrationTest {
 
     @Test
     public void verifyEvidenceManagementFileDownload() {
+        RestAssured.useRelaxedHTTPSValidation();
         fileUrl = uploadFile();
         evidenceManagementTestUtils.downloadFileToEvidenceManagement(
             fileUrl + "/binary",

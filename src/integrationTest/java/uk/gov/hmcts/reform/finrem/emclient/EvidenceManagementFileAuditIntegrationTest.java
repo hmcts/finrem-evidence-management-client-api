@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.finrem.emclient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
@@ -73,6 +74,7 @@ public class EvidenceManagementFileAuditIntegrationTest {
 
     @Test
     public void givenUploadedFiles_whenFilesAudited_thenAuditResponseIsReturned() throws JsonProcessingException {
+        RestAssured.useRelaxedHTTPSValidation();
         fileUrl = uploadFile();
 
         Response response = SerenityRest.given()
