@@ -92,6 +92,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
 
     @Test
     public void verifyDeleteRequestWithMissingDocumentIdIsNotAllowed() {
+        RestAssured.useRelaxedHTTPSValidation();
         fileUrl = uploadFile();
         String fileUrlAlt = fileUrl.substring(0, fileUrl.lastIndexOf("/") + 1);
         Response response = deleteFileFromEvidenceManagement(fileUrlAlt,
