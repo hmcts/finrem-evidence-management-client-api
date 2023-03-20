@@ -233,6 +233,7 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-spring-webmvc', version: versions.springfoxWebmvc
     implementation group: 'javax.validation', name: 'validation-api', version: versions.javaxValidation
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
     implementation group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: versions.apacheLogging
