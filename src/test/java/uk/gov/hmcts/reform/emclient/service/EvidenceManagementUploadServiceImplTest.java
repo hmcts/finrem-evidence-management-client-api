@@ -118,12 +118,7 @@ public class EvidenceManagementUploadServiceImplTest {
     }
 
     private static String authKey() {
-        return "Bearer ***REMOVED***"
-            + "***REMOVED***"
-            + "***REMOVED***"
-            + "***REMOVED***"
-            + "***REMOVED***"
-            + "***REMOVED***";
+        return "Bearer dummy-token";
     }
 
     private List<MultipartFile> getMultipartFiles() {

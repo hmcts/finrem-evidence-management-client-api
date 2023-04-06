@@ -104,11 +104,6 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest 
     }
 
     private static String authToken() {
-        return "Bearer ***REMOVED***"
-            + "***REMOVED***"
-            + "***REMOVED***"
-            + "***REMOVED***"
-            + "***REMOVED***"
-            + "***REMOVED***";
+        return "Bearer dummy-token";
     }
 }

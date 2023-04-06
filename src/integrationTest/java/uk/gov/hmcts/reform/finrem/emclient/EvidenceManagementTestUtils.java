@@ -23,9 +23,7 @@ class EvidenceManagementTestUtils {
 
     Map<String, Object> getInvalidAuthenticationTokenHeader() {
         Map<String, Object> headers = new HashMap<>();
-        headers.put(AUTHORIZATION_HEADER_NAME, "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                + ".eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ"
-                + ".SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5cinvalid");
+        headers.put(AUTHORIZATION_HEADER_NAME, "Bearer dummytoken");
         return headers;
     }
 
